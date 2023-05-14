@@ -1,4 +1,8 @@
-from flask import Flask, request, jsonify, render_template
+import json
+
+from flask import Flask, request, jsonify, render_template, make_response
+
+from nerfw.server.Renderer import Renderer
 from nerfw.server.wrapper import FlaskAppWrapper
 
 
@@ -6,17 +10,11 @@ class Server:
     """Server class"""
 
     def __init__(self):
+        with open("game_script/script.json", "r") as file:
+            self.script = json.load(file)
         flask_app = Flask(__name__)
         self.app = FlaskAppWrapper(flask_app)
-
-    @staticmethod
-    def action():
-        """
-        Function which is added to the app
-        :return: str
-        """
-
-        return "Hello World"
+        self.renderer = Renderer()
 
     @staticmethod
     def home():
@@ -25,24 +23,24 @@ class Server:
         :return: Rendered template from html
         """
 
-        return render_template('home.html')
+        resp = make_response(render_template("home.html"))
+        resp.set_cookie("line_id", "0")
+        return resp
 
-    @staticmethod
-    def test():
+    def forward(self):
         """
         Test function
         :return:
         """
-        text1 = request.form['text1']
-        text2 = request.form['text2']
-        text1 = text1.upper()
-        text2 = text2.upper()
-        combine = text1 + text2
-        result = {
-            "output": combine
-        }
-        result = {str(key): value for key, value in result.items()}
-        return jsonify(result=result)
+
+        line_id = int(request.cookies.get("line_id"))
+        next_scene = self.script[f"{line_id + 1}"]
+        next_scene = self.renderer.render(next_scene)
+
+        resp = make_response(jsonify(result=next_scene))
+        resp.set_cookie("line_id", f"{line_id + 1}")
+
+        return resp
 
     def run(self, debug=False):
         """
@@ -51,7 +49,6 @@ class Server:
         :return: None
         """
 
-        self.app.add_endpoint('/action', 'action', self.action, methods=['GET'])
-        self.app.add_endpoint('/join', 'test', self.test, methods=['GET', 'POST'])
+        self.app.add_endpoint('/forward', 'forward', self.forward, methods=['POST'])
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
         self.app.run(debug=debug)
