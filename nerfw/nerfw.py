@@ -1,3 +1,4 @@
+from nerfw.game import Ui
 from nerfw.game.generator.generator import Generator
 from nerfw.helpers import LoggerBase
 from nerfw.server.server import Server
@@ -13,6 +14,7 @@ class NerFW(LoggerBase):
         super().__init__()
         self.server = Server()
         self.generator = Generator()
+        self.ui = Ui()
 
     def run(self, debug=False):
         """

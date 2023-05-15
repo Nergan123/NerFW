@@ -41,3 +41,11 @@ Class which stores character data. Responsible for actions taken by character
 | **Name** | **Description**                          | **Example**     |
 |:---------|:-----------------------------------------|:----------------|
 | say      | Adds a character line to the game script | say("Test 123") |
+
+### Ui
+
+Class for UI creation
+
+| **Name**   | **Description**                 | **Example**                                     |
+|:-----------|:--------------------------------|:------------------------------------------------|
+| add_button | Creates a new button for the ui | add_button("next", (10, 10), Functions.FORWARD) |

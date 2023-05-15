@@ -1,0 +1,16 @@
+</head>
+
+<script>
+function ForwardFunction() {
+    $.ajax({
+        url: "/forward",
+        type: "POST",
+        data: {}
+    }).done(function(response) {
+        document.getElementById("show-data").innerHTML = response.result;
+    });
+};
+</script>
+
+<body>
+    <p>
