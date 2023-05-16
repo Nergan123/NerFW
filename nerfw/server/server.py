@@ -1,7 +1,6 @@
-import json
-
 from flask import Flask, request, jsonify, render_template, make_response
 
+from nerfw.game.generator.script import Script
 from nerfw.server.Renderer import Renderer
 from nerfw.server.wrapper import FlaskAppWrapper
 
@@ -9,9 +8,8 @@ from nerfw.server.wrapper import FlaskAppWrapper
 class Server:
     """Server class"""
 
-    def __init__(self):
-        with open("game_script/script.json", "r") as file:
-            self.script = json.load(file)
+    def __init__(self, script: Script):
+        self.script = script.get_script()
         flask_app = Flask(__name__)
         self.app = FlaskAppWrapper(flask_app)
         self.renderer = Renderer()
@@ -34,7 +32,7 @@ class Server:
         """
 
         line_id = int(request.cookies.get("line_id"))
-        next_scene = self.script[f"{line_id + 1}"]
+        next_scene = self.script[line_id + 1]
         next_scene = self.renderer.render(next_scene)
 
         resp = make_response(jsonify(result=next_scene))

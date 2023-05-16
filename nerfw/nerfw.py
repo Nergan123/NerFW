@@ -12,7 +12,6 @@ class NerFW(LoggerBase):
 
     def __init__(self):
         super().__init__()
-        self.server = Server()
         self.generator = Generator()
         self.ui = Ui()
 
@@ -22,9 +21,9 @@ class NerFW(LoggerBase):
         :return: None
         """
 
-        self.generator.generate()
+        server = Server(self.generator.script)
         self.logger.info("Launching NerFW")
-        self.server.run(debug=debug)
+        server.run(debug=debug)
 
     def create_character(self, name: str, img: str, color: (int, int, int)):
         """
