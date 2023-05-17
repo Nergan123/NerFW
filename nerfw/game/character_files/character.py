@@ -4,9 +4,9 @@ from nerfw.helpers import LoggerBase
 class Character(LoggerBase):
     """Class for character_files"""
 
-    def __init__(self, generator=None, name="Test name", img_path="/", color=(0, 0, 0)):
+    def __init__(self, recorder=None, name="Test name", img_path="/", color=(0, 0, 0)):
         super().__init__()
-        self.generator = generator
+        self.recorder = recorder
         self.name = name
         self.img = img_path
         self.color = color
@@ -19,4 +19,4 @@ class Character(LoggerBase):
         """
 
         self.logger.info(f"Adding to script: {text}")
-        self.generator.add_line(text, self)
+        self.recorder.check(text, self)

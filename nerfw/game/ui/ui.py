@@ -9,6 +9,7 @@ class Ui(LoggerBase):
     def __init__(self):
         super().__init__()
         self.buttons = []
+        self.html = ""
 
     def add_button(self, name: str, pos: (int, int), function: Functions):
         """
@@ -54,6 +55,5 @@ class Ui(LoggerBase):
             html += template.read()
 
         self.logger.debug(f"final html: {html}")
-
         with open("nerfw/server/templates/index.html", "w") as template:
             template.write(html)
