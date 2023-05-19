@@ -1,5 +1,6 @@
-from nerfw.game import Ui, Character
-from nerfw.game.recorder import Recorder
+from nerfw.game import Character
+from nerfw.helpers.recorder import Recorder
+from nerfw.game.scene import Scene
 from nerfw.helpers import LoggerBase
 
 
@@ -8,8 +9,8 @@ class Game(LoggerBase):
 
     def __init__(self, last_line):
         super().__init__()
-        self.ui = Ui()
-        self.recorder = Recorder(last_line)
+        self.scene = Scene()
+        self._recorder = Recorder(last_line, self.scene)
 
     def create_character(self, name: str, img: str, color: (int, int, int)):
         """
@@ -20,5 +21,5 @@ class Game(LoggerBase):
         :return: Character class
         """
 
-        character = Character(self.recorder, name, img, color)
+        character = Character(self._recorder, name, img, color)
         return character

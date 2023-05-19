@@ -1,5 +1,5 @@
-from nerfw.game.ui.button import Button
-from nerfw.game.ui.functions import Functions
+from nerfw.ui.button import Button
+from nerfw.ui.functions import Functions
 from nerfw.helpers import LoggerBase
 
 

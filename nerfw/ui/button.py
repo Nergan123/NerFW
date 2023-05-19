@@ -1,4 +1,4 @@
-from nerfw.game.ui.functions import Functions
+from nerfw.ui.functions import Functions
 from nerfw.helpers import LoggerBase
 
 
