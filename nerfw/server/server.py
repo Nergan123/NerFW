@@ -1,17 +1,18 @@
 from flask import Flask, request, jsonify, render_template, make_response
 
 from nerfw.helpers.breaker import Breaker
-from nerfw.server.Renderer import Renderer
+from nerfw.server.renderer import Renderer
 from nerfw.server.wrapper import FlaskAppWrapper
+from nerfw.ui.ui import Ui
 
 
 class Server:
     """Server class"""
 
-    def __init__(self):
+    def __init__(self, ui: Ui):
         flask_app = Flask(__name__)
         self.app = FlaskAppWrapper(flask_app)
-        self.renderer = Renderer()
+        self.renderer = Renderer(ui)
         self.script = None
 
     @staticmethod
@@ -34,24 +35,15 @@ class Server:
         line = request.cookies.get("line")
         try:
             self.script(line)
-            next_scene = {
-                "line": {
-                    "name": "Game Over",
-                    "text": "Restart"
-                }
-            }
-        except Breaker as line_to_return:
-            line = line_to_return
-            next_scene = {
-                "line": {
-                    "name": line.name,
-                    "text": line.line
-                }
-            }
+            html = ""
+            css = ""
+            text = ""
+        except Breaker as br:
+            html, css = self.renderer.render(br)
+            text = br.line
 
-        rendered_scene = self.renderer.render(next_scene)
-        resp = make_response(jsonify(result=rendered_scene))
-        resp.set_cookie("line", next_scene["line"]["text"])
+        resp = make_response(jsonify(html=html, css=css))
+        resp.set_cookie("line", text)
 
         return resp
 
@@ -71,4 +63,4 @@ class Server:
             pass
         self.app.add_endpoint('/forward', 'forward', self.forward, methods=['POST'])
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
-        self.app.run(debug=debug)
+        self.app.run(host="0.0.0.0", debug=debug)

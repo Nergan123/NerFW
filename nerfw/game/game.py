@@ -23,3 +23,13 @@ class Game(LoggerBase):
 
         character = Character(self._recorder, name, img, color)
         return character
+
+    def set_background(self, img_path: str):
+        """
+        Sets background to display
+        :param img_path: Path to image file
+        :return: None
+        """
+
+        self.logger.debug(f"Setting background to: {img_path}")
+        self.scene.set_background(img_path)

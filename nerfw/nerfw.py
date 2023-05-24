@@ -19,6 +19,6 @@ class NerFW(LoggerBase):
         :return: None
         """
 
-        server = Server()
+        server = Server(self.ui)
         self.logger.info("Launching NerFW")
         server.run(script, debug=debug)

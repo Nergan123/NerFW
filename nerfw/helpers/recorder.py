@@ -1,4 +1,3 @@
-from nerfw.game import Character
 from nerfw.game.scene import Scene
 from nerfw.helpers import LoggerBase
 from nerfw.helpers.breaker import Breaker
@@ -13,18 +12,17 @@ class Recorder(LoggerBase):
         self.scene = scene
         self.report = False
 
-    def check(self, line: str, character: Character):
+    def check(self, line: str):
         """
         Checks if line is already encountered
 
         :param line: Checks the current line
-        :param character: Character class
         :return: None
         """
 
         if self.report or (self.previous == ""):
             self.report = False
-            raise Breaker(line, character, self.scene)
+            raise Breaker(line, self.scene)
 
         if line == self.previous:
             self.report = True

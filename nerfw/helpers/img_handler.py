@@ -18,7 +18,7 @@ class ImageHandler(LoggerBase):
         """
 
         self.logger.info(f"Converting {img_path} to base64")
-        with open(img_path, "r") as img:
+        with open(img_path, "rb") as img:
             encoded_image = base64.b64encode(img.read())
 
-        return encoded_image
+        return encoded_image.decode("utf-8")
