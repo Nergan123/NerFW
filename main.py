@@ -28,6 +28,5 @@ if __name__ == "__main__":
     ner = NerFW()
     ner.ui.add_button("next", (10, 70), Functions.FORWARD)
     ner.ui.add_button("next2", (90, 70), Functions.FORWARD)
-    ner.ui.compile()
 
     ner.run(script, debug=True)

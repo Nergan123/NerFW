@@ -22,8 +22,9 @@ class Server:
         :return: Rendered template from html
         """
 
-        resp = make_response(render_template("home.html"))
+        resp = make_response(render_template("test.html"))
         resp.set_cookie("line", "")
+        resp.set_cookie("prev_line", "")
         return resp
 
     def forward(self):
