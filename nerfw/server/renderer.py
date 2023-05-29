@@ -35,14 +35,22 @@ class Renderer(LoggerBase):
         """
         Compiles css to be rendered
         :param scene: Scene dict after deconstruction
-        :return: str
+        :return: dict
         """
 
-        back = "url('data:image/jpeg;base64,"
-        back += scene["background"]
+        styles = {}
 
-        self.logger.debug(f"Returning css: {back}")
-        return back
+        back = "background-image: url(data:image/jpeg;base64,"
+        back += scene["background"]
+        back += "); background-repeat: no-repeat; background-size: cover;"
+
+        styles["body_element"] = back
+
+        for button in self.ui.buttons:
+            _, styles[button.name] = button.compile()
+
+        self.logger.debug(f"Returning css: {styles}")
+        return styles
 
     def compile_html(self, scene: dict):
         """
@@ -51,15 +59,21 @@ class Renderer(LoggerBase):
         :return: str
         """
 
+        html = "<p>"
+        for button in self.ui.buttons:
+            html_button, _ = button.compile()
+            html += html_button
+        html += "</p>"
+
         if len(scene["characters"]) > 0:
             char = scene["characters"][0]
             char_img = self.image_handler.convert_to_base64(char.img)
             char_img = f"<img src='data:image/jpeg;base64, {char_img}' />"
-            html = f"<p><b> {char.name}: <b><p>"
+            html += f"<p><b> {char.name}: <b><p>"
             html += f"<p> {scene['text']} <p><br>"
             html += char_img
         else:
-            html = "<p><b> ...: <b><p>"
+            html += "<p><b> ...: <b><p>"
             html += f"<p> {scene['text']} <p><br>"
 
         return html

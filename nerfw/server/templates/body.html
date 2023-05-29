@@ -1,17 +1,5 @@
 </head>
 
-<script>
-function ForwardFunction() {
-    $.ajax({
-        url: "/forward",
-        type: "POST",
-        data: {}
-    }).done(function(response) {
-        document.getElementById("show-data").innerHTML = response['html'];
-        document.body.style.backgroundImage = response['css']
-    });
-};
-</script>
+<script type="text/javascript" src="static/script.js"></script>
 
-<body>
-    <p>
+<body id="body_element">

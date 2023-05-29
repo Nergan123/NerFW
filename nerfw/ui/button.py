@@ -18,15 +18,13 @@ class Button(LoggerBase):
         :return: HTML
         """
 
-        html = f"<button class='{self.name}' onclick="
+        html = f"<button id='{self.name}' onclick="
         html += f"'{self.function}'>{self.name}</button>"
 
-        css = f".{self.name} " + "{"
-        css += f"top:{self.y}%;"
+        css = f"top:{self.y}%;"
         css += f"left:{self.x}%;"
         css += "width:100px;" \
                "height:40px;" \
-               "position: absolute;" \
-               "}\n"
+               "position: absolute;"
 
         return html, css

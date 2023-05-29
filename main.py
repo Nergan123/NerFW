@@ -30,4 +30,4 @@ if __name__ == "__main__":
     ner.ui.add_button("next2", (90, 70), Functions.FORWARD)
     ner.ui.compile()
 
-    ner.run(script)
+    ner.run(script, debug=True)

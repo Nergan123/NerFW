@@ -22,7 +22,7 @@ class Server:
         :return: Rendered template from html
         """
 
-        resp = make_response(render_template("index.html"))
+        resp = make_response(render_template("home.html"))
         resp.set_cookie("line", "")
         return resp
 
