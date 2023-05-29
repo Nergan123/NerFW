@@ -1,3 +1,4 @@
+from json import loads
 from nerfw.game.scene import Scene
 from nerfw.helpers import LoggerBase
 from nerfw.helpers.breaker import Breaker
@@ -8,7 +9,7 @@ class Recorder(LoggerBase):
 
     def __init__(self, last_line: str, scene: Scene):
         super().__init__()
-        self.previous = last_line
+        self.previous = loads(last_line)
         self.scene = scene
         self.report = False
 
@@ -20,9 +21,12 @@ class Recorder(LoggerBase):
         :return: None
         """
 
-        if self.report or (self.previous == ""):
+        if self.report or (self.previous["line"] == ""):
             self.report = False
             raise Breaker(line, self.scene)
 
-        if line == self.previous:
+        if line == self.previous["line"] and not self.previous["back"]:
             self.report = True
+
+        if line == self.previous["line"] and self.previous["back"]:
+            raise Breaker(line, self.scene)
