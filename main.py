@@ -1,4 +1,4 @@
-from nerfw import Game, Functions, NerFW
+from nerfw import Game, NerFW
 from nerfw.helpers import LoggerBase
 
 
@@ -26,7 +26,5 @@ def script(last_line):
 if __name__ == "__main__":
     LoggerBase.setup_logger()
     ner = NerFW()
-    ner.ui.add_button("next", (10, 70), Functions.FORWARD)
-    ner.ui.add_button("back", (90, 70), Functions.BACKWARD)
 
-    ner.run(script, debug=True)
+    ner.run(script)

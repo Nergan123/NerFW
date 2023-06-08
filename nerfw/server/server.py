@@ -4,6 +4,7 @@ from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.renderer import Renderer
 from nerfw.server.wrapper import FlaskAppWrapper
+from nerfw.ui.menus import Menus
 from nerfw.ui.ui import Ui
 
 
@@ -23,7 +24,9 @@ class Server:
         :return: Rendered template from html
         """
 
-        resp = make_response(render_template("test.html"))
+        html, css = self.renderer.render_main_menu(self.renderer.ui.main_menu)
+        resp = make_response(render_template("test.html", html=html, css=css))
+
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())
 
@@ -42,7 +45,7 @@ class Server:
             css = ""
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br)
+            html, css = self.renderer.render(br, Menus.MAIN)
             text = br.line
 
         resp = make_response(jsonify(html=html, css=css))
@@ -65,7 +68,7 @@ class Server:
             css = ""
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br)
+            html, css = self.renderer.render(br, Menus.MAIN)
             text = br.line
 
         resp = make_response(jsonify(html=html, css=css))

@@ -1,5 +1,6 @@
 from nerfw.helpers import LoggerBase
 from nerfw.server.server import Server
+from nerfw.ui.main_menu import MainMenu
 from nerfw.ui.ui import Ui
 
 
@@ -12,6 +13,7 @@ class NerFW(LoggerBase):
         super().__init__()
         self.logger.info("Initializing NerFW")
         self.ui = Ui()
+        self.main_menu = MainMenu()
 
     def run(self, script, debug=False):
         """

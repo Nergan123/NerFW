@@ -2,7 +2,9 @@ from nerfw.helpers import LoggerBase
 from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.deconstructor import Deconstructor
 from nerfw.helpers.img_handler import ImageHandler
+from nerfw.ui.menus import Menus
 from nerfw.ui.ui import Ui
+from nerfw.ui.ui_base import UiBase
 
 
 class Renderer(LoggerBase):
@@ -15,26 +17,51 @@ class Renderer(LoggerBase):
         self.ui = ui
         self.image_handler = ImageHandler()
 
-    def render(self, breaker: Breaker):
+    @staticmethod
+    def render_main_menu(ui: UiBase):
+        """
+        Returns html for main menu
+        :return: HTML
+        """
+
+        css = ""
+
+        for button in ui.buttons:
+            _, css_button = button.compile()
+            css += f"#{button.name} "
+            css += "{"
+            css += css_button
+            css += "}"
+
+        html = ""
+        for button in ui.buttons:
+            html_button, _ = button.compile()
+            html += html_button
+
+        return html, css
+
+    def render(self, breaker: Breaker, menu: Menus):
         """
         Renders a scene
         :param breaker: Breaker containing all the scene info
+        :param menu: A UI class to render
         :return: HTML
         """
 
         self.logger.debug(f"Received: {breaker}")
         scene = self.deconstructor.deconstruct(breaker)
 
-        html = self.compile_html(scene)
-        css = self.compile_css(scene)
+        html = self.compile_html(scene, menu)
+        css = self.compile_css(scene, menu)
         self.logger.info("Returning scene")
 
         return html, css
 
-    def compile_css(self, scene: dict):
+    def compile_css(self, scene: dict, menu: Menus):
         """
         Compiles css to be rendered
         :param scene: Scene dict after deconstruction
+        :param menu: A UI class to render
         :return: dict
         """
 
@@ -46,21 +73,22 @@ class Renderer(LoggerBase):
 
         styles["body_element"] = back
 
-        for button in self.ui.buttons:
+        for button in self.ui.__getattribute__(menu.value).buttons:
             _, styles[button.name] = button.compile()
 
         self.logger.debug(f"Returning css: {styles}")
         return styles
 
-    def compile_html(self, scene: dict):
+    def compile_html(self, scene: dict, menu: Menus):
         """
         Compiles html to be returned
         :param scene: Scene dict
+        :param menu: A UI class to render
         :return: str
         """
 
         html = "<p>"
-        for button in self.ui.buttons:
+        for button in self.ui.__getattribute__(menu.value).buttons:
             html_button, _ = button.compile()
             html += html_button
         html += "</p>"
