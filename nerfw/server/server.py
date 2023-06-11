@@ -24,7 +24,18 @@ class Server:
         :return: Rendered template from html
         """
 
-        html, css = self.renderer.render_main_menu(self.renderer.ui.main_menu)
+        html, css = self.renderer.render_menu(self.renderer.ui.main_menu)
+        resp = make_response(render_template("test.html", html=html, css=css))
+
+        return resp
+
+    def game(self):
+        """
+        Game page
+        :return: Rendered template for game
+        """
+
+        html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
         resp = make_response(render_template("test.html", html=html, css=css))
 
         resp.set_cookie("line", self.input.get_current_line())
@@ -45,7 +56,7 @@ class Server:
             css = ""
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br, Menus.MAIN)
+            html, css = self.renderer.render(br, Menus.DIALOGUE)
             text = br.line
 
         resp = make_response(jsonify(html=html, css=css))
@@ -68,7 +79,7 @@ class Server:
             css = ""
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br, Menus.MAIN)
+            html, css = self.renderer.render(br, Menus.DIALOGUE)
             text = br.line
 
         resp = make_response(jsonify(html=html, css=css))
@@ -94,5 +105,6 @@ class Server:
             pass
         self.app.add_endpoint('/forward', 'forward', self.forward, methods=['POST'])
         self.app.add_endpoint('/backward', 'backward', self.backward, methods=['POST'])
+        self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
         self.app.run(host="0.0.0.0", debug=debug)

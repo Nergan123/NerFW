@@ -17,5 +17,4 @@ class MainMenu(UiBase):
         :return: None
         """
 
-        self.add_button("next", (10, 70), Functions.FORWARD)
-        self.add_button("back", (90, 70), Functions.BACKWARD)
+        self.add_button("Game", (10, 70), Functions.GAME)

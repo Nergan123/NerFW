@@ -18,7 +18,7 @@ class Renderer(LoggerBase):
         self.image_handler = ImageHandler()
 
     @staticmethod
-    def render_main_menu(ui: UiBase):
+    def render_menu(ui: UiBase):
         """
         Returns html for main menu
         :return: HTML

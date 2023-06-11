@@ -1,3 +1,5 @@
+from nerfw.helpers.errors.function_not_found import FunctionNotFound
+from nerfw.helpers.errors.wrong_naming import WrongNamingFormatError
 from nerfw.ui.functions import Functions
 from nerfw.helpers import LoggerBase
 
@@ -10,7 +12,8 @@ class Button(LoggerBase):
         self.name = name
         self.x = pos[0]
         self.y = pos[1]
-        self.function = function.value
+        self.function = function
+        self._check()
 
     def compile(self):
         """
@@ -19,7 +22,7 @@ class Button(LoggerBase):
         """
 
         html = f"<button id='{self.name}' onclick="
-        html += f"'{self.function}'>{self.name}</button>"
+        html += f'"{self.function.value}">{self.name}</button>'
 
         css = f"top:{self.y}%;"
         css += f"left:{self.x}%;"
@@ -28,3 +31,15 @@ class Button(LoggerBase):
                "position: absolute;"
 
         return html, css
+
+    def _check(self):
+        """
+        Checks if everything is correct
+        :return: None
+        """
+
+        if " " in self.name:
+            raise WrongNamingFormatError(self.name)
+
+        if self.function not in Functions:
+            raise FunctionNotFound(self.function)
