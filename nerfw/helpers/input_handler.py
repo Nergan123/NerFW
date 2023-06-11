@@ -45,3 +45,12 @@ class InputHandler(LoggerBase):
 
         self.prev_line = self.current_line
         self.current_line = line
+
+    def reset(self):
+        """
+        Resets to default
+        :return: None
+        """
+
+        self.prev_line = ""
+        self.current_line = ""

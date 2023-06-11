@@ -26,6 +26,9 @@ class Server:
 
         html, css = self.renderer.render_menu(self.renderer.ui.main_menu)
         resp = make_response(render_template("test.html", html=html, css=css))
+        self.input.reset()
+        resp.set_cookie("line", self.input.get_current_line())
+        resp.set_cookie("prev_line", self.input.get_prev_line())
 
         return resp
 
