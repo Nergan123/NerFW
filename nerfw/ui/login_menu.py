@@ -1,8 +1,7 @@
-from nerfw.ui.functions import Functions
 from nerfw.ui.ui_base import UiBase
 
 
-class MainMenu(UiBase):
+class LoginMenu(UiBase):
     """
     Class for creation and control of main menu
     """
@@ -17,4 +16,4 @@ class MainMenu(UiBase):
         :return: None
         """
 
-        self.add_button("Game", (10, 70), Functions.REDIRECT_GAME)
+        self.add_input("Login", (50, 50), (4, 20), 20)

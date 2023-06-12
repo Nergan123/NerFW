@@ -1,5 +1,6 @@
 from nerfw.helpers import LoggerBase
 from nerfw.ui.dialogue_window import DialogueWindow
+from nerfw.ui.login_menu import LoginMenu
 from nerfw.ui.main_menu import MainMenu
 
 
@@ -12,3 +13,4 @@ class Ui(LoggerBase):
         super().__init__()
         self.main_menu = MainMenu()
         self.dialogue_window = DialogueWindow()
+        self.login_menu = LoginMenu()

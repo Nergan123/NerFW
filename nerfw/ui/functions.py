@@ -6,5 +6,6 @@ class Functions(Enum):
 
     FORWARD = "ForwardFunction()"
     BACKWARD = "BackwardFunction()"
-    GAME = "window.location.href='/game'"
+    REDIRECT_GAME = "window.location.href='/game'"
     REDIRECT_MAIN_PAGE = "window.location.href='/'"
+    SAVE = ""

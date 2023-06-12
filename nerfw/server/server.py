@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, render_template, make_response
+from flask import Flask, request, jsonify, render_template, make_response, redirect
 
 from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.renderer import Renderer
+from nerfw.server.saves_handler import SavesHandler
 from nerfw.server.wrapper import FlaskAppWrapper
 from nerfw.ui.menus import Menus
 from nerfw.ui.ui import Ui
@@ -16,6 +17,7 @@ class Server:
         self.app = FlaskAppWrapper(flask_app)
         self.renderer = Renderer(ui)
         self.input = InputHandler("", "")
+        self.saves_handler = SavesHandler()
         self.script = None
 
     def home(self):
@@ -24,9 +26,27 @@ class Server:
         :return: Rendered template from html
         """
 
+        login = request.cookies.get("login")
+
+        if login is None:
+            return redirect("/login")
+
         html, css = self.renderer.render_menu(self.renderer.ui.main_menu)
         resp = make_response(render_template("test.html", html=html, css=css))
         self.input.reset()
+        resp.set_cookie("line", self.input.get_current_line())
+        resp.set_cookie("prev_line", self.input.get_prev_line())
+
+        return resp
+
+    def login(self):
+        """
+        Login page
+        :return: Login page
+        """
+
+        html, css = self.renderer.render_menu(self.renderer.ui.login_menu)
+        resp = make_response(render_template("test.html", html=html, css=css))
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())
 
@@ -106,8 +126,10 @@ class Server:
             self.script(self.input.get_current_line())
         except Breaker:
             pass
+
         self.app.add_endpoint('/forward', 'forward', self.forward, methods=['POST'])
         self.app.add_endpoint('/backward', 'backward', self.backward, methods=['POST'])
         self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
+        self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
         self.app.run(host="0.0.0.0", debug=debug)
