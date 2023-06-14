@@ -1,7 +1,11 @@
+import enum
+
 from nerfw.ui.button import Button
 from nerfw.ui.functions import Functions
 from nerfw.helpers import LoggerBase
 from nerfw.ui.input_text import InputText
+
+# pylint: disable=too-many-arguments
 
 
 class UiBase(LoggerBase):
@@ -10,6 +14,7 @@ class UiBase(LoggerBase):
     def __init__(self):
         super().__init__()
         self.buttons = []
+        self.inputs = []
 
     def add_button(self, name: str, pos: (int, int), function: Functions):
         """
@@ -24,15 +29,23 @@ class UiBase(LoggerBase):
         self.logger.info(f"Adding button to: {self.__class__.__name__}")
         self.buttons.append(but)
 
-    def add_input(self, input_name: str, pos: (int, int), length: (int, int), size: int):
+    def add_input(
+        self,
+        input_name: str,
+        input_type: enum,
+        pos: (int, int),
+        length: (int, int),
+        size: int,
+    ):
         """
         Adds a text field to the menu
         :param input_name: Name that will be displayed
+        :param input_type: Sets type for input field
         :param pos: Position on screen in percents
         :param length: Tuple containing min and max length of the input
         :param size: Size to display
         """
 
-        inp = InputText(input_name, pos, length, size)
+        inp = InputText(input_name, input_type, pos, length, size)
         self.logger.info(f"Adding input field to: {self.__class__.__name__}")
-        self.buttons.append(inp)
+        self.inputs.append(inp)

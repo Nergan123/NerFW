@@ -11,7 +11,7 @@ class DbHandler(LoggerBase):
     def __init__(self):
         super().__init__()
         self.path = "login_data.db"
-        self.connection = sqlite3.connect(self.path)
+        self.connection = sqlite3.connect(self.path, check_same_thread=False)
         try:
             self.setup_db()
         except sqlite3.OperationalError:
@@ -26,6 +26,7 @@ class DbHandler(LoggerBase):
         with self.connection:
             cur = self.connection.cursor()
             cur.execute("CREATE TABLE saves (login TEXT, date TEXT, data TEXT);")
+            cur.execute("CREATE TABLE credentials (login TEXT, password TEXT, UNIQUE(login));")
 
     def execute(self, query: str, values=None):
         """

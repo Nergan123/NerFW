@@ -33,10 +33,25 @@ class Renderer(LoggerBase):
             css += css_button
             css += "}"
 
+        for input_field in ui.inputs:
+            _, css_inp = input_field.compile()
+            css += f"#{input_field.name} "
+            css += "{"
+            css += css_inp
+            css += "}"
+
         html = ""
         for button in ui.buttons:
             html_button, _ = button.compile()
             html += html_button
+
+        html += "<form method='POST'>"
+
+        for input_field in ui.inputs:
+            html_inp, _ = input_field.compile()
+            html += html_inp
+
+        html += "</form>"
 
         return html, css
 

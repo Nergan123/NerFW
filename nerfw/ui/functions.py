@@ -8,4 +8,5 @@ class Functions(Enum):
     BACKWARD = "BackwardFunction()"
     REDIRECT_GAME = "window.location.href='/game'"
     REDIRECT_MAIN_PAGE = "window.location.href='/'"
-    SAVE = ""
+    INPUT_SUBMIT = "submit"
+    INPUT_TEXT = "text"
