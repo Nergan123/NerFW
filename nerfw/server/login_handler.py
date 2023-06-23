@@ -1,5 +1,6 @@
 from nerfw.helpers import LoggerBase
 from nerfw.helpers.db_handler import DbHandler
+from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 
 
@@ -35,5 +36,7 @@ class LoginHandler(LoggerBase):
 
         self.logger.debug(f"Received: {data}")
         sql = "INSERT INTO credentials(login, password) VALUES(?, ?)"
+        if data["Password"] != data["Repeat_password"]:
+            raise PasswordsMismatch()
         values = [data["Login"][0], data["Password"][0]]
         self.db.execute(sql, values)

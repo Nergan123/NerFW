@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template, make_response, redirect
 
 from nerfw.helpers.breaker import Breaker
+from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
+from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.login_handler import LoginHandler
@@ -52,15 +54,35 @@ class Server:
             data = request.form.to_dict(flat=False)
             try:
                 self.login_handler.login(data)
-            except UserDoesntExist:
                 resp = make_response(redirect("/"))
-                resp.set_cookie("login", "test")
-                return resp
-            resp = make_response(redirect("/"))
-            resp.set_cookie("line", self.input.get_current_line())
-            resp.set_cookie("prev_line", self.input.get_prev_line())
+                resp.set_cookie("login", data["Login"][0])
+                resp.set_cookie("line", self.input.get_current_line())
+                resp.set_cookie("prev_line", self.input.get_prev_line())
+            except UserDoesntExist:
+                resp = make_response(redirect("/register"))
         else:
             html, css = self.renderer.render_menu(self.renderer.ui.login_menu)
+            resp = make_response(render_template("test.html", html=html, css=css))
+
+        return resp
+
+    def register(self):
+        """
+        Registers a user
+        :return: Register page
+        """
+
+        if request.method == "POST":
+            data = request.form.to_dict(flat=False)
+            try:
+                self.login_handler.register(data)
+                resp = make_response(redirect("/login"))
+            except UserAlreadyRegistered:
+                resp = make_response(redirect("/login"))
+            except PasswordsMismatch():
+                resp = make_response(redirect("/register"))
+        else:
+            html, css = self.renderer.render_menu(self.renderer.ui.register_menu)
             resp = make_response(render_template("test.html", html=html, css=css))
 
         return resp
@@ -144,5 +166,6 @@ class Server:
         self.app.add_endpoint('/backward', 'backward', self.backward, methods=['POST'])
         self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
         self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
+        self.app.add_endpoint('/register', 'register', self.register, methods=['GET', 'POST'])
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
         self.app.run(host="0.0.0.0", debug=debug)
