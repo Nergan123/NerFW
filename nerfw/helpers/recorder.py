@@ -1,6 +1,6 @@
 from json import loads
 from nerfw.game.scene import Scene
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.breaker import Breaker
 
 

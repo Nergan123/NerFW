@@ -1,7 +1,7 @@
-from nerfw.game import Character
+from nerfw.game.character import Character
 from nerfw.helpers.errors.character_not_found import CharacterNotFoundError
 from nerfw.helpers.img_handler import ImageHandler
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 
 
 class Scene(LoggerBase):

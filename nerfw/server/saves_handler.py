@@ -1,6 +1,6 @@
 import json
 
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.db_handler import DbHandler
 
 

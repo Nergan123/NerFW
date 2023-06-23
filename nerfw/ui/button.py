@@ -1,7 +1,7 @@
+from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.errors.function_not_found import FunctionNotFound
 from nerfw.helpers.errors.wrong_naming import WrongNamingFormatError
 from nerfw.ui.functions import Functions
-from nerfw.helpers import LoggerBase
 
 
 class Button(LoggerBase):

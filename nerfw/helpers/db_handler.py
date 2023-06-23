@@ -1,6 +1,6 @@
 import sqlite3
 
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 
 
 class DbHandler(LoggerBase):

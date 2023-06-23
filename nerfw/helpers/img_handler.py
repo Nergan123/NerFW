@@ -1,6 +1,6 @@
 import base64
 
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 
 
 class ImageHandler(LoggerBase):

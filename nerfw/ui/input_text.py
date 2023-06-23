@@ -1,6 +1,6 @@
 import enum
 
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 # pylint: disable=too-many-arguments
 
 

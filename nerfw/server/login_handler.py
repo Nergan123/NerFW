@@ -1,4 +1,4 @@
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.db_handler import DbHandler
 from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist

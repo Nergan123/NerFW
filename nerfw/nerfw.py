@@ -1,4 +1,4 @@
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 from nerfw.server.server import Server
 from nerfw.ui.main_menu import MainMenu
 from nerfw.ui.ui import Ui

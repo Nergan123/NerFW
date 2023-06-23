@@ -1,4 +1,4 @@
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.img_handler import ImageHandler
 

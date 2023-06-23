@@ -2,7 +2,7 @@ import enum
 
 from nerfw.ui.button import Button
 from nerfw.ui.functions import Functions
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 from nerfw.ui.input_text import InputText
 from nerfw.ui.text_field import TextField
 

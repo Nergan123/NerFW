@@ -1,7 +1,7 @@
-from nerfw.game import Character
+from nerfw.game.character import Character
 from nerfw.helpers.recorder import Recorder
 from nerfw.game.scene import Scene
-from nerfw.helpers import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 
 
 class Game(LoggerBase):
