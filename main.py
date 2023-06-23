@@ -1,5 +1,5 @@
 from nerfw import Game, NerFW
-from nerfw.helpers import LoggerBase
+from nerfw import LoggerBase
 
 
 def script(last_line):
