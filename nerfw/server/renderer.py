@@ -40,6 +40,13 @@ class Renderer(LoggerBase):
             css += css_inp
             css += "}"
 
+        for text_field in ui.text_fields:
+            _, css_field = text_field.compile()
+            css += f"#{text_field.name} "
+            css += "{"
+            css += css_field
+            css += "}"
+
         html = ""
         for button in ui.buttons:
             html_button, _ = button.compile()
@@ -50,6 +57,10 @@ class Renderer(LoggerBase):
         for input_field in ui.inputs:
             html_inp, _ = input_field.compile()
             html += html_inp
+
+        for text_field in ui.text_fields:
+            html_field, _ = text_field.compile()
+            html += html_field
 
         html += "</form>"
 

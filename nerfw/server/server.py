@@ -1,3 +1,5 @@
+import re
+
 from flask import Flask, request, jsonify, render_template, make_response, redirect
 
 from nerfw.helpers.breaker import Breaker
@@ -79,11 +81,18 @@ class Server:
                 resp = make_response(redirect("/login"))
             except UserAlreadyRegistered:
                 resp = make_response(redirect("/login"))
-            except PasswordsMismatch():
+            except PasswordsMismatch:
                 resp = make_response(redirect("/register"))
+                resp.set_cookie("error", "Password mismatch")
         else:
             html, css = self.renderer.render_menu(self.renderer.ui.register_menu)
-            resp = make_response(render_template("test.html", html=html, css=css))
+            error = request.cookies.get("error")
+            if error is None:
+                error = ""
+            template = render_template("test.html", html=html, css=css)
+            template = re.sub(r"\{\{ text\|safe }}", error, template)
+            resp = make_response(template)
+            resp.delete_cookie("error")
 
         return resp
 
