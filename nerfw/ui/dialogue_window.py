@@ -20,3 +20,4 @@ class DialogueWindow(UiBase):
         self.add_button("next", (10, 70), Functions.FORWARD)
         self.add_button("back", (90, 70), Functions.BACKWARD)
         self.add_button("main_menu", (50, 70), Functions.REDIRECT_MAIN_PAGE)
+        self.add_button("save", (10, 10), Functions.SAVE)

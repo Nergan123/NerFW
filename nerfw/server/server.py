@@ -61,7 +61,7 @@ class Server:
                 resp.set_cookie("line", self.input.get_current_line())
                 resp.set_cookie("prev_line", self.input.get_prev_line())
             except UserDoesntExist:
-                resp = make_response(redirect("/register"))
+                resp = make_response(redirect("/login/register"))
         else:
             html, css = self.renderer.render_menu(self.renderer.ui.login_menu)
             resp = make_response(render_template("test.html", html=html, css=css))
@@ -82,7 +82,7 @@ class Server:
             except UserAlreadyRegistered:
                 resp = make_response(redirect("/login"))
             except PasswordsMismatch:
-                resp = make_response(redirect("/register"))
+                resp = make_response(redirect("/login/register"))
                 resp.set_cookie("error", "Password mismatch")
         else:
             html, css = self.renderer.render_menu(self.renderer.ui.register_menu)
@@ -113,7 +113,7 @@ class Server:
     def backward(self):
         """
         Returns to previous slide
-        :return:
+        :return: None
         """
 
         line = request.cookies.get("prev_line")
@@ -136,7 +136,7 @@ class Server:
     def forward(self):
         """
         Progresses the game forward function
-        :return:
+        :return: None
         """
 
         line = request.cookies.get("line")
@@ -156,6 +156,17 @@ class Server:
 
         return resp
 
+    def save(self):
+        """
+        Creates a save entry in db
+        :return: None
+        """
+
+        data = request.cookies.to_dict()
+        self.saves_handler.create_save(data["login"], data)
+        resp = make_response(jsonify(code=200))
+        return resp
+
     def run(self, script, debug=False):
         """
         Runs a server
@@ -171,10 +182,11 @@ class Server:
         except Breaker:
             pass
 
-        self.app.add_endpoint('/forward', 'forward', self.forward, methods=['POST'])
-        self.app.add_endpoint('/backward', 'backward', self.backward, methods=['POST'])
-        self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
-        self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
-        self.app.add_endpoint('/register', 'register', self.register, methods=['GET', 'POST'])
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
+        self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
+        self.app.add_endpoint('/game/forward', 'forward', self.forward, methods=['POST'])
+        self.app.add_endpoint('/game/backward', 'backward', self.backward, methods=['POST'])
+        self.app.add_endpoint('/game/save', 'save', self.save, methods=['POST'])
+        self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
+        self.app.add_endpoint('/login/register', 'register', self.register, methods=['GET', 'POST'])
         self.app.run(host="0.0.0.0", debug=debug)

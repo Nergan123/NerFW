@@ -6,6 +6,7 @@ class Functions(Enum):
 
     FORWARD = "ForwardFunction()"
     BACKWARD = "BackwardFunction()"
+    SAVE = "SaveFunction()"
     REDIRECT_GAME = "window.location.href='/game'"
     REDIRECT_MAIN_PAGE = "window.location.href='/'"
     INPUT_SUBMIT = "submit"

@@ -1,6 +1,6 @@
 function ForwardFunction() {
     $.ajax({
-        url: "/forward",
+        url: "/game/forward",
         type: "POST",
         data: {}
     }).done(function(response) {

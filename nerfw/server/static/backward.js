@@ -1,6 +1,6 @@
 function BackwardFunction() {
     $.ajax({
-        url: "/backward",
+        url: "/game/backward",
         type: "POST",
         data: {}
     }).done(function(response) {
