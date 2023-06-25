@@ -9,6 +9,7 @@ class LoginMenu(UiBase):
 
     def __init__(self):
         super().__init__()
+        self.id = "login_menu"
         self.setup()
 
     def setup(self):
@@ -17,6 +18,6 @@ class LoginMenu(UiBase):
         :return: None
         """
 
-        self.add_input("Login", Functions.INPUT_TEXT, (45, 50), (4, 20), 20)
-        self.add_input("Password", Functions.INPUT_TEXT, (45, 52), (4, 20), 20)
-        self.add_input("Submit", Functions.INPUT_SUBMIT, (45, 54), (4, 20), 20)
+        self.add_input("Login", Functions.INPUT_TEXT, (40, 40), (4, 20), 20)
+        self.add_input("Password", Functions.INPUT_TEXT, (40, 43), (4, 20), 20)
+        self.add_input("Submit", Functions.INPUT_SUBMIT, (40, 46), (4, 20), 20)

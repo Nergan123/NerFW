@@ -15,6 +15,7 @@ class UiBase(LoggerBase):
 
     def __init__(self):
         super().__init__()
+        self.id = ""
         self.buttons = []
         self.inputs = []
         self.text_fields = []

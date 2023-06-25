@@ -2,7 +2,6 @@ from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.deconstructor import Deconstructor
 from nerfw.helpers.img_handler import ImageHandler
-from nerfw.ui.menus import Menus
 from nerfw.ui.ui import Ui
 from nerfw.ui.ui_base import UiBase
 
@@ -47,7 +46,7 @@ class Renderer(LoggerBase):
             css += css_field
             css += "}"
 
-        html = ""
+        html = f"<div id={ui.id}>"
         for button in ui.buttons:
             html_button, _ = button.compile()
             html += html_button
@@ -63,31 +62,30 @@ class Renderer(LoggerBase):
             html += html_field
 
         html += "</form>"
+        html += "</div>"
 
         return html, css
 
-    def render(self, breaker: Breaker, menu: Menus):
+    def render(self, breaker: Breaker):
         """
         Renders a scene
         :param breaker: Breaker containing all the scene info
-        :param menu: A UI class to render
         :return: HTML
         """
 
         self.logger.debug(f"Received: {breaker}")
         scene = self.deconstructor.deconstruct(breaker)
 
-        html = self.compile_html(scene, menu)
-        css = self.compile_css(scene, menu)
+        html = self.compile_html(scene)
+        css = self.compile_css(scene)
         self.logger.info("Returning scene")
 
         return html, css
 
-    def compile_css(self, scene: dict, menu: Menus):
+    def compile_css(self, scene: dict):
         """
         Compiles css to be rendered
         :param scene: Scene dict after deconstruction
-        :param menu: A UI class to render
         :return: dict
         """
 
@@ -99,26 +97,17 @@ class Renderer(LoggerBase):
 
         styles["body_element"] = back
 
-        for button in self.ui.__getattribute__(menu.value).buttons:
-            _, styles[button.name] = button.compile()
-
         self.logger.debug(f"Returning css: {styles}")
         return styles
 
-    def compile_html(self, scene: dict, menu: Menus):
+    def compile_html(self, scene: dict):
         """
         Compiles html to be returned
         :param scene: Scene dict
-        :param menu: A UI class to render
         :return: str
         """
 
-        html = "<p>"
-        for button in self.ui.__getattribute__(menu.value).buttons:
-            html_button, _ = button.compile()
-            html += html_button
-        html += "</p>"
-
+        html = ""
         if len(scene["characters"]) > 0:
             char = scene["characters"][0]
             char_img = self.image_handler.convert_to_base64(char.img)

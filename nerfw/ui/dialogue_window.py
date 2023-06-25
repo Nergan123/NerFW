@@ -9,6 +9,7 @@ class DialogueWindow(UiBase):
 
     def __init__(self):
         super().__init__()
+        self.id = "dialogue_menu"
         self.setup()
 
     def setup(self):
@@ -17,7 +18,7 @@ class DialogueWindow(UiBase):
         :return: None
         """
 
-        self.add_button("next", (10, 70), Functions.FORWARD)
-        self.add_button("back", (90, 70), Functions.BACKWARD)
-        self.add_button("main_menu", (50, 70), Functions.REDIRECT_MAIN_PAGE)
-        self.add_button("save", (10, 10), Functions.SAVE)
+        self.add_button("next", (10, 85), Functions.FORWARD)
+        self.add_button("back", (5, 85), Functions.BACKWARD)
+        self.add_button("main_menu", (85, 85), Functions.REDIRECT_MAIN_PAGE)
+        self.add_button("save", (93, 85), Functions.SAVE)

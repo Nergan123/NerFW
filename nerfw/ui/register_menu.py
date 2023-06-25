@@ -9,6 +9,7 @@ class RegisterMenu(UiBase):
 
     def __init__(self):
         super().__init__()
+        self.id = "register_menu"
         self.setup()
 
     def setup(self):

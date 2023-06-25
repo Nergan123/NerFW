@@ -11,7 +11,6 @@ from nerfw.server.login_handler import LoginHandler
 from nerfw.server.renderer import Renderer
 from nerfw.server.saves_handler import SavesHandler
 from nerfw.server.wrapper import FlaskAppWrapper
-from nerfw.ui.menus import Menus
 from nerfw.ui.ui import Ui
 
 
@@ -123,7 +122,7 @@ class Server:
             css = ""
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br, Menus.DIALOGUE)
+            html, css = self.renderer.render(br)
             text = br.line
 
         resp = make_response(jsonify(html=html, css=css))
@@ -146,7 +145,7 @@ class Server:
             css = ""
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br, Menus.DIALOGUE)
+            html, css = self.renderer.render(br)
             text = br.line
 
         resp = make_response(jsonify(html=html, css=css))

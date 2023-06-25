@@ -9,6 +9,7 @@ class MainMenu(UiBase):
 
     def __init__(self):
         super().__init__()
+        self.id = "main_menu"
         self.setup()
 
     def setup(self):

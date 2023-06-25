@@ -26,9 +26,7 @@ class Button(LoggerBase):
 
         css = f"top:{self.y}%;"
         css += f"left:{self.x}%;"
-        css += "width:100px;" \
-               "height:40px;" \
-               "position: absolute;"
+        css += "position: absolute;"
 
         return html, css
 
