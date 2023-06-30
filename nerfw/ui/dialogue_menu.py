@@ -18,7 +18,9 @@ class DialogueWindow(UiBase):
         :return: None
         """
 
-        self.add_button("next", (10, 85), Functions.FORWARD)
+        self.add_text_field("char-name", (5, 5), 20)
+        self.add_text_field("char-text", (5, 12), 20)
+        self.add_button("next", (15, 85), Functions.FORWARD)
         self.add_button("back", (5, 85), Functions.BACKWARD)
-        self.add_button("main_menu", (85, 85), Functions.REDIRECT_MAIN_PAGE)
-        self.add_button("save", (93, 85), Functions.SAVE)
+        self.add_button("main_menu", (70, 85), Functions.REDIRECT_MAIN_PAGE)
+        self.add_button("save", (85, 85), Functions.SAVE)

@@ -19,8 +19,7 @@ class TextField(LoggerBase):
         :return: css, html
         """
 
-        html = f"<p id='{self.name}'> "
-        html += "{{ text|safe }} </p>"
+        html = f"<div id='{self.name}'> </div>"
         css = f"top:{self.pos_y}%;"
         css += f"left:{self.pos_x}%;"
         css += "position: absolute;"

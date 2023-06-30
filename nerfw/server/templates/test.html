@@ -12,9 +12,9 @@
     </style>
 </head>
 
-<script src="static/forward.js"></script>
-<script src="static/backward.js"></script>
-<script src="static/save.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='forward.js') }}"></script>
+<script src="{{ url_for('static', filename='backward.js') }}"></script>
+<script src="{{ url_for('static', filename='save.js') }}"></script>
 
 <body id="body_element">
     <div id="show-data">

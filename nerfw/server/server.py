@@ -1,5 +1,3 @@
-import re
-
 from flask import Flask, request, jsonify, render_template, make_response, redirect
 
 from nerfw.helpers.breaker import Breaker
@@ -7,6 +5,7 @@ from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 from nerfw.helpers.input_handler import InputHandler
+from nerfw.server.error_handler import ErrorHandler
 from nerfw.server.login_handler import LoginHandler
 from nerfw.server.renderer import Renderer
 from nerfw.server.saves_handler import SavesHandler
@@ -24,6 +23,7 @@ class Server:
         self.input = InputHandler("", "")
         self.saves_handler = SavesHandler()
         self.login_handler = LoginHandler()
+        self.error_handler = ErrorHandler()
         self.script = None
 
     def home(self):
@@ -86,11 +86,11 @@ class Server:
         else:
             html, css = self.renderer.render_menu(self.renderer.ui.register_menu)
             error = request.cookies.get("error")
-            if error is None:
-                error = ""
-            template = render_template("test.html", html=html, css=css)
-            template = re.sub(r"\{\{ text\|safe }}", error, template)
-            resp = make_response(template)
+            if error is not None:
+                html_addition = self.error_handler.display(error)
+                html += html_addition
+
+            resp = make_response(render_template("test.html", html=html, css=css))
             resp.delete_cookie("error")
 
         return resp

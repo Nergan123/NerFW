@@ -21,12 +21,14 @@ class Button(LoggerBase):
         :return: HTML
         """
 
-        html = f"<button id='{self.name}' onclick="
+        html = f"<div id='{self.name}' class='button_div'>"
+        html += "<button onclick="
         html += f'"{self.function.value}">{self.name}</button>'
+        html += "</div>"
 
-        css = f"top:{self.y}%;"
+        css = "position: absolute;"
+        css += f"top:{self.y}%;"
         css += f"left:{self.x}%;"
-        css += "position: absolute;"
 
         return html, css
 

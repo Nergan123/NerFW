@@ -47,9 +47,11 @@ class Renderer(LoggerBase):
             css += "}"
 
         html = f"<div id={ui.id}>"
+        html += "<div id='wrapper'>"
         for button in ui.buttons:
             html_button, _ = button.compile()
             html += html_button
+        html += "</div>"
 
         html += "<form method='POST'>"
 
@@ -93,7 +95,9 @@ class Renderer(LoggerBase):
 
         back = "background-image: url(data:image/jpeg;base64,"
         back += scene["background"]
-        back += "); background-repeat: no-repeat; background-size: cover;"
+        back += "); background-repeat: no-repeat; " \
+                "background-size: cover; " \
+                "background-position: center; "
 
         styles["body_element"] = back
 
@@ -107,16 +111,16 @@ class Renderer(LoggerBase):
         :return: str
         """
 
-        html = ""
+        html = {}
+
         if len(scene["characters"]) > 0:
             char = scene["characters"][0]
             char_img = self.image_handler.convert_to_base64(char.img)
-            char_img = f"<img src='data:image/jpeg;base64, {char_img}' />"
-            html += f"<p><b> {char.name}: <b><p>"
-            html += f"<p> {scene['text']} <p><br>"
-            html += char_img
+            html["show-data"] = f"<img src='data:image/jpeg;base64, {char_img}' />"
+            html["char-name"] = f"<p><b> {char.name}: <b><p>"
+            html["char-text"] = f"<p> {scene['text']} <p>"
         else:
-            html += "<p><b> ...: <b><p>"
-            html += f"<p> {scene['text']} <p><br>"
+            html["char-name"] = "<p><b> ...: <b><p>"
+            html["char-text"] = f"<p> {scene['text']} <p>"
 
         return html
