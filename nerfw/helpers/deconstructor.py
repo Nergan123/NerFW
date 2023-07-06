@@ -21,7 +21,8 @@ class Deconstructor(LoggerBase):
         scene_dict = {
             "background": breaker.scene.background,
             "characters": breaker.scene.characters_to_show,
-            "text": breaker.line
+            "text": breaker.line,
+            "choice": breaker.scene.choice
         }
 
         return scene_dict

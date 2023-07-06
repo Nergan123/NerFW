@@ -1,3 +1,6 @@
+import json
+from json import loads
+
 from flask import Flask, request, jsonify, render_template, make_response, redirect
 
 from nerfw.helpers.breaker import Breaker
@@ -40,8 +43,6 @@ class Server:
         html, css = self.renderer.render_menu(self.renderer.ui.main_menu)
         resp = make_response(render_template("test.html", html=html, css=css))
         self.input.reset()
-        resp.set_cookie("line", self.input.get_current_line())
-        resp.set_cookie("prev_line", self.input.get_prev_line())
 
         return resp
 
@@ -116,6 +117,9 @@ class Server:
         """
 
         line = request.cookies.get("prev_line")
+        line = loads(line)
+        line["back"] = True
+        line = json.dumps(line)
         try:
             self.script(line)
             html = ""
@@ -139,6 +143,18 @@ class Server:
         """
 
         line = request.cookies.get("line")
+        line = loads(line)
+
+        try:
+            answer = request.form.to_dict(flat=False)["answer"][0]
+            choice_id = request.form.to_dict(flat=False)["id"][0]
+            line["choices"][choice_id] = answer
+        except KeyError:
+            pass
+
+        self.input.set_choices(line["choices"])
+        line = json.dumps(line)
+
         try:
             self.script(line)
             html = ""

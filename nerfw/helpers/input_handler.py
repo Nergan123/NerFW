@@ -7,8 +7,29 @@ class InputHandler(LoggerBase):
 
     def __init__(self, current_line: str, prev_line: str):
         super().__init__()
-        self.current_line = current_line
-        self.prev_line = prev_line
+        self.cookie = {
+            "lines": {
+                "current": {
+                    "line": current_line,
+                    "back": False,
+                    "choices": {}
+                },
+                "previous": {
+                    "line": prev_line,
+                    "back": False,
+                    "choices": {}
+                }
+            }
+        }
+
+    def set_choices(self, choices: dict):
+        """
+        Sets choices in current line
+        :param choices: Dict
+        :return: None
+        """
+
+        self.cookie["lines"]["current"]["choices"] = choices
 
     def get_current_line(self):
         """
@@ -16,10 +37,8 @@ class InputHandler(LoggerBase):
 
         :return:
         """
-        output = {
-            "line": self.current_line,
-            "back": False
-        }
+
+        output = self.cookie["lines"]["current"]
 
         return dumps(output)
 
@@ -29,10 +48,7 @@ class InputHandler(LoggerBase):
 
         :return:
         """
-        output = {
-            "line": self.prev_line,
-            "back": True
-        }
+        output = self.cookie["lines"]["previous"]
 
         return dumps(output)
 
@@ -43,8 +59,8 @@ class InputHandler(LoggerBase):
         :return: None
         """
 
-        self.prev_line = self.current_line
-        self.current_line = line
+        self.cookie["lines"]["previous"] = self.cookie["lines"]["current"].copy()
+        self.cookie["lines"]["current"]["line"] = line
 
     def reset(self):
         """
@@ -52,5 +68,17 @@ class InputHandler(LoggerBase):
         :return: None
         """
 
-        self.prev_line = ""
-        self.current_line = ""
+        self.cookie = {
+            "lines": {
+                "current": {
+                    "line": "",
+                    "back": False,
+                    "choices": {}
+                },
+                "previous": {
+                    "line": "",
+                    "back": False,
+                    "choices": {}
+                }
+            }
+        }

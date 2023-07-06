@@ -18,9 +18,26 @@ def script(last_line):
     tester.show()
     tester.say("Test 1")
     tester.say("Test 2")
+    app.set_background("test_files/test.jpg")
     tester.hide()
 
     coder.say("What are you testing?")
+    answers = app.choice(["something", "nothing"])
+    if answers[0]:
+        tester.show()
+        tester.say("Something")
+        val = 1
+    else:
+        tester.show()
+        tester.say("Nothing")
+        val = 2
+
+    tester.hide()
+    coder.say("Got it")
+    if val == 1:
+        coder.say("1")
+    else:
+        coder.say("2")
 
 
 if __name__ == "__main__":

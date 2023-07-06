@@ -1,4 +1,5 @@
 from nerfw.game.character import Character
+from nerfw.game.choice import Choice
 from nerfw.helpers.recorder import Recorder
 from nerfw.game.scene import Scene
 from nerfw.helpers.logger import LoggerBase
@@ -11,6 +12,7 @@ class Game(LoggerBase):
         super().__init__()
         self.scene = Scene()
         self._recorder = Recorder(last_line, self.scene)
+        self._choice_count = 0
 
     def create_character(self, name: str, img: str, color: (int, int, int)):
         """
@@ -33,3 +35,17 @@ class Game(LoggerBase):
 
         self.logger.debug(f"Setting background to: {img_path}")
         self.scene.set_background(img_path)
+
+    def choice(self, choices: list):
+        """
+        Makes a choice
+        :param choices: List of options
+        :return: returns a list with booleans representing answers
+        """
+
+        choice = Choice(self._recorder, choices, self._recorder.previous, self._choice_count)
+        self._recorder.scene.add_choice_to_scene(choice)
+        self._choice_count += 1
+        answers = choice.make()
+
+        return answers

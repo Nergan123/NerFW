@@ -101,6 +101,9 @@ class Renderer(LoggerBase):
 
         styles["body_element"] = back
 
+        if scene["choice"] is not None:
+            pass
+
         self.logger.debug(f"Returning css: {styles}")
         return styles
 
@@ -120,7 +123,13 @@ class Renderer(LoggerBase):
             html["char-name"] = f"<p><b> {char.name}: <b><p>"
             html["char-text"] = f"<p> {scene['text']} <p>"
         else:
+            html["show-data"] = ""
             html["char-name"] = "<p><b> ...: <b><p>"
             html["char-text"] = f"<p> {scene['text']} <p>"
+
+        if scene["choice"] is not None:
+            html["show-data"] += scene['choice'].compile()
+            html["char-name"] = ""
+            html["char-text"] = ""
 
         return html

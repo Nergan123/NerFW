@@ -11,6 +11,7 @@ class Scene(LoggerBase):
         super().__init__()
         self.background = None
         self.characters_to_show = []
+        self.choice = None
         self.img_handler = ImageHandler()
 
     def set_background(self, img_file: str):
@@ -45,3 +46,22 @@ class Scene(LoggerBase):
             self.characters_to_show.remove(character)
         else:
             raise CharacterNotFoundError(character)
+
+    def add_choice_to_scene(self, choice):
+        """
+        Adds choice to be displayed
+        :param choice: Choice object
+        :return: None
+        """
+
+        self.choice = choice
+        self.logger.debug(f"Setting choice to: {choice}")
+
+    def remove_choice_from_scene(self):
+        """
+        Removes choice from object
+        :return: None
+        """
+
+        self.logger.debug("Removing choice from scene object")
+        self.choice = None
