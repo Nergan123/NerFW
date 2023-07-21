@@ -14,16 +14,17 @@ class Game(LoggerBase):
         self._recorder = Recorder(last_line, self.scene)
         self._choice_count = 0
 
-    def create_character(self, name: str, img: str, color: (int, int, int)):
+    def create_character(self, name: str, img: str, color: (int, int, int), pos: (int, int)):
         """
         Generates a character_files class
         :param name: Name of the character_files
         :param img: Path to image file
         :param color: Color in rgb from 0 to 255
+        :param pos: Position of the character on screen in percent
         :return: Character class
         """
 
-        character = Character(self._recorder, name, img, color)
+        character = Character(self._recorder, name, img, color, pos)
         return character
 
     def set_background(self, img_path: str):

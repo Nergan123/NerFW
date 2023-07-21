@@ -1,3 +1,16 @@
+@keyframes slideIn {
+    from {
+        left: var(--moveStartX);
+        top: var(--moveStartY);
+    }
+    to {
+        left: var(--moveEndX);
+        top: var(--moveEndY);
+    }
+}
+
+
+
 html {
   height: 100%;
   user-select: none;

@@ -32,7 +32,7 @@ class Choice(LoggerBase):
                 else:
                     self.answers.append(False)
         except KeyError:
-            pass
+            self.answers = []
 
     def make(self):
         """

@@ -1,15 +1,18 @@
+from nerfw.game.animation import Animations
 from nerfw.helpers.logger import LoggerBase
 
 
 class Character(LoggerBase):
     """Class for character_files"""
 
-    def __init__(self, recorder=None, name="Test name", img_path="/", color=(0, 0, 0)):
+    # pylint: disable=too-many-arguments
+    def __init__(self, recorder=None, name="Test name", img_path="/", color=(0, 0, 0), pos=(0, 0)):
         super().__init__()
         self.recorder = recorder
         self.name = name
         self.img = img_path
         self.color = color
+        self.animation = Animations(pos[0], pos[1])
 
     def say(self, text="Sample text"):
         """
@@ -20,6 +23,7 @@ class Character(LoggerBase):
 
         self.logger.info(f"Adding to script: {text}")
         self.recorder.check(text)
+        self.animation.css = ""
 
     def hide(self):
         """

@@ -100,6 +100,14 @@ class Renderer(LoggerBase):
                 "background-position: center; "
 
         styles["body_element"] = back
+        try:
+            char = scene["characters"][0]
+            styles[char.name] = "position: absolute;"
+            styles[char.name] += f"top: {char.animation.current_y}%;"
+            styles[char.name] += f"left: {char.animation.current_x}%;"
+            styles[char.name] += char.animation.css
+        except IndexError:
+            pass
 
         if scene["choice"] is not None:
             pass
@@ -119,7 +127,7 @@ class Renderer(LoggerBase):
         if len(scene["characters"]) > 0:
             char = scene["characters"][0]
             char_img = self.image_handler.convert_to_base64(char.img)
-            html["show-data"] = f"<img src='data:image/jpeg;base64, {char_img}' />"
+            html["show-data"] = f"<img id={char.name} src='data:image/jpeg;base64, {char_img}' />"
             html["char-name"] = f"<p><b> {char.name}: <b><p>"
             html["char-text"] = f"<p> {scene['text']} <p>"
         else:
