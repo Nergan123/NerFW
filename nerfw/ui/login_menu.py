@@ -18,6 +18,6 @@ class LoginMenu(UiBase):
         :return: None
         """
 
-        self.add_input("Login", Functions.INPUT_TEXT, (40, 40), (4, 20), 20)
+        self.add_input("Login", Functions.INPUT_TEXT, (40, 39), (4, 20), 20)
         self.add_input("Password", Functions.INPUT_TEXT, (40, 43), (4, 20), 20)
-        self.add_input("Submit", Functions.INPUT_SUBMIT, (40, 46), (4, 20), 20)
+        self.add_input("Submit", Functions.INPUT_SUBMIT, (40, 47), (4, 20), 20)

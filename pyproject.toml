@@ -38,10 +38,11 @@ include=[
 exclude=[
     "logs",
     "test_files",
+    ".pylintrc",
 ]
 dependencies = [
     "python-dotenv",
-    "Flask",
+    "flask",
 ]
 dynamic = ["version"]
 homepage = ["https://github.com/Nergan123/NerFW/tree/main"]

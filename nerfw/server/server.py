@@ -102,8 +102,8 @@ class Server:
         :return: Rendered template for game
         """
 
-        html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
-        resp = make_response(render_template("test.html", html=html, css=css))
+        # html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
+        resp = make_response(render_template("game.html"))
 
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())
