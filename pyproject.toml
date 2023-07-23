@@ -41,7 +41,7 @@ exclude=[
 ]
 dependencies = [
     "python-dotenv",
-    "Flask",
+    "flask",
 ]
 dynamic = ["version"]
 homepage = ["https://github.com/Nergan123/NerFW/tree/main"]
