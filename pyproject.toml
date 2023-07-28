@@ -22,14 +22,18 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 
-[tool.setuptools]
-py-modules = [
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
     "nerfw"
 ]
+exclude = [
+    "test_files",
+]
+namespaces = false
 
 [tool.setuptools.package-data]
 include=[
-    "**/*.py",
     "**/*.html",
     "**/*.css",
     "**/*.js",
