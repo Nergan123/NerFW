@@ -3,7 +3,7 @@ requires = ["setuptools>=43.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "NerFW"
+name = "nerfw"
 authors = [
     {name = "Nergan", email = "noname.nosurname2016@yandex.ru"},
 ]
@@ -29,6 +29,7 @@ py-modules = [
 
 [tool.setuptools.package-data]
 include=[
+    "**/*.py",
     "**/*.html",
     "**/*.css",
     "**/*.js",
@@ -39,6 +40,7 @@ exclude=[
     "logs",
     "test_files",
     ".pylintrc",
+    "main.py",
 ]
 dependencies = [
     "python-dotenv",
@@ -52,4 +54,5 @@ repository = ["https://github.com/Nergan123/NerFW/tree/main"]
 dev = [
     "black",
     "pylint",
+    "pytest",
 ]
