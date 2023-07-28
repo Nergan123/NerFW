@@ -30,7 +30,7 @@ dependencies = [
 where = ["."]
 include = [
     "nerfw",
-    "**/*.py",
+    "nerfw/*"
 ]
 exclude = [
     "test_files",
