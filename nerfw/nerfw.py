@@ -11,7 +11,7 @@ class NerFW(LoggerBase):
         super().__init__()
         self.logger.info("Initializing NerFW")
 
-    def run(self, script, debug=False):
+    def run(self, script, debug=False, port=4000):
         """
         Runs a game
         :return: None
@@ -19,4 +19,4 @@ class NerFW(LoggerBase):
 
         server = Server()
         self.logger.info("Launching NerFW")
-        server.run(script, debug=debug)
+        server.run(script, debug=debug, port=port)

@@ -180,12 +180,13 @@ class Server:
         resp = make_response(jsonify(code=200))
         return resp
 
-    def run(self, script, debug=False):
+    def run(self, script, debug=False, port=5000):
         """
         Runs a server
 
         :param debug: Sets debug mode
         :param script: Script to be run
+        :param port: Port to be used
         :return: None
         """
 
@@ -202,4 +203,4 @@ class Server:
         self.app.add_endpoint('/game/save', 'save', self.save, methods=['POST'])
         self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
         self.app.add_endpoint('/login/register', 'register', self.register, methods=['GET', 'POST'])
-        self.app.run(host="0.0.0.0", debug=debug)
+        self.app.run(host="0.0.0.0", debug=debug, port=port)
