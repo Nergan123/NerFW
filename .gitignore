@@ -5,3 +5,7 @@ test_files
 *.json
 game_script
 index.html
+.env
+*.db
+build
+*.egg-info
