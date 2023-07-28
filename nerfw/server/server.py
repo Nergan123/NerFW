@@ -1,7 +1,17 @@
-from flask import Flask, request, jsonify, render_template, make_response
+import json
+from json import loads
+
+from flask import Flask, request, jsonify, render_template, make_response, redirect
 
 from nerfw.helpers.breaker import Breaker
-from nerfw.server.Renderer import Renderer
+from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
+from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
+from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
+from nerfw.helpers.input_handler import InputHandler
+from nerfw.server.error_handler import ErrorHandler
+from nerfw.server.login_handler import LoginHandler
+from nerfw.server.renderer import Renderer
+from nerfw.server.saves_handler import SavesHandler
 from nerfw.server.wrapper import FlaskAppWrapper
 
 
@@ -12,47 +22,162 @@ class Server:
         flask_app = Flask(__name__)
         self.app = FlaskAppWrapper(flask_app)
         self.renderer = Renderer()
+        self.input = InputHandler("", "")
+        self.saves_handler = SavesHandler()
+        self.login_handler = LoginHandler()
+        self.error_handler = ErrorHandler()
         self.script = None
 
-    @staticmethod
-    def home():
+    def home(self):
         """
         Renders home url
         :return: Rendered template from html
         """
 
-        resp = make_response(render_template("index.html"))
-        resp.set_cookie("line", "")
+        login = request.cookies.get("login")
+
+        if login is None:
+            return redirect("/login")
+
+        resp = make_response(render_template("test.html"))
+        self.input.reset()
+
+        return resp
+
+    def login(self):
+        """
+        Login page
+        :return: Login page
+        """
+
+        if request.method == "POST":
+            data = request.form.to_dict(flat=False)
+            print(data)
+            try:
+                self.login_handler.login(data)
+                resp = make_response(redirect("/"))
+                resp.set_cookie("login", data["Login"][0])
+                resp.set_cookie("line", self.input.get_current_line())
+                resp.set_cookie("prev_line", self.input.get_prev_line())
+            except UserDoesntExist:
+                resp = make_response(redirect("/login/register"))
+        else:
+            resp = make_response(render_template("login.html"))
+
+        return resp
+
+    def register(self):
+        """
+        Registers a user
+        :return: Register page
+        """
+
+        if request.method == "POST":
+            data = request.form.to_dict(flat=False)
+            try:
+                self.login_handler.register(data)
+                resp = make_response(redirect("/login"))
+            except UserAlreadyRegistered:
+                resp = make_response(redirect("/login"))
+            except PasswordsMismatch:
+                resp = make_response(redirect("/login/register"))
+                resp.set_cookie("error", "Password mismatch")
+        else:
+            error = request.cookies.get("error")
+            if error is not None:
+                html = self.error_handler.display(error)
+            else:
+                html = ""
+
+            resp = make_response(render_template("register.html", html=html))
+            resp.delete_cookie("error")
+
+        return resp
+
+    def game(self):
+        """
+        Game page
+        :return: Rendered template for game
+        """
+
+        # html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
+        resp = make_response(render_template("game.html"))
+
+        resp.set_cookie("line", self.input.get_current_line())
+        resp.set_cookie("prev_line", self.input.get_prev_line())
+
+        return resp
+
+    def backward(self):
+        """
+        Returns to previous slide
+        :return: None
+        """
+
+        line = request.cookies.get("prev_line")
+        line = loads(line)
+        line["back"] = True
+        line = json.dumps(line)
+        try:
+            self.script(line)
+            html = ""
+            css = ""
+            text = ""
+        except Breaker as br:
+            html, css = self.renderer.render(br)
+            text = br.line
+
+        resp = make_response(jsonify(html=html, css=css))
+        self.input.set_line(text)
+        resp.set_cookie("line", self.input.get_current_line())
+        resp.set_cookie("prev_line", self.input.get_prev_line())
+
         return resp
 
     def forward(self):
         """
-        Test function
-        :return:
+        Progresses the game forward function
+        :return: None
         """
 
         line = request.cookies.get("line")
+        line = loads(line)
+
+        try:
+            answer = request.form.to_dict(flat=False)["answer"][0]
+            choice_id = request.form.to_dict(flat=False)["id"][0]
+            line["choices"][choice_id] = answer
+        except KeyError:
+            pass
+
+        self.input.set_choices(line["choices"])
+        line = json.dumps(line)
+
         try:
             self.script(line)
-            next_scene = {
-                "line": {
-                    "name": "Game Over",
-                    "text": "Restart"
-                }
-            }
-        except Breaker as line_to_return:
-            line = line_to_return
-            next_scene = {
-                "line": {
-                    "name": line.name,
-                    "text": line.line
-                }
-            }
+            html = ""
+            css = ""
+            text = ""
+        except Breaker as br:
+            html, css = self.renderer.render(br)
+            text = br.line
 
-        rendered_scene = self.renderer.render(next_scene)
-        resp = make_response(jsonify(result=rendered_scene))
-        resp.set_cookie("line", next_scene["line"]["text"])
+        resp = make_response(jsonify(html=html, css=css))
+        self.input.set_line(text)
+        resp.set_cookie("line", self.input.get_current_line())
+        resp.set_cookie("prev_line", self.input.get_prev_line())
 
+        return resp
+
+    def save(self):
+        """
+        Creates a save entry in db
+        :return: None
+        """
+
+        data = request.cookies.to_dict()
+        self.saves_handler.create_save(data["login"], data)
+        resp = make_response(jsonify(code=200))
         return resp
 
     def run(self, script, debug=False):
@@ -66,9 +191,15 @@ class Server:
 
         self.script = script
         try:
-            self.script("")
+            self.script(self.input.get_current_line())
         except Breaker:
             pass
-        self.app.add_endpoint('/forward', 'forward', self.forward, methods=['POST'])
+
         self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
-        self.app.run(debug=debug)
+        self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
+        self.app.add_endpoint('/game/forward', 'forward', self.forward, methods=['POST'])
+        self.app.add_endpoint('/game/backward', 'backward', self.backward, methods=['POST'])
+        self.app.add_endpoint('/game/save', 'save', self.save, methods=['POST'])
+        self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
+        self.app.add_endpoint('/login/register', 'register', self.register, methods=['GET', 'POST'])
+        self.app.run(host="0.0.0.0", debug=debug)

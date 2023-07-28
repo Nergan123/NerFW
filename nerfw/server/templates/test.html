@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NerFW</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/dialogue_menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/choices.css') }}">
+</head>
+
+<script src="{{ url_for('static', filename='forward.js') }}"></script>
+<script src="{{ url_for('static', filename='register_choice.js') }}"></script>
+<script src="{{ url_for('static', filename='backward.js') }}"></script>
+<script src="{{ url_for('static', filename='save.js') }}"></script>
+
+<body id="body_element">
+    <div id="show-data">
+
+    </div>
+    <div>
+        <div id="main_menu" class="button_div"><button onclick="window.location.href='/game'">Game</button></div>
+    </div>
+</body>
+</html>
