@@ -25,7 +25,8 @@ classifiers = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = [
-    "nerfw"
+    "nerfw",
+    "**/*.py",
 ]
 exclude = [
     "test_files",
