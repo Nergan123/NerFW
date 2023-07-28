@@ -27,11 +27,6 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = [
-    "nerfw",
-    "**/*.py",
-]
 exclude = [
     "test_files",
 ]
