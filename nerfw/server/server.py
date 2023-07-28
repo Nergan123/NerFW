@@ -13,16 +13,15 @@ from nerfw.server.login_handler import LoginHandler
 from nerfw.server.renderer import Renderer
 from nerfw.server.saves_handler import SavesHandler
 from nerfw.server.wrapper import FlaskAppWrapper
-from nerfw.ui.ui import Ui
 
 
 class Server:
     """Server class"""
 
-    def __init__(self, ui: Ui):
+    def __init__(self):
         flask_app = Flask(__name__)
         self.app = FlaskAppWrapper(flask_app)
-        self.renderer = Renderer(ui)
+        self.renderer = Renderer()
         self.input = InputHandler("", "")
         self.saves_handler = SavesHandler()
         self.login_handler = LoginHandler()
@@ -40,8 +39,7 @@ class Server:
         if login is None:
             return redirect("/login")
 
-        html, css = self.renderer.render_menu(self.renderer.ui.main_menu)
-        resp = make_response(render_template("test.html", html=html, css=css))
+        resp = make_response(render_template("test.html"))
         self.input.reset()
 
         return resp
@@ -54,6 +52,7 @@ class Server:
 
         if request.method == "POST":
             data = request.form.to_dict(flat=False)
+            print(data)
             try:
                 self.login_handler.login(data)
                 resp = make_response(redirect("/"))
@@ -63,8 +62,7 @@ class Server:
             except UserDoesntExist:
                 resp = make_response(redirect("/login/register"))
         else:
-            html, css = self.renderer.render_menu(self.renderer.ui.login_menu)
-            resp = make_response(render_template("test.html", html=html, css=css))
+            resp = make_response(render_template("login.html"))
 
         return resp
 
@@ -85,13 +83,13 @@ class Server:
                 resp = make_response(redirect("/login/register"))
                 resp.set_cookie("error", "Password mismatch")
         else:
-            html, css = self.renderer.render_menu(self.renderer.ui.register_menu)
             error = request.cookies.get("error")
             if error is not None:
-                html_addition = self.error_handler.display(error)
-                html += html_addition
+                html = self.error_handler.display(error)
+            else:
+                html = ""
 
-            resp = make_response(render_template("test.html", html=html, css=css))
+            resp = make_response(render_template("register.html", html=html))
             resp.delete_cookie("error")
 
         return resp
@@ -102,8 +100,8 @@ class Server:
         :return: Rendered template for game
         """
 
-        html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
-        resp = make_response(render_template("test.html", html=html, css=css))
+        # html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
+        resp = make_response(render_template("game.html"))
 
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())

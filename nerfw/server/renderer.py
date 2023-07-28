@@ -2,71 +2,16 @@ from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.deconstructor import Deconstructor
 from nerfw.helpers.img_handler import ImageHandler
-from nerfw.ui.ui import Ui
-from nerfw.ui.ui_base import UiBase
 
 
 class Renderer(LoggerBase):
     """Class to render html"""
 
-    def __init__(self, ui: Ui):
+    def __init__(self):
         super().__init__()
         self.logger.debug("Created")
         self.deconstructor = Deconstructor()
-        self.ui = ui
         self.image_handler = ImageHandler()
-
-    @staticmethod
-    def render_menu(ui: UiBase):
-        """
-        Returns html for main menu
-        :return: HTML
-        """
-
-        css = ""
-
-        for button in ui.buttons:
-            _, css_button = button.compile()
-            css += f"#{button.name} "
-            css += "{"
-            css += css_button
-            css += "}"
-
-        for input_field in ui.inputs:
-            _, css_inp = input_field.compile()
-            css += f"#{input_field.name} "
-            css += "{"
-            css += css_inp
-            css += "}"
-
-        for text_field in ui.text_fields:
-            _, css_field = text_field.compile()
-            css += f"#{text_field.name} "
-            css += "{"
-            css += css_field
-            css += "}"
-
-        html = f"<div id={ui.id}>"
-        html += "<div id='wrapper'>"
-        for button in ui.buttons:
-            html_button, _ = button.compile()
-            html += html_button
-        html += "</div>"
-
-        html += "<form method='POST'>"
-
-        for input_field in ui.inputs:
-            html_inp, _ = input_field.compile()
-            html += html_inp
-
-        for text_field in ui.text_fields:
-            html_field, _ = text_field.compile()
-            html += html_field
-
-        html += "</form>"
-        html += "</div>"
-
-        return html, css
 
     def render(self, breaker: Breaker):
         """

@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/test.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/dialogue_menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/choices.css') }}">
-    <style>
-        {{ css|safe }}
-    </style>
 </head>
 
 <script src="{{ url_for('static', filename='forward.js') }}"></script>
@@ -22,6 +19,8 @@
     <div id="show-data">
 
     </div>
-    {{ html|safe }}
+    <div>
+        <div id="main_menu" class="button_div"><button onclick="window.location.href='/game'">Game</button></div>
+    </div>
 </body>
 </html>

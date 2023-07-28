@@ -1,19 +1,16 @@
 .choice {
-    height: auto;
-    width: auto;
     background: #44475a90;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 34%;
-    right: 50%;
     padding: 30px 30px 30px 30px;
     gap: 20px;
     outline-color: rgba(255, 255, 255, 0);
     box-shadow: inset 0 0 20px rgba(255, 255, 255, .5);
     border-radius: 10px;
+    align-self: center;
 }
 
 .button_specific {
@@ -25,7 +22,10 @@
     background: #00000090;
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    flex-direction: column;
+    top: 0%;
+    left: 0%;
 }

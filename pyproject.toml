@@ -38,6 +38,7 @@ include=[
 exclude=[
     "logs",
     "test_files",
+    ".pylintrc",
 ]
 dependencies = [
     "python-dotenv",
