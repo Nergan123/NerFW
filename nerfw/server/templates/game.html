@@ -4,9 +4,9 @@
     <title>NerFW</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="/static/stylesheets/test.css">
-    <link rel="stylesheet" href="/static/stylesheets/dialogue_menu.css">
-    <link rel="stylesheet" href="/static/stylesheets/choices.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/dialogue_menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/choices.css') }}">
 
     <script src="/static/forward.js"></script>
     <script src="/static/register_choice.js"></script>
@@ -21,8 +21,8 @@
     <div id="dialogue_menu">
         <div id="wrapper" style="display: flex;flex-direction: row;justify-content: space-between;align-self: flex-end;width: 100%;">
           <div style="display: flex;flex-flow: row;margin: 10px 10px 10px 10px;">
-            <div id="next" class="button_div"><button onclick="ForwardFunction()">next</button></div>
             <div id="back" class="button_div"><button onclick="BackwardFunction()">back</button></div>
+            <div id="next" class="button_div"><button onclick="ForwardFunction()">next</button></div>
           </div>
           <div style="display: flex;flex-flow: row;margin: 10px 10px 10px 10px;">
             <div id="main_menu" class="button_div"><button onclick="window.location.href='/'">main_menu</button></div>
