@@ -27,6 +27,11 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "nerfw",
+    "**/*.py",
+]
 exclude = [
     "test_files",
 ]
@@ -34,19 +39,12 @@ namespaces = false
 
 
 [tool.setuptools.package-data]
-include=[
+nerfw = [
     "**/*.html",
     "**/*.css",
     "**/*.js",
-    "README.md",
-    "LICENSE"
 ]
-exclude=[
-    "logs",
-    "test_files",
-    ".pylintrc",
-    "main.py",
-]
+
 dynamic = ["version"]
 homepage = ["https://github.com/Nergan123/NerFW/tree/main"]
 repository = ["https://github.com/Nergan123/NerFW/tree/main"]
