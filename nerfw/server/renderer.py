@@ -85,4 +85,6 @@ class Renderer(LoggerBase):
             html["char-name"] = ""
             html["char-text"] = ""
 
+        html["player"] = scene["audio"]
+
         return html

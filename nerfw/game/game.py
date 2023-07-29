@@ -1,3 +1,4 @@
+from nerfw.game.audio import Audio
 from nerfw.game.character import Character
 from nerfw.game.choice import Choice
 from nerfw.helpers.recorder import Recorder
@@ -12,6 +13,7 @@ class Game(LoggerBase):
         super().__init__()
         self.scene = Scene()
         self._recorder = Recorder(last_line, self.scene)
+        self._audio = Audio(self._recorder)
         self._choice_count = 0
 
     def create_character(self, name: str, img: str, color: (int, int, int), pos: (int, int)):
@@ -50,3 +52,12 @@ class Game(LoggerBase):
         answers = choice.make()
 
         return answers
+
+    def play_audio(self, filename: str):
+        """
+        Plays audio
+        :param filename: File to play
+        :return: None
+        """
+
+        self._audio.play(filename)

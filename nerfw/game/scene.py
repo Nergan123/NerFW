@@ -12,6 +12,7 @@ class Scene(LoggerBase):
         self.background = None
         self.characters_to_show = []
         self.choice = None
+        self.audio = ""
         self.img_handler = ImageHandler()
 
     def set_background(self, img_file: str):
@@ -65,3 +66,16 @@ class Scene(LoggerBase):
 
         self.logger.debug("Removing choice from scene object")
         self.choice = None
+
+    def add_audio(self, filename: str):
+        """
+        Adds audio to self
+        :param filename: Audio file name
+        :return: None
+        """
+
+        self.logger.debug(f"Added {filename}")
+        text = f"<source src='static/{filename}'"
+        text += " type='audio/mp3'>"
+        self.logger.debug(f"Adding: {text}")
+        self.audio = text

@@ -8,16 +8,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/dialogue_menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/choices.css') }}">
 
-    <script src="/static/forward.js"></script>
-    <script src="/static/register_choice.js"></script>
-    <script src="/static/backward.js"></script>
-    <script src="/static/save.js"></script>
+    <script src="/static/scripts/forward.js"></script>
+    <script src="/static/scripts/register_choice.js"></script>
+    <script src="/static/scripts/backward.js"></script>
+    <script src="/static/scripts/save.js"></script>
+    <script src="/static/scripts/auto_play.js"></script>
 </head>
 
 <body id="body_element">
+    <audio id='player' class='my_audio' autoplay="autoplay">
+        <source src="" type="audio/mp3">
+    </audio>
     <div id="show-data">
 
     </div>
+    <div class="button_div"><button onclick="PlayAudio('')">Enable sound</button></div>
     <div id="dialogue_menu">
         <div id="wrapper" style="display: flex;flex-direction: row;justify-content: space-between;align-self: flex-end;width: 100%;">
           <div style="display: flex;flex-flow: row;margin: 10px 10px 10px 10px;">

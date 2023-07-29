@@ -16,6 +16,7 @@ def script(last_line):
     coder = app.create_character("Coder", "test_files/test.jpg", (255, 100, 100), (70, 10))
 
     tester.show()
+    app.play_audio("test_files/test.mp3")
     tester.say("Test 1")
     tester.animation.move(20, 10, 3)
     tester.say("Test 2")
@@ -23,6 +24,7 @@ def script(last_line):
     tester.hide()
 
     coder.say("What are you testing?")
+    app.play_audio("test_files/amaranthe.mp3")
     answers = app.choice(["something", "nothing"])
     if answers[0]:
         tester.show()
