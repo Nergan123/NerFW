@@ -37,7 +37,7 @@ jobs:
         run: |
           raw=$(git branch -r --contains ${{ github.ref }})
           branch=${raw/origin\/}
-          branch = `echo $branch | sed -e 's/^[[:space:]]*//'`
+          branch=`echo $branch | sed -e 's/^[[:space:]]*//'`
           echo "BRANCH=$branch"  >> $GITHUB_ENV
           echo $BRANCH
 
