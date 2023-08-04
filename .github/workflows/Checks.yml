@@ -30,22 +30,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - name: Switching branch
+        uses: actions/checkout@v3
+        with:
+          path: test_branch
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
           python-version: '3.10.x'
 
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
-
       - name: Check output
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          git fetch
-          git checkout test_branch
           docker-compose up --build --build-arg brunch_name=$BRUNCH_NAME --remove-orphans --abort-on-container-exit
         env:
           BRUNCH_NAME: ${{ steps.vars.outputs.short_ref }}
