@@ -25,3 +25,36 @@ jobs:
       - name: Running Pylint check
         run: |
           pylint $(git ls-files '*.py')
+
+  UnitTests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v3
+
+      - name: Get Branch
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw/origin\/}
+          branch=`echo $branch | sed -e 's/^[[:space:]]*//'`
+          echo "BRANCH=$branch"  >> $GITHUB_ENV
+          echo $BRANCH
+
+      - name: Switching branch
+        uses: actions/checkout@v3
+        with:
+          ref: test_branch
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10.x'
+
+      - name: Build containers
+        run: |
+          docker-compose build --build-arg brunch_name="$BRANCH"
+
+      - name: Compose up
+        run: |
+          docker-compose up --abort-on-container-exit
