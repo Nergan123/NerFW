@@ -46,6 +46,6 @@ jobs:
           git config --global user.email 'action@github.com'
           git fetch
           git checkout test_branch
-          docker-compose up --build --build-arg brunch_name=$BRUNCH_NAME --remove-orphans --force-recreate --abort-on-container-exit
+          docker-compose up --build --build-arg brunch_name=$BRUNCH_NAME --remove-orphans --abort-on-container-exit
         env:
           BRUNCH_NAME: ${{ steps.vars.outputs.short_ref }}
