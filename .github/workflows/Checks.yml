@@ -38,7 +38,7 @@ jobs:
           raw=$(git branch -r --contains ${{ github.ref }})
           branch=${raw/origin\/}
           echo "BRANCH=$branch"  >> $GITHUB_ENV
-          - run: echo $BRANCH
+          echo $BRANCH
 
       - name: Switching branch
         uses: actions/checkout@v3
