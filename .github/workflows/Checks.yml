@@ -52,4 +52,5 @@ jobs:
 
       - name: Check output
         run: |
-          docker-compose up --build --build-arg brunch_name=$BRANCH --remove-orphans --abort-on-container-exit
+          docker-compose build --build-arg brunch_name=$BRANCH
+          docker-compose up --abort-on-container-exit
