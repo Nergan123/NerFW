@@ -37,8 +37,8 @@ jobs:
         run: |
           raw=$(git branch -r --contains ${{ github.ref }})
           branch=${raw/origin\/}
-          echo ::set-env name=BRANCH::$branch
-          - run: echo ${{ env.BRANCH }}
+          echo "BRANCH=$branch"  >> $GITHUB_ENV
+          - run: echo ${{ BRANCH }}
 
       - name: Switching branch
         uses: actions/checkout@v3
@@ -52,4 +52,4 @@ jobs:
 
       - name: Check output
         run: |
-          docker-compose up --build --build-arg brunch_name=${{ env.BRANCH }} --remove-orphans --abort-on-container-exit
+          docker-compose up --build --build-arg brunch_name=${{ BRANCH }} --remove-orphans --abort-on-container-exit
