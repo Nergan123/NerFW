@@ -1,5 +1,7 @@
 import os
 import subprocess
+from importlib.resources import files
+from pathlib import Path
 
 from nerfw.helpers.logger import LoggerBase
 
@@ -22,11 +24,15 @@ class Audio(LoggerBase):
 
         file = filename.split("/")[-1]
 
-        if not os.path.exists(f"nerfw/server/static/{file}"):
+        dir_folder = files("nerfw.server.static")
+        self.logger.debug(dir_folder)
+        path = Path(dir_folder.joinpath(file))
+
+        if not os.path.exists(path):
             if os.name == 'nt':
-                arg = ['copy', filename, f"nerfw/server/static/{file}"]
+                arg = ['copy', filename, str(path)]
             else:
-                arg = ['cp', filename, f"nerfw/server/static/{file}"]
+                arg = ['cp', filename, str(path)]
             subprocess.call(arg)
 
         self.logger.debug(f"Adding {filename} to scene")

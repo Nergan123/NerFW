@@ -10,3 +10,4 @@ index.html
 build
 *.egg-info
 *.mp3
+tests
