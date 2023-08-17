@@ -2,6 +2,7 @@ from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.db_handler import DbHandler
 from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
+from nerfw.server.password_manager import PasswordManager
 
 
 class LoginHandler(LoggerBase):
@@ -12,19 +13,25 @@ class LoginHandler(LoggerBase):
     def __init__(self):
         super().__init__()
         self.db = DbHandler()
+        self.pwd_manager = PasswordManager(self.db)
 
     def login(self, data: dict):
         """
         Checks user data
         :param data: Login credentials
-        :return: bool
+        :return: dict
         """
 
-        sql = "SELECT password FROM credentials WHERE login = ?"
+        sql = "SELECT password, salt FROM credentials WHERE login = ?"
         result = self.db.execute(sql, data["Login"])
         self.logger.debug(f"Found results: {result}")
         if len(result) != 1:
             raise UserDoesntExist(data["Login"])
+
+        hashed, _ = self.pwd_manager.encrypt(data["Password"], result[0][1])
+        if hashed != result[0][0]:
+            raise PasswordsMismatch()
+
         return result[0]
 
     def register(self, data: dict):
@@ -35,8 +42,6 @@ class LoginHandler(LoggerBase):
         """
 
         self.logger.debug(f"Received: {data}")
-        sql = "INSERT INTO credentials(login, password) VALUES(?, ?)"
         if data["Password"] != data["Repeat_password"]:
             raise PasswordsMismatch()
-        values = [data["Login"][0], data["Password"][0]]
-        self.db.execute(sql, values)
+        self.pwd_manager.register(data)

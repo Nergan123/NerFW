@@ -10,10 +10,14 @@ def script(last_line):
     """
 
     app = Game(last_line)
-    app.set_background("test_files/char2.jpg")
+    app.set_background("test_files/back.jpg")
 
-    tester = app.create_character("Tester", "test_files/char1.jpeg", (100, 255, 255), (30, 10))
-    coder = app.create_character("Coder", "test_files/char2.jpg", (255, 100, 100), (70, 10))
+    tester = app.create_character(
+        "Tester", "test_files/char1.jpeg", (100, 255, 255), (30, 10)
+    )
+    coder = app.create_character(
+        "Coder", "test_files/char1.jpg", (255, 100, 100), (70, 10)
+    )
 
     tester.show()
     app.play_audio("test_files/test.mp3")

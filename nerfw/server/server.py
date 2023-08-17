@@ -52,7 +52,6 @@ class Server:
 
         if request.method == "POST":
             data = request.form.to_dict(flat=False)
-            print(data)
             try:
                 self.login_handler.login(data)
                 resp = make_response(redirect("/"))
@@ -195,11 +194,17 @@ class Server:
         except Breaker:
             pass
 
-        self.app.add_endpoint('/', 'home', self.home, methods=['GET'])
-        self.app.add_endpoint('/game', 'game', self.game, methods=['GET'])
-        self.app.add_endpoint('/game/forward', 'forward', self.forward, methods=['POST'])
-        self.app.add_endpoint('/game/backward', 'backward', self.backward, methods=['POST'])
-        self.app.add_endpoint('/game/save', 'save', self.save, methods=['POST'])
-        self.app.add_endpoint('/login', 'login', self.login, methods=['GET', 'POST'])
-        self.app.add_endpoint('/login/register', 'register', self.register, methods=['GET', 'POST'])
+        self.app.add_endpoint("/", "home", self.home, methods=["GET"])
+        self.app.add_endpoint("/game", "game", self.game, methods=["GET"])
+        self.app.add_endpoint(
+            "/game/forward", "forward", self.forward, methods=["POST"]
+        )
+        self.app.add_endpoint(
+            "/game/backward", "backward", self.backward, methods=["POST"]
+        )
+        self.app.add_endpoint("/game/save", "save", self.save, methods=["POST"])
+        self.app.add_endpoint("/login", "login", self.login, methods=["GET", "POST"])
+        self.app.add_endpoint(
+            "/login/register", "register", self.register, methods=["GET", "POST"]
+        )
         self.app.run(host="0.0.0.0", debug=debug)
