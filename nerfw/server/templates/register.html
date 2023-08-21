@@ -6,17 +6,22 @@
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/test.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/login.css') }}">
+
+    <script src="/static/scripts/check_password_match.js"></script>
 </head>
 
 
 <body id="body_element">
-    {{ html|safe }}
     <div id="register_menu" class="login-wrapper">
+        <div id="popup" hidden="hidden">
+            <div id="inner_popup"></div>
+            <button onclick="HidePopup()">Hide</button>
+        </div>
         <form method="POST">
             <input type="text" id="Login" name="Login" required="" minlength="4" maxlength="20" size="20" placeholder="Login" style="margin: 0 0 5%;">
             <input type="text" id="Password" name="Password" required="" minlength="4" maxlength="20" size="20" placeholder="Password" style="margin: 0 0 5%;">
             <input type="text" id="Repeat_password" name="Repeat_password" required="" minlength="4" maxlength="20" size="20" placeholder="Repeat Password" style="margin: 0 0 5%;">
-            <input type="submit" id="Submit" name="Submit" size="20" value="Submit">
+            <input type="submit" id="Submit" name="Submit" size="20" value="Submit" onclick="PassFunction()">
         </form>
     </div>
 </body>

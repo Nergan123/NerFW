@@ -1,6 +1,9 @@
 import hashlib
 import random
+import sqlite3
 import string
+
+from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 
 from nerfw.helpers.db_handler import DbHandler
 
@@ -28,7 +31,10 @@ class PasswordManager(LoggerBase):
         hashed, salt = self.encrypt(pwd)
         sql = "INSERT INTO credentials(login, salt, password) VALUES(?, ?, ?)"
         vals = [data["Login"][0], salt, hashed]
-        self.db.execute(sql, vals)
+        try:
+            self.db.execute(sql, vals)
+        except sqlite3.IntegrityError as e:
+            raise UserAlreadyRegistered(data["Login"]) from e
 
     @staticmethod
     def encrypt(password: str, salt=None):
