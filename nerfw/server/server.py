@@ -1,4 +1,5 @@
 import json
+import datetime
 from json import loads
 
 from flask import Flask, request, jsonify, render_template, make_response, redirect
@@ -11,7 +12,9 @@ from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.error_handler import ErrorHandler
 from nerfw.server.login_handler import LoginHandler
 from nerfw.server.renderer import Renderer
+from nerfw.server.require_token import require_token
 from nerfw.server.saves_handler import SavesHandler
+from nerfw.server.token_handler import TokenHandler
 from nerfw.server.wrapper import FlaskAppWrapper
 
 
@@ -26,18 +29,15 @@ class Server:
         self.saves_handler = SavesHandler()
         self.login_handler = LoginHandler()
         self.error_handler = ErrorHandler()
+        self.token_handler = TokenHandler()
         self.script = None
 
+    @require_token
     def home(self):
         """
         Renders home url
         :return: Rendered template from html
         """
-
-        login = request.cookies.get("login")
-
-        if login is None:
-            return redirect("/login")
 
         resp = make_response(render_template("test.html"))
         self.input.reset()
@@ -55,7 +55,10 @@ class Server:
             try:
                 self.login_handler.login(data)
                 resp = make_response(redirect("/"))
-                resp.set_cookie("login", data["Login"][0])
+                token = self.token_handler.create_token(data["Login"][0])
+                expire_date = datetime.datetime.now()
+                expire_date = expire_date + datetime.timedelta(days=7)
+                resp.set_cookie("token", token, httponly=True, expires=expire_date)
                 resp.set_cookie("line", self.input.get_current_line())
                 resp.set_cookie("prev_line", self.input.get_prev_line())
             except UserDoesntExist:
@@ -93,13 +96,13 @@ class Server:
 
         return resp
 
+    @require_token
     def game(self):
         """
         Game page
         :return: Rendered template for game
         """
 
-        # html, css = self.renderer.render_menu(self.renderer.ui.dialogue_window)
         resp = make_response(render_template("game.html"))
 
         resp.set_cookie("line", self.input.get_current_line())
@@ -107,6 +110,7 @@ class Server:
 
         return resp
 
+    @require_token
     def backward(self):
         """
         Returns to previous slide
@@ -133,6 +137,7 @@ class Server:
 
         return resp
 
+    @require_token
     def forward(self):
         """
         Progresses the game forward function
@@ -168,6 +173,7 @@ class Server:
 
         return resp
 
+    @require_token
     def save(self):
         """
         Creates a save entry in db
