@@ -5,7 +5,7 @@
     <title>NerFW</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/dialogue_menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/choices.css') }}">
 </head>
@@ -20,7 +20,10 @@
 
     </div>
     <div>
-        <div id="main_menu" class="button_div"><button onclick="window.location.href='/game'">Game</button></div>
+        <div id="main_menu" class="button_div">
+            <button onclick="window.location.href='/game'">Game</button>
+            <button onclick="window.location.href='/game/load_game'">Saves</button>
+        </div>
     </div>
 </body>
 </html>

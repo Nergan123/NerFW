@@ -39,7 +39,7 @@ class Server:
         :return: Rendered template from html
         """
 
-        resp = make_response(render_template("test.html"))
+        resp = make_response(render_template("index.html"))
         self.input.reset()
 
         return resp
@@ -174,6 +174,16 @@ class Server:
         return resp
 
     @require_token
+    def load_game(self):
+        """
+        Saves menu
+        :return: None
+        """
+
+        resp = make_response(render_template("load_game.html"))
+        return resp
+
+    @require_token
     def save(self):
         """
         Creates a save entry in db
@@ -209,6 +219,9 @@ class Server:
             "/game/backward", "backward", self.backward, methods=["POST"]
         )
         self.app.add_endpoint("/game/save", "save", self.save, methods=["POST"])
+        self.app.add_endpoint(
+            "/game/load_game", "load_game", self.load_game, methods=["GET", "POST"]
+        )
         self.app.add_endpoint("/login", "login", self.login, methods=["GET", "POST"])
         self.app.add_endpoint(
             "/login/register", "register", self.register, methods=["GET", "POST"]
