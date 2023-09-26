@@ -180,7 +180,23 @@ class Server:
         :return: None
         """
 
-        resp = make_response(render_template("load_game.html"))
+        if request.method == "GET":
+            login = request.cookies.to_dict()["token"]
+            login = self.token_handler.unlock_token(login)["login"]
+            saves = self.saves_handler.get_all_saves(login)
+            html = self.renderer.compile_saves(saves)
+
+            resp = make_response(render_template("load_game.html", html=html))
+            return resp
+
+        data = request.form.to_dict(flat=False)["data"][0]
+        data = json.loads(data)
+        resp = make_response(redirect("/game"))
+        self.input.cookie["lines"]["previous"] = json.loads(data["prev_line"])
+        self.input.set_line(json.loads(data["line"])["line"])
+        self.input.cookie["lines"]["current"]["back"] = json.loads(data["line"])["back"]
+        self.input.cookie["lines"]["current"]["choices"] = json.loads(data["line"])["choices"]
+
         return resp
 
     @require_token
@@ -191,7 +207,8 @@ class Server:
         """
 
         data = request.cookies.to_dict()
-        self.saves_handler.create_save(data["login"], data)
+        login = self.token_handler.unlock_token(data["token"])["login"]
+        self.saves_handler.create_save(login, data)
         resp = make_response(jsonify(code=200))
         return resp
 

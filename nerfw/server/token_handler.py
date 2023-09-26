@@ -76,3 +76,14 @@ class TokenHandler(LoggerBase):
             self.logger.debug("Expired signature")
             return False
         return decoded
+
+    def unlock_token(self, token: str):
+        """
+        Decodes token and return json obj
+        :param token: JWS token
+        :return: dict
+        """
+
+        decoded = jwt.decode(token, key=self.key, algorithms='HS256')
+
+        return decoded

@@ -88,3 +88,19 @@ class Renderer(LoggerBase):
         html["player"] = scene["audio"]
 
         return html
+
+    @staticmethod
+    def compile_saves(saves: list):
+        """
+        Compile buttons for saves
+        :param saves: List of save files
+        :return: HTML
+        """
+
+        html = ""
+        for save in saves:
+            html += f"<button class='load-save' value='{save[1]}' onclick='LoadSave(this)'>"
+            html += str(save[0])
+            html += "</button>\n"
+
+        return html

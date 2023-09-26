@@ -22,7 +22,11 @@ class SavesHandler(LoggerBase):
         """
 
         self.logger.debug(f"Creating save for: {login}")
-        sql = "INSERT INTO saves(login, date, data) VALUES(?, DATE('now','localtime'), ?)"
+        sql = "INSERT INTO saves(login, date, data) VALUES(?, DATETIME('now','localtime'), ?)"
+        data = {
+            "line": data["line"],
+            "prev_line": data["prev_line"]
+        }
         text = json.dumps(data)
         values = [login, text]
 
