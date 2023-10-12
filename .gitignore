@@ -15,14 +15,15 @@ data
 
 !package.json
 !package-lock.json
+!manifest.json
 
-/node_modules
-/.pnp
-.pnp.js
+*/node_modules
+*.pnp
+*.pnp.js
 
-/coverage
+coverage
 
-/build
+*/frontend/build
 
 .DS_Store
 .env.local
