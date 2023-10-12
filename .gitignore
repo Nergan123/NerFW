@@ -17,7 +17,7 @@ data
 !package-lock.json
 !manifest.json
 
-*/node_modules
+node_modules
 *.pnp
 *.pnp.js
 
