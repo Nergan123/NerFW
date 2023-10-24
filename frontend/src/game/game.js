@@ -25,6 +25,12 @@ function Game() {
         margin: '10px 10px 10px 10px'
     }
 
+    function forwardClick() {
+        let showData = document.getElementById("show-data")
+        var data = fetch("/game/forward")
+        showData.innerHTML = data
+    }
+
     return(
         <div id="body_element">
             <div id="show-data">
@@ -35,7 +41,7 @@ function Game() {
                 <div id="wrapper" style={wrapper_style}>
                 <div style={buttons_container}>
                     <div id="back" className="button_div"><button onClick="BackwardFunction()">back</button></div>
-                    <div id="next" className="button_div"><button onClick="ForwardFunction()">next</button></div>
+                    <div id="next" className="button_div"><button onClick={forwardClick}>next</button></div>
                 </div>
                 <div style={buttons_container}>
                     <div id="main_menu" className="button_div"><button onClick={handleClick}>main_menu</button></div>

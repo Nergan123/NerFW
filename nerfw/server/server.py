@@ -159,14 +159,13 @@ class Server:
 
         try:
             self.script(line)
-            html = ""
-            css = ""
+            output = {}
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br)
+            output = self.renderer.deconstructor.deconstruct(br)
             text = br.line
 
-        resp = make_response(jsonify(html=html, css=css))
+        resp = make_response(output)
         self.input.set_line(text)
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())

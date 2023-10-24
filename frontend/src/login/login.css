@@ -1,0 +1,18 @@
+.login-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#root{
+    height: 100%;
+}
+
+form {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 10%;
+}
