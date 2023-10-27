@@ -23,7 +23,7 @@ class LoginHandler(LoggerBase):
         """
 
         sql = "SELECT password, salt FROM credentials WHERE login = ?"
-        result = self.db.execute(sql, data["Login"])
+        result = self.db.execute(sql, [data["Login"]])
         self.logger.debug(f"Found results: {result}")
         if len(result) != 1:
             raise UserDoesntExist(data["Login"])

@@ -25,10 +25,11 @@ function Game() {
         margin: '10px 10px 10px 10px'
     }
 
-    function forwardClick() {
-        let showData = document.getElementById("show-data")
-        var data = fetch("/game/forward")
-        showData.innerHTML = data
+    async function forwardClick() {
+        const data = await fetch("/game/forward", {
+            method: 'POST',
+           });
+        console.log(data.json())
     }
 
     return(

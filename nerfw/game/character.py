@@ -14,6 +14,22 @@ class Character(LoggerBase):
         self.color = color
         self.animation = Animations(pos[0], pos[1])
 
+    def to_dict(self):
+        """
+        Converts to dict
+
+        :return: dict
+        """
+
+        output = {
+            "name": self.name,
+            "color": self.color,
+            "img": self.img,
+            "css": self.animation.css
+        }
+
+        return output
+
     def say(self, text="Sample text"):
         """
         Character will display text

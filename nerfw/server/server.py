@@ -51,14 +51,14 @@ class Server:
         """
 
         if request.method == "POST":
-            data = request.form.to_dict(flat=False)
+            data = request.get_json()
             try:
                 self.login_handler.login(data)
                 resp = make_response(redirect("/"))
                 token = self.token_handler.create_token(data["Login"][0])
                 expire_date = datetime.datetime.now()
                 expire_date = expire_date + datetime.timedelta(days=7)
-                resp.set_cookie("token", token, httponly=True, expires=expire_date)
+                resp.set_cookie("token", token, httponly=False, expires=expire_date)
                 resp.set_cookie("line", self.input.get_current_line())
                 resp.set_cookie("prev_line", self.input.get_prev_line())
             except UserDoesntExist:
@@ -75,7 +75,7 @@ class Server:
         """
 
         if request.method == "POST":
-            data = request.form.to_dict(flat=False)
+            data = request.get_json()
             try:
                 self.login_handler.register(data)
                 resp = make_response(redirect("/login"))

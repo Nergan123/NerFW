@@ -30,7 +30,7 @@ class PasswordManager(LoggerBase):
         self.logger.debug(f"Hashing password for {data['Login']}")
         hashed, salt = self.encrypt(pwd)
         sql = "INSERT INTO credentials(login, salt, password) VALUES(?, ?, ?)"
-        vals = [data["Login"][0], salt, hashed]
+        vals = [data["Login"], salt, hashed]
         try:
             self.db.execute(sql, vals)
         except sqlite3.IntegrityError as e:

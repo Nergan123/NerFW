@@ -3,6 +3,7 @@ import RouteGuard from "./route_guard.js";
 import Game from "../game/game.js";
 import Home from "../home/home.js";
 import Login from "../login/login.js";
+import Register from "../register/register.js";
 
 
 function RoutesHome() {
@@ -15,6 +16,7 @@ function RoutesHome() {
                 <Route exact path="/game" element={<Game />} />
             </Route>
             <Route exact path="/Login" element={<Login />} />
+            <Route exact path="/Register" element={<Register />} />
         </Routes>
     );
 }
