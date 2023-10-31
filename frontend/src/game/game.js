@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import './choices.css'
 import './dialogue_menu.css'
 import { useNavigate } from 'react-router-dom';
+import GetScene from './handle_forward_click';
 
 
 function Game() {
+
+    const [scene, SetScene] = useState({});
 
     const navigate = useNavigate();
 
@@ -29,14 +33,21 @@ function Game() {
         const data = await fetch("/game/forward", {
             method: 'POST',
            });
-        console.log(data.json())
+        let dataStr = await data.json()
+        SetScene(dataStr);
+    }
+
+    const backgroundStyle = {
+        height: "100%",
+        backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
     }
 
     return(
-        <div id="body_element">
-            <div id="show-data">
-
-            </div>
+        <div id="body_element" style={backgroundStyle}>
+            {GetScene(scene)}
             <div className="button_div"><button onClick="PlayAudio('')">Enable sound</button></div>
             <div id="dialogue_menu">
                 <div id="wrapper" style={wrapper_style}>
