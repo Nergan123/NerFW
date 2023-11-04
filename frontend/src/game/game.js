@@ -12,7 +12,7 @@ function Game() {
         characters: [],
         name: "",
         text: "",
-        choice: "",
+        choice: {},
         audio: ""
     });
 
