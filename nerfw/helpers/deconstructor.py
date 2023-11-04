@@ -22,6 +22,7 @@ class Deconstructor(LoggerBase):
             "background": breaker.scene.background,
             "characters": [character.to_dict() for character in breaker.scene.characters_to_show],
             "text": breaker.line,
+            "name": breaker.scene.name,
             "choice": breaker.scene.choice,
             "audio": breaker.scene.audio
         }

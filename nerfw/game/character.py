@@ -1,3 +1,5 @@
+from nerfw.helpers.img_handler import ImageHandler
+
 from nerfw.game.animation import Animations
 from nerfw.helpers.logger import LoggerBase
 
@@ -11,6 +13,7 @@ class Character(LoggerBase):
         self.recorder = recorder
         self.name = name
         self.img = img_path
+        self.img_handler = ImageHandler()
         self.color = color
         self.animation = Animations(pos[0], pos[1])
 
@@ -24,7 +27,7 @@ class Character(LoggerBase):
         output = {
             "name": self.name,
             "color": self.color,
-            "img": self.img,
+            "img": self.img_handler.convert_to_base64(self.img),
             "css": self.animation.css
         }
 
@@ -38,7 +41,7 @@ class Character(LoggerBase):
         """
 
         self.logger.info(f"Adding to script: {text}")
-        self.recorder.check(text)
+        self.recorder.check(text, self.name)
         self.animation.css = ""
 
     def hide(self):

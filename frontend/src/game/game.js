@@ -2,12 +2,19 @@ import { useState } from 'react';
 import './choices.css'
 import './dialogue_menu.css'
 import { useNavigate } from 'react-router-dom';
-import GetScene from './handle_forward_click';
+import GetScene from './get_scene';
 
 
 function Game() {
 
-    const [scene, SetScene] = useState({});
+    const [scene, SetScene] = useState({
+        background: "",
+        characters: [],
+        name: "",
+        text: "",
+        choice: "",
+        audio: ""
+    });
 
     const navigate = useNavigate();
 
@@ -29,20 +36,20 @@ function Game() {
         margin: '10px 10px 10px 10px'
     }
 
-    async function forwardClick() {
-        const data = await fetch("/game/forward", {
-            method: 'POST',
-           });
-        let dataStr = await data.json()
-        SetScene(dataStr);
-    }
-
     const backgroundStyle = {
         height: "100%",
         backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+    }
+
+    async function forwardClick() {
+        const data = await fetch("/game/forward", {
+            method: 'POST',
+           });
+        let dataStr = await data.json()
+        SetScene(dataStr);
     }
 
     return(
@@ -63,10 +70,10 @@ function Game() {
 
                 <form method="POST" style={{'margin': '10px 20px'}}>
                     <div id="char-name">
-
+                        <p><b>{scene['name']}</b></p>
                     </div>
                     <div id="char-text">
-
+                        <p>{scene['text']}</p>
                     </div>
                 </form>
             </div>
