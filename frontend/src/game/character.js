@@ -4,6 +4,8 @@ function Character({charData}){
 
     const charStyle = charData['css']
 
+    console.log(charData)
+
     return(
         <img
         id={charData['name']}

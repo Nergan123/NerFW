@@ -44,22 +44,44 @@ function Game() {
         backgroundPosition: "center",
     }
 
+    function HandleSceneSet(data){
+        SetScene(data);
+    }
+
     async function forwardClick() {
         const data = await fetch("/game/forward", {
             method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+            })
            });
         let dataStr = await data.json()
-        SetScene(dataStr);
+        HandleSceneSet(dataStr);
+    }
+
+    async function backwardClick() {
+        const data = await fetch("/game/backward", {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+            })
+           });
+        let dataStr = await data.json()
+        HandleSceneSet(dataStr);
     }
 
     return(
         <div id="body_element" style={backgroundStyle}>
-            {GetScene(scene)}
             <div className="button_div"><button onClick="PlayAudio('')">Enable sound</button></div>
+            {GetScene(scene, HandleSceneSet)}
             <div id="dialogue_menu">
                 <div id="wrapper" style={wrapper_style}>
                 <div style={buttons_container}>
-                    <div id="back" className="button_div"><button onClick="BackwardFunction()">back</button></div>
+                    <div id="back" className="button_div"><button onClick={backwardClick}>back</button></div>
                     <div id="next" className="button_div"><button onClick={forwardClick}>next</button></div>
                 </div>
                 <div style={buttons_container}>

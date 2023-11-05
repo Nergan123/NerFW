@@ -123,14 +123,13 @@ class Server:
         line = json.dumps(line)
         try:
             self.script(line)
-            html = ""
-            css = ""
+            output = {}
             text = ""
         except Breaker as br:
-            html, css = self.renderer.render(br)
+            output = self.renderer.deconstructor.deconstruct(br)
             text = br.line
 
-        resp = make_response(jsonify(html=html, css=css))
+        resp = make_response(output)
         self.input.set_line(text)
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())
@@ -148,8 +147,8 @@ class Server:
         line = loads(line)
 
         try:
-            answer = request.form.to_dict(flat=False)["answer"][0]
-            choice_id = request.form.to_dict(flat=False)["id"][0]
+            answer = request.get_json()["answer"]
+            choice_id = request.get_json()["id"]
             line["choices"][choice_id] = answer
         except KeyError:
             pass
@@ -194,7 +193,9 @@ class Server:
         self.input.cookie["lines"]["previous"] = json.loads(data["prev_line"])
         self.input.set_line(json.loads(data["line"])["line"])
         self.input.cookie["lines"]["current"]["back"] = json.loads(data["line"])["back"]
-        self.input.cookie["lines"]["current"]["choices"] = json.loads(data["line"])["choices"]
+        self.input.cookie["lines"]["current"]["choices"] = json.loads(data["line"])[
+            "choices"
+        ]
 
         return resp
 

@@ -1,13 +1,14 @@
 import Character from "./character";
 import Choice from "./choice";
 
-function GetScene(scene) {
+function GetScene(scene, HandleSceneSet) {
     console.log("triggered")
     console.log(scene)
 
-    function compile_choice(choiceData){
+    
+    function compile_choice(choiceData, HandleSceneSet){
         if (choiceData['options'] != null){
-            const output = Choice(choiceData);
+            const output = Choice(choiceData, HandleSceneSet);
             return output;
         } else {
             return null;
@@ -23,7 +24,7 @@ function GetScene(scene) {
                 })
             }
             {
-                compile_choice(scene['choice'])
+                compile_choice(scene['choice'], HandleSceneSet)
             }
         </div>
     )
