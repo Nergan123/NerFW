@@ -51,12 +51,18 @@ function Game() {
     async function forwardClick() {
         const data = await fetch("/game/forward", {
             method: 'POST',
+            redirect: 'follow',
             headers: {
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
             })
            });
+           
+        if (data.redirected){
+            window.location.href = data.url;
+        }
+
         let dataStr = await data.json()
         HandleSceneSet(dataStr);
     }
@@ -64,14 +70,26 @@ function Game() {
     async function backwardClick() {
         const data = await fetch("/game/backward", {
             method: 'POST',
+            redirect: 'follow',
             headers: {
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
             })
            });
+
+        if (data.redirected){
+            window.location.href = data.url;
+        }
+        
         let dataStr = await data.json()
         HandleSceneSet(dataStr);
+    }
+
+    async function SaveGame(){
+        await fetch('game/save', {
+            method: 'POST',
+        })
     }
 
     return(
@@ -86,7 +104,7 @@ function Game() {
                 </div>
                 <div style={buttons_container}>
                     <div id="main_menu" className="button_div"><button onClick={handleClick}>main_menu</button></div>
-                    <div id="save" className="button_div"><button onClick="SaveFunction()">save</button></div>
+                    <div id="save" className="button_div"><button onClick={SaveGame}>save</button></div>
                 </div>
                 </div>
 

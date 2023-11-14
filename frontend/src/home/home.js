@@ -6,14 +6,18 @@ function Home() {
 
     const navigate = useNavigate();
 
-    function handleClick() {
+    function handleClickToGame() {
         navigate("/Game");
+    }
+
+    function handleClickToSaves() {
+        navigate("/saves");
     }
 
     return (
         <div id="main_menu" className="button_div">
-            <button onClick={handleClick}>Game</button>
-            <button >Saves</button>
+            <button onClick={handleClickToGame}>Game</button>
+            <button onClick={handleClickToSaves}>Saves</button>
         </div>
     );
 }

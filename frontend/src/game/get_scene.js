@@ -2,8 +2,6 @@ import Character from "./character";
 import Choice from "./choice";
 
 function GetScene(scene, HandleSceneSet) {
-    console.log("triggered")
-    console.log(scene)
 
     
     function compile_choice(choiceData, HandleSceneSet){

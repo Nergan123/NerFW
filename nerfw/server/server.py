@@ -55,7 +55,7 @@ class Server:
             try:
                 self.login_handler.login(data)
                 resp = make_response(redirect("/"))
-                token = self.token_handler.create_token(data["Login"][0])
+                token = self.token_handler.create_token(data["Login"])
                 expire_date = datetime.datetime.now()
                 expire_date = expire_date + datetime.timedelta(days=7)
                 resp.set_cookie("token", token, httponly=False, expires=expire_date)
@@ -118,7 +118,12 @@ class Server:
         """
 
         line = request.cookies.get("prev_line")
-        line = loads(line)
+
+        if line is None:
+            line = {"line": "", "back": False, "choices": {}}
+        else:
+            line = loads(line)
+
         line["back"] = True
         line = json.dumps(line)
         try:
@@ -144,7 +149,10 @@ class Server:
         """
 
         line = request.cookies.get("line")
-        line = loads(line)
+        if line is None:
+            line = {"line": "", "back": False, "choices": {}}
+        else:
+            line = loads(line)
 
         try:
             answer = request.get_json()["answer"]
@@ -158,7 +166,7 @@ class Server:
 
         try:
             self.script(line)
-            output = {}
+            output = redirect("/")
             text = ""
         except Breaker as br:
             output = self.renderer.deconstructor.deconstruct(br)
@@ -179,12 +187,13 @@ class Server:
         """
 
         if request.method == "GET":
-            login = request.cookies.to_dict()["token"]
+            login = request.cookies.get("token")
             login = self.token_handler.unlock_token(login)["login"]
             saves = self.saves_handler.get_all_saves(login)
-            html = self.renderer.compile_saves(saves)
 
-            resp = make_response(render_template("load_game.html", html=html))
+            output = self.render_save(saves)
+
+            resp = make_response(output)
             return resp
 
         data = request.form.to_dict(flat=False)["data"][0]
@@ -198,6 +207,28 @@ class Server:
         ]
 
         return resp
+
+    def render_save(self, saves):
+        """
+        Renders scene object for each save
+        :param saves: Saves data to render
+        :return: dict
+        """
+
+        output = []
+
+        for date, save in saves:
+            line = loads(save)
+            line = line["line"]
+            try:
+                self.script(line)
+                data = {}
+            except Breaker as br:
+                data = self.renderer.deconstructor.deconstruct(br)
+            output.append({"date": date, "data": data})
+
+        return output
+
 
     @require_token
     def save(self):
