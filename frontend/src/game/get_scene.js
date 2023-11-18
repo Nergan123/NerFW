@@ -17,8 +17,8 @@ function GetScene(scene, HandleSceneSet) {
     return(
         <div id="show-data">
             {
-                scene['characters'].map((character) => {
-                    return(<Character charData={character} />)
+                scene['characters'].map((character, idx) => {
+                    return(<Character charData={character} idx={idx}/>)
                 })
             }
             {

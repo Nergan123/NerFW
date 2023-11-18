@@ -1,6 +1,6 @@
 import "../stylesheets/index.css"
 
-function Character({charData}){
+function Character({charData, idx}){
 
     const charStyle = charData['css']
 
@@ -10,6 +10,7 @@ function Character({charData}){
         src={`data:image/jpeg;base64,${charData['img']}`}
         alt="character"
         style={charStyle}
+        key={idx}
         />
     );
 }

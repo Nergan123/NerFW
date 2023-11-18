@@ -1,25 +1,47 @@
 import Character from "../game/character";
 
 
-function RenderVisualBackground(scene, key){
+function RenderVisualBackground({scene, idx, state}){
 
-    console.log("Received a scene object: ", scene)
+    console.log("received: ", state)
+    console.log("My id: ", idx)
 
-    function Background({imgSrc}){
-        return(
-            <img
-            src={`data:image/jpeg;base64,${imgSrc}`}
-            alt="background"
-            style={{height: "100%"}}
-            />
-        );
+    const backgroundStyleVisible = {
+        height: "100%",
+        width: "100%",
+        backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        zIndex: -1-idx,
+        opacity: 0,
+    }
+
+    const backgroundStyleInvisible = {
+        height: "100%",
+        width: "100%",
+        backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        zIndex: -1-idx,
+        opacity: 1,
+    }
+
+    function getStyle(){
+        if(state[idx]){
+            console.log("Changing my style to true: ", idx);
+            return(backgroundStyleInvisible);
+        }else{
+            console.log("Changing my style to false: ", idx);
+            return(backgroundStyleVisible);
+        }
     }
 
     return(
-        <div className="save" key={key}>
-            <Background imgSrc={scene["background"]} />
-            {scene['characters'].map((character) => {
-                return(<Character charData={character} />)
+        <div className="Save" key={idx} style={getStyle()}>
+            {scene['characters'].map((character, idx) => {
+                return(<Character charData={character} idx={idx}/>)
             })}
         </div>
     );
