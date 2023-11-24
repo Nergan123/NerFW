@@ -1,10 +1,9 @@
 import "./load_game.css"
 
 
-function SaveButton({name, idx, state, setStateFunction}){
+function SaveButton({name, idx, save, state, setStateFunction}){
 
     function onMouseEntercustom(){
-        console.log("changing true: ", idx);
         const newState = state.map((_, idOfVal) => {
             if(idOfVal === idx){
                 return(true);
@@ -17,17 +16,36 @@ function SaveButton({name, idx, state, setStateFunction}){
     };
     
     function onMouseLeaveCustom(){
-        console.log("changing false: ", idx);
         const newState = new Array(state.length).fill(false);
         newState[idx] = false;
         setStateFunction(newState);
     };
+
+    async function HandleOnClick(){
+        const data = await fetch("/game/load_game", {
+            method: 'POST',
+            redirect: 'follow',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                data: save
+            })
+           });
+
+        if (data.redirected){
+            window.location.href = data.url;
+        }
+    }
+
 
     return(
         <button
         className="LoadSave"
         onMouseEnter={onMouseEntercustom}
         onMouseLeave={onMouseLeaveCustom}
+        onClick={HandleOnClick}
+        value={save}
         key={idx}
         >
             {name}

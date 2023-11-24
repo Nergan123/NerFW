@@ -16,8 +16,8 @@ function BackPairs({saves}){
         navigate('/')
     }
 
-    function getButton(buttonName, idx){
-        return(<SaveButton name={buttonName} key={idx} idx={idx} state={pairs} setStateFunction={setPairs}/>);
+    function getButton(buttonName, idx, save){
+        return(<SaveButton name={buttonName} key={idx} idx={idx} state={pairs} setStateFunction={setPairs} save={save}/>);
     }
 
     function getBackground(dataFromSave, idx){
@@ -36,7 +36,7 @@ function BackPairs({saves}){
                 <div className="SavesButtons">
                     {saves.map((scene, idx) => {
                         return(
-                            getButton(scene.date, idx)
+                            getButton(scene.date, idx, scene.save)
                         );
                     })}
                 </div>

@@ -24,7 +24,7 @@ class Audio(LoggerBase):
 
         file = filename.split("/")[-1]
 
-        dir_folder = files("nerfw.server.static")
+        dir_folder = files("nerfw.server")
         self.logger.debug(dir_folder)
         path = Path(dir_folder.joinpath(file))
 
