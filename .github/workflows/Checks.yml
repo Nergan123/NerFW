@@ -53,7 +53,7 @@ jobs:
 
       - name: Build containers
         run: |
-          docker-compose build --build-arg brunch_name="$BRANCH"
+          docker-compose build --build-arg branch_name="$BRANCH"
 
       - name: Compose up
         run: |
