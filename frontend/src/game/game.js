@@ -94,7 +94,6 @@ function Game() {
 
     return(
         <div id="body_element" style={backgroundStyle}>
-            <div className="button_div"><button onClick="PlayAudio('')">Enable sound</button></div>
             {GetScene(scene, HandleSceneSet)}
             <div id="dialogue_menu">
                 <div id="wrapper" style={wrapper_style}>

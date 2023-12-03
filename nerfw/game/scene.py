@@ -76,7 +76,4 @@ class Scene(LoggerBase):
         """
 
         self.logger.debug(f"Added {filename}")
-        text = f"<source src='static/{filename}'"
-        text += " type='audio/mp3'>"
-        self.logger.debug(f"Adding: {text}")
-        self.audio = text
+        self.audio = filename
