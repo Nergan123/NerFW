@@ -35,7 +35,6 @@ dependencies = [
     "python-dotenv",
     "flask",
     "pyjwt",
-    "pydub",
 ]
 
 [project.urls]
