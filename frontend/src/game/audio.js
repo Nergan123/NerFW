@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 
 
   const AudioPlayer = ({ url }) => {
-    var loc = window.location.href
-    loc = loc.replace("Game", url)
-    console.log(loc)
+    var loc = window.location.href;
+    loc = loc.replace("game", url);
 
     const [audio] = useState(new Audio(loc));
     const [playing, setPlaying] = useState(false);
@@ -12,7 +11,6 @@ import { useEffect, useState } from "react";
     function playSound(){
         var tempUrl = window.location.href
         tempUrl = tempUrl.replace("Game", "");
-        console.log(tempUrl)
         if(!playing & loc !== tempUrl){
             audio.src = loc;
             audio.type = "audio/mp3";
@@ -24,13 +22,21 @@ import { useEffect, useState } from "react";
         }
         
     }
-  
+
     useEffect(() => {
-        audio.addEventListener('ended', () => setPlaying(false));
-        return () => {
-          audio.removeEventListener('ended', () => setPlaying(false));
-        };
-      }, [audio]);
+      audio.addEventListener('ended', () => setPlaying(false));
+      return () => {
+        audio.removeEventListener('ended', () => setPlaying(false));
+      };
+    }, [audio]);
+
+    useEffect(() => {
+      return () => {
+        setPlaying(false);
+        audio.pause();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
       <div>

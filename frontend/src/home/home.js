@@ -7,7 +7,7 @@ function Home() {
     const navigate = useNavigate();
 
     function handleClickToGame() {
-        navigate("/Game");
+        navigate("/game");
     }
 
     function handleClickToSaves() {

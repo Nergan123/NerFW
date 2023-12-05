@@ -94,7 +94,7 @@ class Server:
         :return: Rendered template for game
         """
 
-        resp = make_response(render_template("game.html"))
+        resp = make_response(jsonify(code=200))
 
         resp.set_cookie("line", self.input.get_current_line())
         resp.set_cookie("prev_line", self.input.get_prev_line())
@@ -187,7 +187,7 @@ class Server:
             resp = make_response(output)
             return resp
 
-        data = request.form.to_dict(flat=False)["data"][0]
+        data = request.get_json()["data"]
         data = json.loads(data)
         resp = make_response(redirect("/game"))
         self.input.cookie["lines"]["previous"] = json.loads(data["prev_line"])
@@ -216,7 +216,7 @@ class Server:
                 data = {}
             except Breaker as br:
                 data = self.deconstructor.deconstruct(br)
-            output.append({"date": date, "data": data})
+            output.append({"date": date, "data": data, "save": save})
 
         return output
 
