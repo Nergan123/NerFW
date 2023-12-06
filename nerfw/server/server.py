@@ -57,7 +57,7 @@ class Server:
         data = request.get_json()
         try:
             self.login_handler.login(data)
-            resp = make_response(redirect("/"))
+            resp = make_response(jsonify(url="/"))
             token = self.token_handler.create_token(data["Login"])
             expire_date = datetime.datetime.now()
             expire_date = expire_date + datetime.timedelta(days=7)
@@ -65,7 +65,7 @@ class Server:
             resp.set_cookie("line", self.input.get_current_line())
             resp.set_cookie("prev_line", self.input.get_prev_line())
         except UserDoesntExist:
-            resp = make_response(redirect("/login/register"))
+            resp = make_response(jsonify(url="/register"))
 
         return resp
 
@@ -78,11 +78,11 @@ class Server:
         data = request.get_json()
         try:
             self.login_handler.register(data)
-            resp = make_response(redirect("/login"))
+            resp = make_response(jsonify(url="/login"))
         except UserAlreadyRegistered:
-            resp = make_response(redirect("/login"))
+            resp = make_response(jsonify(url="/login"))
         except PasswordsMismatch:
-            resp = make_response(redirect("/login/register"))
+            resp = make_response(jsonify(url="/register"))
             resp.set_cookie("error", "Password mismatch")
 
         return resp
@@ -189,7 +189,7 @@ class Server:
 
         data = request.get_json()["data"]
         data = json.loads(data)
-        resp = make_response(redirect("/game"))
+        resp = make_response(jsonify(url="/game"))
         self.input.cookie["lines"]["previous"] = json.loads(data["prev_line"])
         self.input.set_line(json.loads(data["line"])["line"])
         self.input.cookie["lines"]["current"]["back"] = json.loads(data["line"])["back"]

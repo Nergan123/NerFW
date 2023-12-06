@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import './login.css'
 
 
@@ -6,6 +7,7 @@ function Login() {
 
     const [login, setLogin] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const navigate = useNavigate();
 
     const handleLogin = (event) => {
       setLogin(event.target.value);
@@ -30,9 +32,8 @@ function Login() {
         })
        });
 
-       if (response.redirected){
-            window.location.href = response.url;
-       }
+       const resp = await response.json()
+       navigate(resp.url);
     };
 
     return (

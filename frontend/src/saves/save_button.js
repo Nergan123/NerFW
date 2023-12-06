@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "./load_game.css"
 
 
 function SaveButton({name, idx, save, state, setStateFunction}){
+    const navigate = useNavigate();
 
     function onMouseEntercustom(){
         const newState = state.map((_, idOfVal) => {
@@ -22,7 +24,7 @@ function SaveButton({name, idx, save, state, setStateFunction}){
     };
 
     async function HandleOnClick(){
-        const data = await fetch("/game/load_game", {
+        const response = await fetch("/game/load_game", {
             method: 'POST',
             redirect: 'follow',
             headers: {
@@ -33,9 +35,8 @@ function SaveButton({name, idx, save, state, setStateFunction}){
             })
            });
 
-        if (data.redirected){
-            window.location.href = data.url;
-        }
+           const resp = await response.json()
+           navigate(resp.url);
     }
 
 

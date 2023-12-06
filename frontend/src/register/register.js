@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 
 function Register() {
@@ -6,6 +7,7 @@ function Register() {
     const [login, setLogin] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [passwordRepeat, setPasswordRepeat] = React.useState('');
+    const navigate = useNavigate();
   
     const handleLogin = (event) => {
       setLogin(event.target.value);
@@ -35,9 +37,8 @@ function Register() {
             })
            });
 
-           if (response.redirected){
-            window.location.href = response.url;
-           }
+           const resp = await response.json()
+           navigate(resp.url);
     }
 
     return (
