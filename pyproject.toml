@@ -54,6 +54,8 @@ nerfw = [
     "**/*.html",
     "**/*.css",
     "**/*.js",
+    "**/*.txt",
+    "**/*.map",
 ]
 
 [project.optional-dependencies]
