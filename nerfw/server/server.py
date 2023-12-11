@@ -57,7 +57,7 @@ class Server:
         data = request.get_json()
         try:
             self.login_handler.login(data)
-            resp = make_response(jsonify(url="/"))
+            resp = make_response()
             token = self.token_handler.create_token(data["Login"])
             expire_date = datetime.datetime.now()
             expire_date = expire_date + datetime.timedelta(days=7)
@@ -65,7 +65,8 @@ class Server:
             resp.set_cookie("line", self.input.get_current_line())
             resp.set_cookie("prev_line", self.input.get_prev_line())
         except UserDoesntExist:
-            resp = make_response(jsonify(url="/register"))
+            resp = make_response()
+            resp.status = 401
 
         return resp
 
@@ -78,11 +79,13 @@ class Server:
         data = request.get_json()
         try:
             self.login_handler.register(data)
-            resp = make_response(jsonify(url="/login"))
+            resp = make_response()
         except UserAlreadyRegistered:
-            resp = make_response(jsonify(url="/login"))
+            resp = make_response()
+            resp.status = 409
         except PasswordsMismatch:
-            resp = make_response(jsonify(url="/register"))
+            resp = make_response()
+            resp.status = 401
             resp.set_cookie("error", "Password mismatch")
 
         return resp
@@ -189,7 +192,7 @@ class Server:
 
         data = request.get_json()["data"]
         data = json.loads(data)
-        resp = make_response(jsonify(url="/game"))
+        resp = make_response()
         self.input.cookie["lines"]["previous"] = json.loads(data["prev_line"])
         self.input.set_line(json.loads(data["line"])["line"])
         self.input.cookie["lines"]["current"]["back"] = json.loads(data["line"])["back"]
@@ -230,7 +233,7 @@ class Server:
         data = request.cookies.to_dict()
         login = self.token_handler.unlock_token(data["token"])["login"]
         self.saves_handler.create_save(login, data)
-        resp = make_response(jsonify(code=200))
+        resp = make_response()
         return resp
 
     def run(self, script, debug=False):

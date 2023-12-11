@@ -32,8 +32,11 @@ function Login() {
         })
        });
 
-       const resp = await response.json()
-       navigate(resp.url);
+       if(response.status === 200){
+          navigate("/");
+       }else{
+          navigate("/register");
+       };
     };
 
     return (

@@ -37,8 +37,12 @@ function Register() {
             })
            });
 
-           const resp = await response.json()
-           navigate(resp.url);
+           if(response.status === 200){
+            navigate("/login");
+           }else if(response.status === 409){
+            console.log("User already exists");
+            navigate("/login");
+           };
     }
 
     return (

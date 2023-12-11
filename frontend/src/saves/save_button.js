@@ -35,8 +35,9 @@ function SaveButton({name, idx, save, state, setStateFunction}){
             })
            });
 
-           const resp = await response.json()
-           navigate(resp.url);
+           if(response.status === 200){
+            navigate("/");
+           };
     }
 
 
