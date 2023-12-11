@@ -1,6 +1,6 @@
+import AudioGroup from "./audioGroup";
 import Character from "./character";
 import Choice from "./choice";
-import AudioPlayer from "./audio";
 
 function GetScene(scene, HandleSceneSet) {
 
@@ -17,7 +17,7 @@ function GetScene(scene, HandleSceneSet) {
 
     return(
         <div id="show-data">
-            <AudioPlayer url={scene.audio}/>
+            <AudioGroup sourcesInput={[scene.audio]}/>
             {
                 scene['characters'].map((character, idx) => {
                     return(<Character charData={character} idx={idx}/>)

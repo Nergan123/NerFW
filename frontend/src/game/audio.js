@@ -8,19 +8,16 @@ import { useEffect, useState } from "react";
     const [audio] = useState(new Audio(loc));
     const [playing, setPlaying] = useState(false);
 
-    function playSound(){
-        var tempUrl = window.location.href
-        tempUrl = tempUrl.replace("Game", "");
-        if(!playing & loc !== tempUrl){
-            audio.src = loc;
-            audio.type = "audio/mp3";
-            audio.load();
-            audio.play();
-            setPlaying(true);
-        }else{
-            audio.pause();
-        }
-        
+    var tempUrl = window.location.href
+    tempUrl = tempUrl.replace("Game", "");
+    if(!playing & loc !== tempUrl){
+        audio.src = loc;
+        audio.type = "audio/mp3";
+        audio.load();
+        audio.play();
+        setPlaying(true);
+    }else{
+        audio.pause();
     }
 
     useEffect(() => {
@@ -39,10 +36,8 @@ import { useEffect, useState } from "react";
     }, [])
 
     return (
-      <div>
-        <button onClick={playSound}>Enable sound</button>
-      </div>
-    );
+      audio
+    )
   };
 
 export default AudioPlayer;
