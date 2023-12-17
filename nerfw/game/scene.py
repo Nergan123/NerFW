@@ -13,6 +13,7 @@ class Scene(LoggerBase):
         self.characters_to_show = []
         self.choice = None
         self.audio = ""
+        self.name = ""
         self.img_handler = ImageHandler()
 
     def set_background(self, img_file: str):
@@ -75,7 +76,4 @@ class Scene(LoggerBase):
         """
 
         self.logger.debug(f"Added {filename}")
-        text = f"<source src='static/{filename}'"
-        text += " type='audio/mp3'>"
-        self.logger.debug(f"Adding: {text}")
-        self.audio = text
+        self.audio = filename

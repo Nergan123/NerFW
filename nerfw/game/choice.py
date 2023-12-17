@@ -17,6 +17,23 @@ class Choice(LoggerBase):
         self.cookies = cookies
         self.setup()
 
+    def to_dict(self):
+        """
+        Converts obj to dict
+        :return: dict
+        """
+
+        output = {"options": []}
+        for choice in self.choices:
+            output['options'].append(
+                {
+                    "id": self.id,
+                    "text": choice
+                }
+            )
+
+        return output
+
     def setup(self):
         """
         Sets up choice from cookies

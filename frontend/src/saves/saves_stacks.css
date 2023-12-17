@@ -1,0 +1,11 @@
+.SavesScreenshots {
+    height: 100%;
+    display: grid;
+    grid-template: 1fr / 1fr;
+    place-items: center;
+  }
+
+  .SavesScreenshots > * {
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+  }

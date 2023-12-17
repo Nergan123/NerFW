@@ -44,6 +44,7 @@ repository = "https://github.com/Nergan123/NerFW/tree/main"
 [tool.setuptools.packages.find]
 exclude = [
     "test_files",
+    "frontend",
 ]
 namespaces = false
 
@@ -53,6 +54,8 @@ nerfw = [
     "**/*.html",
     "**/*.css",
     "**/*.js",
+    "**/*.txt",
+    "**/*.map",
 ]
 
 [project.optional-dependencies]
