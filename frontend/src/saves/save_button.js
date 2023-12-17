@@ -36,7 +36,7 @@ function SaveButton({name, idx, save, state, setStateFunction}){
            });
 
            if(response.status === 200){
-            navigate("/");
+            navigate("/game");
            };
     }
 

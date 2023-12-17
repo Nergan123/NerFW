@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './choices.css'
 import './dialogue_menu.css'
 import { useNavigate } from 'react-router-dom';
@@ -91,6 +91,10 @@ function Game() {
             method: 'POST',
         })
     }
+
+    useEffect(() => {
+        forwardClick();
+    }, []);
 
     return(
         <div id="body_element" style={backgroundStyle}>

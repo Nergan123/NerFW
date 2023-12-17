@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 
 function AudioGroup({sourcesInput}){
@@ -6,6 +6,9 @@ function AudioGroup({sourcesInput}){
     const [sources, setSources] = useState([]);
     const initialState = new Array(sources.length).fill(false);
     const [playing, setPlaying] = useState(initialState)
+
+    const musicToStop = useRef();
+    musicToStop.current = sources;
 
     function checkSourceInList(){
         const links = sourcesInput.map((url) => {
@@ -59,28 +62,34 @@ function AudioGroup({sourcesInput}){
 
     useEffect(() => {
         if(sourcesInput.length > 0 && !sourcesInput.includes("")){
+            console.log("Triggered");
             checkSourceInList();
             handleSources();
+            musicToStop.current = sources;
         }
+        console.log("Sources: ", sources);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sourcesInput]);
 
     useEffect(() => {
         sources.map((source, idx) =>{
             const filler = [...playing];
-            filler[idx] = false
+            filler[idx] = true
             source.player.addEventListener('ended', () => setPlaying(filler));
             return null;
         })
         
         return () => {
+            console.log("Cleanup");
+            const sources = musicToStop.current;
             sources.map((source, idx) => {
+                console.log("Pausing audio: ", source);
                 const filler = [...playing];
                 filler[idx] = false
                 source.player.removeEventListener('ended', () => setPlaying(filler));
-                source.player.pause()
+                source.player.pause();
 
-                return null;
+                return source;
             })
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
