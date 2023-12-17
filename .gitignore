@@ -9,7 +9,6 @@ game_script
 build
 *.egg-info
 *.mp3
-tests
 data
 
 

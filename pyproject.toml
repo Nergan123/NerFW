@@ -45,6 +45,7 @@ repository = "https://github.com/Nergan123/NerFW/tree/main"
 exclude = [
     "test_files",
     "frontend",
+    "tests",
 ]
 namespaces = false
 
