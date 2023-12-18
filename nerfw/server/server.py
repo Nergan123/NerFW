@@ -10,7 +10,6 @@ from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 from nerfw.helpers.input_handler import InputHandler
-from nerfw.server.error_handler import ErrorHandler
 from nerfw.server.login_handler import LoginHandler
 from nerfw.server.require_token import require_token
 from nerfw.server.saves_handler import SavesHandler
@@ -33,7 +32,6 @@ class Server:
         self.deconstructor = Deconstructor()
         self.saves_handler = SavesHandler()
         self.login_handler = LoginHandler()
-        self.error_handler = ErrorHandler()
         self.token_handler = TokenHandler()
         self.script = None
 
