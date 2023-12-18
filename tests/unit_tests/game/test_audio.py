@@ -1,4 +1,7 @@
+import os
 import unittest
+from importlib.resources import files
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 from nerfw.game.audio import Audio
 
@@ -13,6 +16,9 @@ class AudioTests(unittest.TestCase):
         """
         Set up method for the test class. Initializes an instance of the Audio class.
         """
+        dir_folder = files("nerfw.server")
+        path = Path(dir_folder.joinpath("build"))
+        os.mkdir(path)
         self.recorder_mock = MagicMock()
         self.audio = Audio(self.recorder_mock)
 
