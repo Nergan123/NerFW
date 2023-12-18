@@ -18,7 +18,8 @@ class AudioTests(unittest.TestCase):
         """
         dir_folder = files("nerfw.server")
         path = Path(dir_folder.joinpath("build"))
-        os.mkdir(path)
+        if not os.path.exists(path):
+            os.mkdir(path)
         self.recorder_mock = MagicMock()
         self.audio = Audio(self.recorder_mock)
 
