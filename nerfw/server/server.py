@@ -113,23 +113,10 @@ class Server:
 
         if line is None:
             line = {"line": "", "back": False, "choices": {}}
-        else:
-            line = loads(line)
+            line = json.dumps(line)
 
-        line["back"] = True
-        line = json.dumps(line)
-        try:
-            self.script(line)
-            output = {}
-            text = ""
-        except Breaker as br:
-            output = self.deconstructor.deconstruct(br)
-            text = br.line
-
-        resp = make_response(output)
-        self.input.set_line(text)
-        resp.set_cookie("line", self.input.get_current_line())
-        resp.set_cookie("prev_line", self.input.get_prev_line())
+        resp = make_response()
+        resp.set_cookie("line", line)
 
         return resp
 

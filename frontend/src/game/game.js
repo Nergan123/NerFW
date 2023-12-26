@@ -3,11 +3,22 @@ import './choices.css'
 import './dialogue_menu.css'
 import { useNavigate } from 'react-router-dom';
 import GetScene from './get_scene';
+import { useCookies } from 'react-cookie';
 
 
 function Game() {
 
+    const [cookie, setCookie] = useCookies(['line', 'prev_line', 'prev_scene']);
+
     const [scene, SetScene] = useState({
+        background: "",
+        characters: [],
+        name: "",
+        text: "",
+        choice: {},
+        audio: ""
+    });
+    const [prevScene, SetPrevScene] = useState({
         background: "",
         characters: [],
         name: "",
@@ -48,7 +59,13 @@ function Game() {
         SetScene(data);
     }
 
+    function HandlePrevSceneSet(data){
+        SetPrevScene(data);
+        setCookie('prev_scene', data);
+    }
+
     async function forwardClick() {
+        HandlePrevSceneSet(scene);
         const data = await fetch("/game/forward", {
             method: 'POST',
             redirect: 'follow',
@@ -68,7 +85,7 @@ function Game() {
     }
 
     async function backwardClick() {
-        const data = await fetch("/game/backward", {
+        await fetch("/game/backward", {
             method: 'POST',
             redirect: 'follow',
             headers: {
@@ -76,14 +93,8 @@ function Game() {
             },
             body: JSON.stringify({
             })
-           });
-
-        if (data.redirected){
-            window.location.href = data.url;
-        }
-        
-        let dataStr = await data.json()
-        HandleSceneSet(dataStr);
+        });
+        SetScene(prevScene);
     }
 
     async function SaveGame(){
@@ -93,7 +104,9 @@ function Game() {
     }
 
     useEffect(() => {
+        HandlePrevSceneSet(cookie.prev_scene);
         forwardClick();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return(
