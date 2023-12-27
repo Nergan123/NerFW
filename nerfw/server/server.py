@@ -117,6 +117,8 @@ class Server:
 
         resp = make_response()
         resp.set_cookie("line", line)
+        self.input.cookie["lines"]["current"] = json.loads(line)
+        self.input.cookie["lines"]["previous"] = json.loads(line)
 
         return resp
 
