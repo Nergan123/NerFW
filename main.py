@@ -46,6 +46,10 @@ def script(last_line):
     else:
         coder.say("2")
     inner_func(tester, coder)
+    tester.say("Lets test string input")
+    coder.say("Ok")
+    answer = app.string_input("test")
+    coder.say(f"You wrote: {answer}")
 
 
 def inner_func(tester, coder):

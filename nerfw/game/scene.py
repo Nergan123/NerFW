@@ -1,4 +1,5 @@
 from nerfw.game.character import Character
+from nerfw.game.string_input import StringInput
 from nerfw.helpers.errors.character_not_found import CharacterNotFoundError
 from nerfw.helpers.img_handler import ImageHandler
 from nerfw.helpers.logger import LoggerBase
@@ -12,6 +13,7 @@ class Scene(LoggerBase):
         self.background = None
         self.characters_to_show = []
         self.choice = None
+        self.string_input = None
         self.audio = ""
         self.name = ""
         self.img_handler = ImageHandler()
@@ -77,3 +79,22 @@ class Scene(LoggerBase):
 
         self.logger.debug(f"Added {filename}")
         self.audio = filename
+
+    def add_string_input(self, string_input: StringInput):
+        """
+        Adds string input to self
+        :param string_input: String input object
+        :return: None
+        """
+
+        self.logger.debug(f"Added {string_input}")
+        self.string_input = string_input
+
+    def remove_string_input(self):
+        """
+        Removes string input from self
+        :return: None
+        """
+
+        self.logger.debug("Removed string input")
+        self.string_input = None

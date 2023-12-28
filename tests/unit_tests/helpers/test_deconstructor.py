@@ -35,6 +35,7 @@ class DeconstructorTests(unittest.TestCase):
         self.breaker.scene.characters_to_show = [
             Character("Test Character", "img_path", (255, 255, 255), (0, 0))
         ]
+        self.breaker.scene.string_input = MagicMock()
         output = self.deconstructor.deconstruct(self.breaker)
         expected_output = {
             "background": self.breaker.scene.background,
@@ -43,6 +44,7 @@ class DeconstructorTests(unittest.TestCase):
                 for character in self.breaker.scene.characters_to_show
             ],
             "text": self.breaker.line,
+            "stringInput": self.breaker.scene.string_input.to_dict(),
             "name": self.breaker.scene.name,
             "choice": {},
             "audio": self.breaker.scene.audio,
@@ -60,6 +62,7 @@ class DeconstructorTests(unittest.TestCase):
             Character("Test Character", "img_path", (255, 255, 255), (0, 0))
         ]
         self.breaker.scene.choice = MagicMock()
+        self.breaker.scene.string_input = MagicMock()
         output = self.deconstructor.deconstruct(self.breaker)
         expected_output = {
             "background": self.breaker.scene.background,
@@ -68,6 +71,7 @@ class DeconstructorTests(unittest.TestCase):
                 for character in self.breaker.scene.characters_to_show
             ],
             "text": self.breaker.line,
+            "stringInput": self.breaker.scene.string_input.to_dict(),
             "name": self.breaker.scene.name,
             "choice": self.breaker.scene.choice.to_dict(),
             "audio": self.breaker.scene.audio,

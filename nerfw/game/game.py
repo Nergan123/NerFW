@@ -1,6 +1,7 @@
 from nerfw.game.audio import Audio
 from nerfw.game.character import Character
 from nerfw.game.choice import Choice
+from nerfw.game.string_input import StringInput
 from nerfw.helpers.recorder import Recorder
 from nerfw.game.scene import Scene
 from nerfw.helpers.logger import LoggerBase
@@ -15,8 +16,11 @@ class Game(LoggerBase):
         self._recorder = Recorder(last_line, self.scene)
         self._audio = Audio(self._recorder)
         self._choice_count = 0
+        self._string_count = 0
 
-    def create_character(self, name: str, img: str, color: (int, int, int), pos: (int, int)):
+    def create_character(
+        self, name: str, img: str, color: (int, int, int), pos: (int, int)
+    ):
         """
         Generates a character_files class
         :param name: Name of the character_files
@@ -46,12 +50,30 @@ class Game(LoggerBase):
         :return: returns a list with booleans representing answers
         """
 
-        choice = Choice(self._recorder, choices, self._recorder.previous, self._choice_count)
+        choice = Choice(
+            self._recorder, choices, self._recorder.previous, self._choice_count
+        )
         self._recorder.scene.add_choice_to_scene(choice)
         self._choice_count += 1
         answers = choice.make()
 
         return answers
+
+    def string_input(self, string_name: str):
+        """
+        Allows string input
+        :param string_name: Name of the variable to display
+        :return: Answer from user
+        """
+
+        string_input = StringInput(
+            self._recorder, self._recorder.previous, string_name, self._string_count
+        )
+        self._recorder.scene.add_string_input(string_input)
+        self._string_count += 1
+        answer = string_input.make()
+
+        return answer
 
     def play_audio(self, filename: str):
         """

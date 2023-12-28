@@ -112,7 +112,7 @@ class Server:
         line = request.cookies.get("prev_line")
 
         if line is None:
-            line = {"line": "", "back": False, "choices": {}}
+            line = {"line": "", "back": False, "choices": {}, "stringInput": {}}
             line = json.dumps(line)
 
         resp = make_response()
@@ -131,18 +131,26 @@ class Server:
 
         line = request.cookies.get("line")
         if line is None:
-            line = {"line": "", "back": False, "choices": {}}
+            line = {"line": "", "back": False, "choices": {}, "stringInput": {}}
         else:
             line = loads(line)
 
         try:
-            answer = request.get_json()["answer"]
+            answer = request.get_json()["choice"]
             choice_id = request.get_json()["id"]
             line["choices"][choice_id] = answer
         except KeyError:
             pass
 
+        try:
+            string_input = request.get_json()["stringInput"]
+            input_id = request.get_json()["id"]
+            line["stringInput"][str(input_id)] = string_input
+        except KeyError:
+            pass
+
         self.input.set_choices(line["choices"])
+        self.input.set_string_input(line["stringInput"])
         line = json.dumps(line)
 
         try:

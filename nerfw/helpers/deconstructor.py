@@ -17,19 +17,21 @@ class Deconstructor(LoggerBase):
         :return: Dict
         """
 
-        if breaker.scene.choice is not None:
-            choice = breaker.scene.choice.to_dict()
-        else:
-            choice = {}
-
         self.logger.debug(f"Deconstructing: {breaker}")
         scene_dict = {
             "background": breaker.scene.background,
-            "characters": [character.to_dict() for character in breaker.scene.characters_to_show],
+            "characters": [
+                character.to_dict() for character in breaker.scene.characters_to_show
+            ],
             "text": breaker.line,
             "name": breaker.scene.name,
-            "choice": choice,
-            "audio": breaker.scene.audio
+            "choice": {}
+            if breaker.scene.choice is None
+            else breaker.scene.choice.to_dict(),
+            "stringInput": {}
+            if breaker.scene.string_input is None
+            else breaker.scene.string_input.to_dict(),
+            "audio": breaker.scene.audio,
         }
 
         return scene_dict

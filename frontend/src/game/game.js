@@ -16,6 +16,7 @@ function Game() {
         name: "",
         text: "",
         choice: {},
+        stringInput: {},
         audio: ""
     });
     const [prevScene, SetPrevScene] = useState({
@@ -24,6 +25,7 @@ function Game() {
         name: "",
         text: "",
         choice: {},
+        stringInput: {},
         audio: ""
     });
 

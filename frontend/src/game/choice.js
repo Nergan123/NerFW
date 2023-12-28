@@ -8,7 +8,7 @@ function Choice(ChoiceData, HandleSceneSet){
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
-                "answer": buttonValue,
+                "choice": buttonValue,
                 "id": buttonId,
             })
            });
