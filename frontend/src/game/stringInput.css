@@ -1,4 +1,4 @@
-.choice {
+.stringInput {
     background: #44475a90;
     display: flex;
     justify-content: center;
@@ -28,4 +28,14 @@
     flex-direction: column;
     top: 0%;
     left: 0%;
+}
+
+input {
+    margin: 0 0 0;
+}
+
+label {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
 }

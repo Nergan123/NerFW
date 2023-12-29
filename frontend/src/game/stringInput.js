@@ -32,7 +32,7 @@ function StringInput(name, idx, HandleSceneSet) {
             <div className='stringInput'>
                 <label>{name}</label>
                 <input type="text" name={name} id={name} onChange={handleChange}/>
-                <button onClick={async () => await submitStringInput()}>Submit</button>
+                <button className="button_specific" onClick={async () => await submitStringInput()}>Submit</button>
             </div>
         </div>
     )
