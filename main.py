@@ -28,6 +28,7 @@ def script(last_line):
     tester.hide()
 
     coder.say("What are you testing?")
+    app.stop_audio("test_files/test.mp3")
     app.play_audio("test_files/amaranthe.mp3")
     answers = app.choice(["something", "nothing"])
     if answers[0]:
@@ -50,6 +51,10 @@ def script(last_line):
     coder.say("Ok")
     answer = app.string_input("test")
     coder.say(f"You wrote: {answer}")
+
+    tester.say("Lets test a for loop")
+    for i in range(5):
+        tester.say(f"Loop {i}")
 
 
 def inner_func(tester, coder):

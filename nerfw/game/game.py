@@ -83,3 +83,12 @@ class Game(LoggerBase):
         """
 
         self._audio.play(filename)
+
+    def stop_audio(self, filename: str):
+        """
+        Stops audio
+        :param filename: File to stop
+        :return: None
+        """
+
+        self._audio.stop_playing(filename)

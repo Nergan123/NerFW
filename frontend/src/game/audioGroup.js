@@ -12,12 +12,13 @@ function AudioGroup({sourcesInput}){
 
     function checkSourceInList(){
         const links = sourcesInput.map((url) => {
+            console.log(url.name)
             var loc = window.location.href;
-            loc = loc.replace("game", url);
+            loc = loc.replace("game", url.name);
             return loc
         });
         const newSources = [...sources];
-        sources.map((source, idxToDelete) => {
+        sources.forEach((source, idxToDelete) => {
             const idx = links.findIndex(e => e === source.source);
             if(idx <= -1){
                 const filler = [...playing];
@@ -26,7 +27,6 @@ function AudioGroup({sourcesInput}){
                 source.player.pause();
                 newSources.splice(idxToDelete, 1);
             }
-            return null
         });
         setSources(newSources);
     };
@@ -38,7 +38,7 @@ function AudioGroup({sourcesInput}){
         const processedSources = [...sources];
         sourcesInput.map((source) =>{
                 var loc = window.location.href;
-                loc = loc.replace("game", source);
+                loc = loc.replace("game", source.name);
                 const idx = sources.findIndex(e => e.source === loc);
                 if(idx <= -1 && !playing[idx]){
                     const audio = {

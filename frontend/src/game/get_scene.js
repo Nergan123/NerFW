@@ -27,7 +27,7 @@ function GetScene(scene, HandleSceneSet) {
 
     return(
         <div id="show-data">
-            <AudioGroup sourcesInput={[scene.audio]}/>
+            <AudioGroup sourcesInput={scene.audio}/>
             {
                 scene['characters'].map((character, idx) => {
                     return(<Character charData={character} idx={idx}/>)

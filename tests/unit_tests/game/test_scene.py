@@ -72,7 +72,7 @@ class SceneTest(unittest.TestCase):
         This test checks if an audio file is added to the scene correctly.
         """
         self.scene.add_audio("filename")
-        self.assertEqual(self.scene.audio, "filename")
+        self.assertEqual(self.scene.audio, [{"name": "filename", "repeatable": False}])
 
 
 if __name__ == "__main__":
