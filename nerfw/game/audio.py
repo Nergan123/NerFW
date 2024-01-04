@@ -15,10 +15,11 @@ class Audio(LoggerBase):
         super().__init__()
         self.recorder = recorder
 
-    def play(self, filename: str):
+    def play(self, filename: str, repeat: bool = False):
         """
         Adds audio to html to be shown
         :param filename: Audio file to play
+        :param repeat: If audio should be repeatable
         :return: None
         """
 
@@ -36,7 +37,7 @@ class Audio(LoggerBase):
             subprocess.call(arg)
 
         self.logger.debug(f"Adding {filename} to scene")
-        self.recorder.scene.add_audio(f"{file}")
+        self.recorder.scene.add_audio(f"{file}", repeatable=repeat)
 
     def stop_playing(self, filename: str):
         """

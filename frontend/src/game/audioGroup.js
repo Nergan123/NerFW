@@ -10,6 +10,15 @@ function AudioGroup({sourcesInput}){
     const musicToStop = useRef();
     musicToStop.current = sources;
 
+    function playOnRepeat(audio){
+        console.log("Playing on repeat")
+        audio.addEventListener('ended', () => {
+            audio.currentTime = 0;
+            audio.play();
+        });
+        audio.loop = true;
+    }
+
     function checkSourceInList(){
         const links = sourcesInput.map((url) => {
             console.log(url.name)
@@ -23,7 +32,7 @@ function AudioGroup({sourcesInput}){
             if(idx <= -1){
                 const filler = [...playing];
                 filler[idx] = false
-                source.player.removeEventListener('ended', () => setPlaying(filler));
+                source.player.removeEventListener('ended', () => {});
                 source.player.pause();
                 newSources.splice(idxToDelete, 1);
             }
@@ -36,7 +45,7 @@ function AudioGroup({sourcesInput}){
             return null
         }
         const processedSources = [...sources];
-        sourcesInput.map((source) =>{
+        sourcesInput.forEach((source) =>{
                 var loc = window.location.href;
                 loc = loc.replace("game", source.name);
                 const idx = sources.findIndex(e => e.source === loc);
@@ -45,16 +54,15 @@ function AudioGroup({sourcesInput}){
                         source: loc,
                         player: new Audio(),
                     }
+                    if (source.repeatable){
+                        playOnRepeat(audio.player);
+                    }
                     audio.player.src = loc;
                     audio.player.type = "audio/mp3";
                     audio.player.load();
                     audio.player.play();
-                    const filler = [...playing];
-                    filler[idx] = true
-                    audio.player.addEventListener('ended', () => setPlaying(filler));
                     processedSources.push(audio);
                 }
-                return source;
             }
         );
         setSources(processedSources);

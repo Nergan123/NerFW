@@ -75,14 +75,15 @@ class Game(LoggerBase):
 
         return answer
 
-    def play_audio(self, filename: str):
+    def play_audio(self, filename: str, repeat: bool = False):
         """
         Plays audio
         :param filename: File to play
+        :param repeat: Whether to repeat audio or not
         :return: None
         """
 
-        self._audio.play(filename)
+        self._audio.play(filename, repeat)
 
     def stop_audio(self, filename: str):
         """
