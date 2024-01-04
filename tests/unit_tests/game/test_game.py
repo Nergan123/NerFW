@@ -42,7 +42,7 @@ class GameTests(unittest.TestCase):
         Test case to verify that the play_audio method correctly plays an audio file.
         """
         self.game.play_audio("audio_file.mp3")
-        mock_play.assert_called_once_with("audio_file.mp3")
+        mock_play.assert_called_once_with("audio_file.mp3", False)
 
 
 if __name__ == "__main__":

@@ -29,7 +29,9 @@ class AudioTests(unittest.TestCase):
         Test case to verify that the play method correctly plays an existing audio file.
         """
         self.audio.play("existing_file.mp3")
-        self.recorder_mock.scene.add_audio.assert_called_once_with("existing_file.mp3")
+        self.recorder_mock.scene.add_audio.assert_called_once_with(
+            "existing_file.mp3", repeatable=False
+        )
 
     @patch("os.path.exists", return_value=False)
     @patch("subprocess.call")
@@ -40,7 +42,7 @@ class AudioTests(unittest.TestCase):
         self.audio.play("non_existing_file.mp3")
         call_mock.assert_called_once()
         self.recorder_mock.scene.add_audio.assert_called_once_with(
-            "non_existing_file.mp3"
+            "non_existing_file.mp3", repeatable=False
         )
 
 
