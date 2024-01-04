@@ -16,6 +16,10 @@ class Character(LoggerBase):
         self.img_handler = ImageHandler()
         self.color = color
         self.animation = Animations(pos[0], pos[1])
+        self.img_scale = {
+            "height": 100,
+            "width": 100
+        }
 
     def to_dict(self):
         """
@@ -28,6 +32,7 @@ class Character(LoggerBase):
             "name": self.name,
             "color": self.color,
             "img": self.img_handler.convert_to_base64(self.img),
+            "scale": self.img_scale,
             "css": self.animation.css
         }
 
@@ -59,3 +64,16 @@ class Character(LoggerBase):
         """
 
         self.recorder.scene.add_character_to_scene(self)
+
+    def scale(self, height: int, width: int):
+        """
+        Scales character
+        :param height: Height of the character image in px
+        :param width: Width of the character image in px
+        :return: None
+        """
+
+        self.img_scale = {
+            "height": height,
+            "width": width
+        }

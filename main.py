@@ -23,6 +23,7 @@ def script(last_line):
     app.play_audio("test_files/test.mp3")
     tester.say("Test 1")
     tester.animation.move(20, 10, 3)
+    tester.scale(height=500, width=500)
     tester.say("Test 2")
     app.set_background("test_files/back.jpg")
     tester.hide()
