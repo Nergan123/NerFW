@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  nerfw_server:
+    build:
+      context: "."
+    ports:
+      - "8080:5000"
+  tests:
+    build:
+      context: "./tests/integration_testing"
+    ports:
+      - "9999:5000"
+    depends_on:
+      - "nerfw_server"

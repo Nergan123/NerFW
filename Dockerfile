@@ -12,6 +12,7 @@ RUN apt-get install -y nodejs npm
 WORKDIR /app/frontend
 RUN npm install
 RUN npm run build
+EXPOSE 5000
 
 WORKDIR /app
 CMD ["python", "main.py"]
