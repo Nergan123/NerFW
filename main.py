@@ -10,27 +10,27 @@ def script(last_line):
     """
 
     app = Game(last_line)
-    app.set_background("test_files/back.jpg")
+    app.set_background("tests/integration_testing/test_files/back.jpg")
 
     tester = app.create_character(
-        "Tester", "test_files/char1.png", (100, 255, 255), (30, 10)
+        "Tester", "tests/integration_testing/test_files/char1.png", (100, 255, 255), (30, 10)
     )
     coder = app.create_character(
-        "Coder", "test_files/char1.jpeg", (255, 100, 100), (70, 10)
+        "Coder", "tests/integration_testing/test_files/char1.jpeg", (255, 100, 100), (70, 10)
     )
 
     tester.show()
-    app.play_audio("test_files/test.mp3")
+    app.play_audio("tests/integration_testing/test_files/test.mp3")
     tester.say("Test 1")
     tester.animation.move(20, 10, 3)
     tester.scale(height=500, width=500)
     tester.say("Test 2")
-    app.set_background("test_files/back.jpg")
+    app.set_background("tests/integration_testing/test_files/back.jpg")
     tester.hide()
 
     coder.say("What are you testing?")
-    app.stop_audio("test_files/test.mp3")
-    app.play_audio("test_files/amaranthe.mp3", repeat=True)
+    app.stop_audio("tests/integration_testing/test_files/test.mp3")
+    app.play_audio("tests/integration_testing/test_files/test2.mp3", repeat=True)
     answers = app.choice(["something", "nothing"])
     if answers[0]:
         tester.show()

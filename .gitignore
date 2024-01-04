@@ -1,7 +1,6 @@
 logs
 *__pycache__
 .idea
-test_files
 *.json
 game_script
 .env
@@ -9,6 +8,7 @@ game_script
 build
 *.egg-info
 *.mp3
+!tests/integration_testing/**/*.mp3
 data
 
 
