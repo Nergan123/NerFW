@@ -31,6 +31,7 @@ class CharacterTests(unittest.TestCase):
             "color": (255, 255, 255),
             "img": "mocked_base64",
             "css": self.character.animation.css,
+            "scale": {"height": 100, "width": 100},
         }
         self.assertEqual(output, expected_output)
 
