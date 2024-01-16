@@ -2,6 +2,7 @@ import json
 import datetime
 from json import loads
 
+from authlib.integrations.flask_client import OAuth
 from flask import Flask, request, jsonify, render_template, make_response, redirect
 from nerfw.helpers.deconstructor import Deconstructor
 
@@ -10,6 +11,7 @@ from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 from nerfw.helpers.input_handler import InputHandler
+from nerfw.server.login_github import LoginGithub
 from nerfw.server.login_handler import LoginHandler
 from nerfw.server.require_token import require_token
 from nerfw.server.saves_handler import SavesHandler
@@ -20,7 +22,7 @@ from nerfw.server.wrapper import FlaskAppWrapper
 class Server:
     """Server class"""
 
-    def __init__(self):
+    def __init__(self, login_method: str):
         flask_app = Flask(
             __name__,
             static_url_path="/",
@@ -31,9 +33,23 @@ class Server:
         self.input = InputHandler("", "")
         self.deconstructor = Deconstructor()
         self.saves_handler = SavesHandler()
-        self.login_handler = LoginHandler()
+        self.login_handler = None
+        self._set_login_method(login_method)
         self.token_handler = TokenHandler()
         self.script = None
+
+    def _set_login_method(self, method: str):
+        """
+        Sets login method
+        :param method: Login method. Can be "Default", "GitHub"
+        :return: None
+        """
+
+        if method == "default":
+            self.login_handler = LoginHandler()
+        elif method == "github":
+            oauth = OAuth(self.app)
+            self.login_handler = LoginGithub(oauth)
 
     def home(self):
         """

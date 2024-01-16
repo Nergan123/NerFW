@@ -35,6 +35,8 @@ dependencies = [
     "python-dotenv",
     "flask",
     "pyjwt",
+    "authlib",
+    "python-dotenv",
 ]
 
 [project.urls]
