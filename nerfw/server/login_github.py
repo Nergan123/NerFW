@@ -3,7 +3,7 @@ import os
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 
-from nerfw import LoggerBase
+from nerfw.helpers.logger import LoggerBase
 
 
 class LoginGithub(LoggerBase):
