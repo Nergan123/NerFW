@@ -36,7 +36,6 @@ dependencies = [
     "flask",
     "pyjwt",
     "authlib",
-    "python-dotenv",
     "requests",
 ]
 
