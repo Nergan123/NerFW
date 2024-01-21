@@ -68,6 +68,14 @@ class Server:
         :return: Login page
         """
 
+        if request.method == "GET":
+            resp_data = {
+                "method": self.login_handler.get_method(),
+                "additionalData": self.login_handler.get_additional_data(),
+            }
+            resp = make_response(resp_data)
+            return resp
+
         data = request.get_json()
         try:
             self.login_handler.login(data)
@@ -274,7 +282,7 @@ class Server:
         self.app.add_endpoint(
             "/game/load_game", "load_game", self.load_game, methods=["GET", "POST"]
         )
-        self.app.add_endpoint("/login", "login", self.login, methods=["POST"])
+        self.app.add_endpoint("/login", "login", self.login, methods=["POST", "GET"])
         self.app.add_endpoint(
             "/login/register", "register", self.register, methods=["POST"]
         )

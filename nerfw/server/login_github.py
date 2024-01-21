@@ -30,6 +30,7 @@ class LoginGithub(LoggerBase):
         """
         Login to GitHub.
         :return: None
+
         """
 
         self.logger.info("Logging in to GitHub...")
@@ -48,4 +49,34 @@ class LoginGithub(LoggerBase):
         except KeyError:
             raise KeyError("CLIENT_ID and CLIENT_SECRET not found in .env file") from KeyError
 
+        if client_id == "" or client_secret == "":
+            raise KeyError("CLIENT_ID or CLIENT_SECRET is empty")
+
         return client_id, client_secret
+
+    @staticmethod
+    def get_method():
+        """
+        Gets login method.
+        :return: str
+        """
+
+        return "github"
+
+    @staticmethod
+    def get_additional_data():
+        """
+        Gets additional data for login.
+        :return: None
+        """
+
+        load_dotenv()
+        try:
+            client_id = os.environ["CLIENT_ID"]
+        except KeyError:
+            raise KeyError("CLIENT_ID not found in .env file") from KeyError
+
+        if client_id == "":
+            raise KeyError("CLIENT_ID is empty")
+
+        return {"clientId": client_id}

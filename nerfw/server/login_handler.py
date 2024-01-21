@@ -45,3 +45,21 @@ class LoginHandler(LoggerBase):
         if data["Password"] != data["Repeat_password"]:
             raise PasswordsMismatch()
         self.pwd_manager.register(data)
+
+    @staticmethod
+    def get_method():
+        """
+        Gets login method
+        :return: str
+        """
+
+        return "default"
+
+    @staticmethod
+    def get_additional_data():
+        """
+        Gets additional data for login
+        :return: None
+        """
+
+        return None

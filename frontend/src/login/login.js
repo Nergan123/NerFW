@@ -1,53 +1,37 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import './login.css'
+import { useEffect } from 'react';
+import { useState } from 'react';
+import LoginDefault from './loginDefault.js';
+import LoginGithub from './loginGithub.js';
 
+
+const LOGIN_METHOD_DEFAULT = 'default';
+const LOGIN_METHOD_GITHUB = 'github';
 
 function Login() {
+    const [loginMethod, setLoginMethod] = useState(LOGIN_METHOD_DEFAULT);
+    const [additionalData, setAdditionalData] = useState({});
 
-    const [login, setLogin] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const navigate = useNavigate();
+    useEffect(() => {
+        console.log("Fetching")
+        const fetchLoginMethod = async () => {
+            const response = await fetch('/login', {
+                method: 'GET'
+            });
+    
+            const data = await response.json();
 
-    const handleLogin = (event) => {
-      setLogin(event.target.value);
-    };
-  
-    const handlePassword = (event) => {
-      setPassword(event.target.value);
-    };
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-  
-      const response = await fetch('/login', {
-        method: 'POST',
-        redirect: 'follow',
-        headers: {
-            'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
-            "Login": login,
-            "Password": password,
-        })
-       });
+            setAdditionalData(data.additionalData);
+            setLoginMethod(data.method);
+        }
 
-       if(response.status === 200){
-          navigate("/");
-       }else{
-          navigate("/register");
-       };
-    };
+        fetchLoginMethod();
+    }, [setLoginMethod, setAdditionalData]);
 
-    return (
-        <div id="login_menu" className="login-wrapper">
-            <form onSubmit={handleSubmit}>
-                <input type="text" id="Login" name="Login" required="" minLength="4" maxLength="20" size="20" style={{margin: "0 0 5%"}} placeholder="Login" value={login} onChange={handleLogin} />
-                <input type="text" id="Password" name="Password" required="" minLength="4" maxLength="20" size="20" style={{margin: "0 0 5%"}} placeholder="Password" value={password} onChange={handlePassword} />
-                <input type="submit" id="Submit" name="Submit" size="20" value="Submit" style={{margin: "0 0 5%"}} />
-            </form>
-        </div>
-    );
+    if (loginMethod === LOGIN_METHOD_GITHUB) {
+        return <LoginGithub additionalData={additionalData} />;
+    }
+    
+    return <LoginDefault />;
 }
 
 

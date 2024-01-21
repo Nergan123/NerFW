@@ -75,5 +75,6 @@ def inner_func(tester, coder):
 if __name__ == "__main__":
     LoggerBase.setup_logger()
     ner = NerFW()
+    ner.set_login_method("github")
 
     ner.run(script)

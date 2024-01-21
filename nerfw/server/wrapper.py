@@ -6,6 +6,7 @@ class FlaskAppWrapper:
 
     def __init__(self, app, **configs):
         self.app = app
+        self.config = {}
         self.configs(**configs)
 
     def configs(self, **configs):
