@@ -1,12 +1,9 @@
-import { useState } from "react";
-
-
 function LoginGithub({additionalData}) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   async function handleLogin() {
-    
+    let codeUrl = "https://github.com/login/oauth/authorize?scope=user,repo";        
+    codeUrl += "&client_id=" + additionalData.clientId;
+    window.location.replace(codeUrl);
   }
 
   return (
@@ -14,7 +11,6 @@ function LoginGithub({additionalData}) {
       <button onClick={handleLogin}>
         Login with Github
       </button>
-      <p>{additionalData.clientId}</p>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import os
 
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
+from flask import make_response, redirect
 
 from nerfw.helpers.logger import LoggerBase
 
@@ -47,7 +48,9 @@ class LoginGithub(LoggerBase):
             client_id = os.environ["CLIENT_ID"]
             client_secret = os.environ["CLIENT_SECRET"]
         except KeyError:
-            raise KeyError("CLIENT_ID and CLIENT_SECRET not found in .env file") from KeyError
+            raise KeyError(
+                "CLIENT_ID and CLIENT_SECRET not found in .env file"
+            ) from KeyError
 
         if client_id == "" or client_secret == "":
             raise KeyError("CLIENT_ID or CLIENT_SECRET is empty")
@@ -80,3 +83,14 @@ class LoginGithub(LoggerBase):
             raise KeyError("CLIENT_ID is empty")
 
         return {"clientId": client_id}
+
+    def authorize(self):
+        """
+        Authorizes GitHub login.
+        :return: None
+        """
+
+        self.logger.info("Authorizing GitHub login...")
+        resp = make_response(redirect("/"))
+
+        return resp

@@ -286,4 +286,13 @@ class Server:
         self.app.add_endpoint(
             "/login/register", "register", self.register, methods=["POST"]
         )
+
+        if self.login_handler.get_method() == "github":
+            self.app.add_endpoint(
+                "/github/callback",
+                "github_authorized",
+                self.login_handler.authorize,
+                methods=["GET"],
+            )
+
         self.app.run(host="0.0.0.0", debug=debug)

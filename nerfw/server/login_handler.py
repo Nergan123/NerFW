@@ -63,3 +63,11 @@ class LoginHandler(LoggerBase):
         """
 
         return None
+
+    def authorize(self):
+        """
+        Checks if user is authorized
+        :return: bool
+        """
+
+        raise NotImplementedError
