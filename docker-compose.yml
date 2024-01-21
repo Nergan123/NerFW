@@ -1,11 +1,17 @@
 version: '3.4'
 services:
   nerfw_server:
+    environment:
+        - CLIENT_ID=${CLIENT_ID}
+        - CLIENT_SECRET=${CLIENT_SECRET}
     build:
       context: "."
     ports:
       - "8080:5000"
   tests:
+    environment:
+        - CLIENT_ID=${CLIENT_ID}
+        - CLIENT_SECRET=${CLIENT_SECRET}
     build:
       context: "./tests/integration_testing"
     ports:
