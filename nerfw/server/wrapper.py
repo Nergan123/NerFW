@@ -1,3 +1,6 @@
+from nerfw.server.token_handler import TokenHandler
+
+
 class FlaskAppWrapper:
     """
     Wrapper for a flask app
@@ -8,6 +11,7 @@ class FlaskAppWrapper:
         self.app = app
         self.config = {}
         self.configs(**configs)
+        self.app.secret_key = TokenHandler().get_key()
 
     def configs(self, **configs):
         """

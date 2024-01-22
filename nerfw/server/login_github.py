@@ -1,10 +1,12 @@
 import os
 
+import requests
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
-from flask import make_response, redirect
+from flask import make_response, redirect, request
 
 from nerfw.helpers.logger import LoggerBase
+from nerfw.server.token_handler import TokenHandler
 
 
 class LoginGithub(LoggerBase):
@@ -26,6 +28,7 @@ class LoginGithub(LoggerBase):
             api_base_url="https://api.github.com/",
             client_kwargs={"scope": "user:email"},
         )
+        self.token_handler = TokenHandler()
 
     def login(self):
         """
@@ -91,6 +94,54 @@ class LoginGithub(LoggerBase):
         """
 
         self.logger.info("Authorizing GitHub login...")
+        request_token = request.args.get("code")
+        access_token = self._get_access_token(request_token)
+        user_data = self._get_user_data(access_token)
+        jwt_token = self.token_handler.create_token(user_data["login"])
         resp = make_response(redirect("/"))
+        resp.set_cookie("token", jwt_token)
 
         return resp
+
+    def _get_access_token(self, request_token: str):
+        """
+        Gets access token from GitHub.
+        :param request_token:
+        :return: str
+        """
+
+        client_id, client_secret = self._get_id_and_secret()
+
+        auth_data = {
+            "code": request_token,
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "redirect_uri": "http://127.0.0.1:5000/github/callback",
+        }
+        resp = requests.post(
+            "https://github.com/login/oauth/access_token", data=auth_data, timeout=10
+        )
+        token = resp.text.split("access_token=")[1]
+        token = token.split("&")[0]
+
+        return token
+
+    @staticmethod
+    def _get_user_data(access_token: str) -> dict:
+        """
+        Gets user data from GitHub.
+        :param access_token: Access token
+        :return: dict
+        """
+        if not access_token:
+            raise ValueError("The request token has to be supplied!")
+        if not isinstance(access_token, str):
+            raise ValueError("The request token has to be a string!")
+
+        user = requests.get(
+            "https://api.github.com/user",
+            headers={"Authorization": "token " + access_token},
+            timeout=10,
+        )
+
+        return user.json()
