@@ -1,3 +1,7 @@
+import "./loginGithub.css"
+import GitHubLogo from "./github-mark-white.svg"
+
+
 function LoginGithub({additionalData}) {
 
   async function handleLogin() {
@@ -7,10 +11,13 @@ function LoginGithub({additionalData}) {
   }
 
   return (
-    <div>
-      <button onClick={handleLogin}>
-        Login with Github
-      </button>
+    <div className="outterWrapper">
+      <div className="innerWrapper">
+        <img src={GitHubLogo} alt="GitHub Logo"/>
+        <button onClick={handleLogin}>
+          Login with Github
+        </button>
+        </div>
     </div>
   );
 }
