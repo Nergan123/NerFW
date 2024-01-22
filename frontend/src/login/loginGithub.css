@@ -11,8 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 25%;
-    height: 50%;
+
     border: 1px solid #ccc;
     border-radius: 15px;
     box-shadow: 0 0 20px #ccc;
@@ -21,11 +20,11 @@
 }
 
 button {
+    margin: 10%;
     background-color: #ffffff20;
 }
 
 img {
     margin: 5%;
-    height: 100%;
     border-radius: 15px;
 }
