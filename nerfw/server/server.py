@@ -10,6 +10,7 @@ from nerfw.helpers.breaker import Breaker
 from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
+from nerfw.helpers.errors.user_not_allowed import UserNotAllowed
 from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.login_github import LoginGithub
 from nerfw.server.login_handler import LoginHandler
@@ -87,6 +88,9 @@ class Server:
             resp.set_cookie("line", self.input.get_current_line())
             resp.set_cookie("prev_line", self.input.get_prev_line())
         except UserDoesntExist:
+            resp = make_response()
+            resp.status = 404
+        except UserNotAllowed:
             resp = make_response()
             resp.status = 401
 

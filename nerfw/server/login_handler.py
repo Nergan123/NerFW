@@ -1,3 +1,4 @@
+from nerfw.helpers.errors.user_not_allowed import UserNotAllowed
 from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.db_handler import DbHandler
 from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
@@ -14,6 +15,7 @@ class LoginHandler(LoggerBase):
         super().__init__()
         self.db = DbHandler()
         self.pwd_manager = PasswordManager(self.db)
+        self.allowed_users = []
 
     def login(self, data: dict):
         """
@@ -21,6 +23,9 @@ class LoginHandler(LoggerBase):
         :param data: Login credentials
         :return: dict
         """
+
+        if not self.check_user_allowed(data["Login"]):
+            raise UserNotAllowed(data["Login"])
 
         sql = "SELECT password, salt FROM credentials WHERE login = ?"
         result = self.db.execute(sql, [data["Login"]])
@@ -33,6 +38,15 @@ class LoginHandler(LoggerBase):
             raise PasswordsMismatch()
 
         return result[0]
+
+    def check_user_allowed(self, login: str):
+        """
+        Checks if user is allowed
+        :param login: User login
+        :return: bool
+        """
+
+        return login in self.allowed_users if self.allowed_users else True
 
     def register(self, data: dict):
         """
@@ -71,3 +85,12 @@ class LoginHandler(LoggerBase):
         """
 
         raise NotImplementedError
+
+    def set_list_of_allowed_users(self, users: list):
+        """
+        Sets list of allowed users
+        :param users: List of users
+        :return: None
+        """
+
+        self.allowed_users = users

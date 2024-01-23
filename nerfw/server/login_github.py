@@ -29,6 +29,7 @@ class LoginGithub(LoggerBase):
             client_kwargs={"scope": "user:email"},
         )
         self.token_handler = TokenHandler()
+        self.allowed_users = []
 
     def login(self):
         """
@@ -97,6 +98,10 @@ class LoginGithub(LoggerBase):
         request_token = request.args.get("code")
         access_token = self._get_access_token(request_token)
         user_data = self._get_user_data(access_token)
+
+        if not self.check_user_allowed(user_data["login"]):
+            raise ValueError("User not allowed")
+
         jwt_token = self.token_handler.create_token(user_data["login"])
         resp = make_response(redirect("/"))
         resp.set_cookie("token", jwt_token)
@@ -145,3 +150,21 @@ class LoginGithub(LoggerBase):
         )
 
         return user.json()
+
+    def check_user_allowed(self, login: str):
+        """
+        Checks if user is allowed
+        :param login: User login
+        :return: bool
+        """
+
+        return login in self.allowed_users if self.allowed_users else True
+
+    def set_list_of_allowed_users(self, users: list):
+        """
+        Sets list of allowed users
+        :param users: List of users
+        :return: None
+        """
+
+        self.allowed_users = users

@@ -34,6 +34,8 @@ function LoginDefault() {
 
        if(response.status === 200){
           navigate("/");
+       }else if(response.status === 401) {
+          alert("This Login is not authorized on this website.");
        }else{
           navigate("/register");
        };
