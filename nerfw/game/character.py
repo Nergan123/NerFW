@@ -46,7 +46,7 @@ class Character(LoggerBase):
         """
 
         self.logger.info(f"Adding to script: {text}")
-        self.recorder.check(text, self.name)
+        self.recorder.check(text, self.name, self.color)
 
     def hide(self):
         """

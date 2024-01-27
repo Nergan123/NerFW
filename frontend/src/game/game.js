@@ -14,6 +14,7 @@ function Game() {
         background: "",
         characters: [],
         name: "",
+        color: [],
         text: "",
         choice: {},
         stringInput: {},
@@ -55,6 +56,12 @@ function Game() {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+    }
+
+    const charNameStyle = {
+        fontSize: "20px",
+        fontWeight: "bold",
+        color: `rgb(${scene['color'][0]}, ${scene['color'][1]}, ${scene['color'][2]})`,
     }
 
     function HandleSceneSet(data){
@@ -105,6 +112,15 @@ function Game() {
         })
     }
 
+    function getSceneText(){
+        if (scene['choice']['options'] != null) {
+            return "";
+        }else if (scene['stringInput']['text'] != null){
+            return "";
+        }
+        return scene['text'];
+    }
+
     useEffect(() => {
         HandlePrevSceneSet(cookie.prev_scene);
         forwardClick();
@@ -128,10 +144,10 @@ function Game() {
 
                 <form method="POST" style={{'margin': '10px 20px'}}>
                     <div id="char-name">
-                        <p><b>{scene['name']}</b></p>
+                        <p style={charNameStyle}>{scene['name']}</p>
                     </div>
-                    <div id="char-text">
-                        <p>{scene['text']}</p>
+                    <div id="char-text" style={{marginTop: "10px"}}>
+                        <p>{getSceneText()}</p>
                     </div>
                 </form>
             </div>

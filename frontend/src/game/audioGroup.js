@@ -6,6 +6,7 @@ function AudioGroup({sourcesInput}){
     const [sources, setSources] = useState([]);
     const initialState = new Array(sources.length).fill(false);
     const [playing, setPlaying] = useState(initialState)
+    const [audioOn, setAudioOn] = useState(true);
 
     const musicToStop = useRef();
     musicToStop.current = sources;
@@ -59,8 +60,12 @@ function AudioGroup({sourcesInput}){
                     }
                     audio.player.src = loc;
                     audio.player.type = "audio/mp3";
-                    audio.player.load();
-                    audio.player.play();
+                    if(audioOn){
+                        audio.player.load();
+                        audio.player.play();
+                    }else{
+                        audio.player.pause();
+                    }
                     processedSources.push(audio);
                 }
             }
@@ -68,9 +73,21 @@ function AudioGroup({sourcesInput}){
         setSources(processedSources);
     };
 
+    function handleClick(){
+        setAudioOn(!audioOn);
+        const sources = musicToStop.current;
+        sources.forEach((source) => {
+            if(audioOn){
+                source.player.pause();
+            }else{
+                source.player.load();
+                source.player.play();
+            }
+        })
+    }
+
     useEffect(() => {
         if(sourcesInput.length > 0 && !sourcesInput.includes("")){
-            console.log("Triggered");
             checkSourceInList();
             handleSources();
             musicToStop.current = sources;
@@ -105,7 +122,7 @@ function AudioGroup({sourcesInput}){
 
     return(
         <div>
-            <button onClick={handleSources}>Enable sound</button>
+            <button onClick={handleClick}>Enable sound</button>
         </div>
     );
 

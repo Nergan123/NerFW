@@ -13,16 +13,18 @@ class Recorder(LoggerBase):
         self.scene = scene
         self.report = False
 
-    def check(self, line: str, name=""):
+    def check(self, line: str, name="", color=(0, 0, 0)):
         """
         Checks if line is already encountered
 
         :param line: Checks the current line
         :param name: Name to display
+        :param color: Color of the name to display
         :return: None
         """
 
         self.scene.name = name
+        self.scene.color = color
 
         if self.report or (self.previous["line"] == ""):
             self.report = False

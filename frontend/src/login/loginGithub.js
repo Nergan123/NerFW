@@ -14,7 +14,7 @@ function LoginGithub({additionalData}) {
     <div className="outterWrapper">
       <div className="innerWrapper">
         <img src={GitHubLogo} alt="GitHub Logo"/>
-        <button onClick={handleLogin}>
+        <button onClick={handleLogin} className="button-Github">
           Login with Github
         </button>
         </div>

@@ -39,6 +39,21 @@ function RenderVisualBackground({scene, idx, state}){
         width: '100%'
     }
 
+    const charNameStyle = {
+        fontSize: "20px",
+        fontWeight: "bold",
+        color: `rgb(${scene['color'][0]}, ${scene['color'][1]}, ${scene['color'][2]})`,
+    }
+
+    function getSceneText(){
+        if (scene['choice']['options'] != null) {
+            return "";
+        }else if (scene['stringInput']['text'] != null){
+            return "";
+        }
+        return scene['text'];
+    }
+
     function getStyle(){
         if(state[idx]){
             return(backgroundStyleInvisible);
@@ -66,10 +81,10 @@ function RenderVisualBackground({scene, idx, state}){
 
                 <form method="POST" style={{'margin': '10px 20px'}}>
                     <div id="char-name">
-                        <p><b>{scene.name}</b></p>
+                        <p style={charNameStyle}>{scene.name}</p>
                     </div>
                     <div id="char-text">
-                        <p>{scene.text}</p>
+                        <p>{getSceneText()}</p>
                     </div>
                 </form>
             </div>

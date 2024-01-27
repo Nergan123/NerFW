@@ -16,6 +16,7 @@ class Scene(LoggerBase):
         self.string_input = None
         self.audio = []
         self.name = ""
+        self.color = ()
         self.img_handler = ImageHandler()
 
     def set_background(self, img_file: str):

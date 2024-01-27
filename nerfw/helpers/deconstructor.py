@@ -25,6 +25,7 @@ class Deconstructor(LoggerBase):
             ],
             "text": breaker.line,
             "name": breaker.scene.name,
+            "color": breaker.scene.color,
             "choice": {}
             if breaker.scene.choice is None
             else breaker.scene.choice.to_dict(),
