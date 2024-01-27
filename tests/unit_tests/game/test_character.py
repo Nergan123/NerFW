@@ -42,7 +42,7 @@ class CharacterTests(unittest.TestCase):
         """
         self.character.say("Hello, world!")
         self.recorder_mock.check.assert_called_once_with(
-            "Hello, world!", "Test Character"
+            "Hello, world!", "Test Character", (255, 255, 255)
         )
 
     def test_character_hide(self):

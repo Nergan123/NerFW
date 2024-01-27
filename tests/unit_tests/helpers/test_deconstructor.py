@@ -33,7 +33,7 @@ class DeconstructorTests(unittest.TestCase):
         """
         mock_convert_to_base64.return_value = "base64"
         self.breaker.scene.characters_to_show = [
-            Character("Test Character", "img_path", (255, 255, 255), (0, 0))
+            Character("Test Character", "img_path", (255, 255, 255), (0, 0, 0))
         ]
         self.breaker.scene.string_input = MagicMock()
         output = self.deconstructor.deconstruct(self.breaker)
@@ -46,6 +46,7 @@ class DeconstructorTests(unittest.TestCase):
             "text": self.breaker.line,
             "stringInput": self.breaker.scene.string_input.to_dict(),
             "name": self.breaker.scene.name,
+            "color": self.breaker.scene.color,
             "choice": {},
             "audio": self.breaker.scene.audio,
         }
@@ -59,7 +60,7 @@ class DeconstructorTests(unittest.TestCase):
         """
         mock_convert_to_base64.return_value = "base64"
         self.breaker.scene.characters_to_show = [
-            Character("Test Character", "img_path", (255, 255, 255), (0, 0))
+            Character("Test Character", "img_path", (255, 255, 255), (0, 0, 0))
         ]
         self.breaker.scene.choice = MagicMock()
         self.breaker.scene.string_input = MagicMock()
@@ -73,6 +74,7 @@ class DeconstructorTests(unittest.TestCase):
             "text": self.breaker.line,
             "stringInput": self.breaker.scene.string_input.to_dict(),
             "name": self.breaker.scene.name,
+            "color": self.breaker.scene.color,
             "choice": self.breaker.scene.choice.to_dict(),
             "audio": self.breaker.scene.audio,
         }
