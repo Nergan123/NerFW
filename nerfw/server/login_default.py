@@ -6,7 +6,7 @@ from nerfw.helpers.login_base import LoginBaseClass
 from nerfw.server.password_manager import PasswordManager
 
 
-class LoginHandler(LoginBaseClass):
+class LoginDefault(LoginBaseClass):
     """
     Handles login process
     """

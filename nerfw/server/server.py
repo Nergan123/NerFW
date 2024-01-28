@@ -13,7 +13,7 @@ from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 from nerfw.helpers.errors.user_not_allowed import UserNotAllowed
 from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.login_github import LoginGithub
-from nerfw.server.login_handler import LoginHandler
+from nerfw.server.login_default import LoginDefault
 from nerfw.server.require_token import require_token
 from nerfw.server.saves_handler import SavesHandler
 from nerfw.server.token_handler import TokenHandler
@@ -47,7 +47,7 @@ class Server:
         """
 
         if method == "default":
-            self.login_handler = LoginHandler()
+            self.login_handler = LoginDefault()
         elif method == "github":
             oauth = OAuth(self.app)
             self.login_handler = LoginGithub(oauth)

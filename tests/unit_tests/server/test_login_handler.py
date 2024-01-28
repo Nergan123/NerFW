@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from nerfw.server.login_handler import LoginHandler
+from nerfw.server.login_default import LoginDefault
 from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 
@@ -14,7 +14,7 @@ class LoginHandlerTests(unittest.TestCase):
         """
         This method is called before each test. It initializes the LoginHandler object.
         """
-        self.login_handler = LoginHandler()
+        self.login_handler = LoginDefault()
 
     @patch("nerfw.helpers.db_handler.DbHandler.execute")
     def test_login_handler_login_user_doesnt_exist(self, mock_execute):
