@@ -66,4 +66,6 @@ dev = [
     "black",
     "pylint",
     "pytest",
+    "sphinx",
+    "sphinx-rtd-theme",
 ]
