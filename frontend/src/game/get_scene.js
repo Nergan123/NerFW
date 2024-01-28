@@ -43,7 +43,4 @@ function GetScene(scene, HandleSceneSet) {
     )
 }
 
-
-// "{\"line\": \"\"\054 \"back\": false\054 \"choices\": {}}"
-
 export default GetScene;

@@ -5,11 +5,11 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from flask import make_response, redirect, request
 
-from nerfw.helpers.logger import LoggerBase
+from nerfw.helpers.login_base import LoginBaseClass
 from nerfw.server.token_handler import TokenHandler
 
 
-class LoginGithub(LoggerBase):
+class LoginGithub(LoginBaseClass):
     """
     Login to GitHub.
     """
@@ -29,7 +29,6 @@ class LoginGithub(LoggerBase):
             client_kwargs={"scope": "user:email"},
         )
         self.token_handler = TokenHandler()
-        self.allowed_users = []
 
     def login(self):
         """
@@ -150,21 +149,3 @@ class LoginGithub(LoggerBase):
         )
 
         return user.json()
-
-    def check_user_allowed(self, login: str):
-        """
-        Checks if user is allowed
-        :param login: User login
-        :return: bool
-        """
-
-        return login in self.allowed_users if self.allowed_users else True
-
-    def set_list_of_allowed_users(self, users: list):
-        """
-        Sets list of allowed users
-        :param users: List of users
-        :return: None
-        """
-
-        self.allowed_users = users

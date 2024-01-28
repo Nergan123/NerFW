@@ -1,12 +1,12 @@
 from nerfw.helpers.errors.user_not_allowed import UserNotAllowed
-from nerfw.helpers.logger import LoggerBase
 from nerfw.helpers.db_handler import DbHandler
 from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
+from nerfw.helpers.login_base import LoginBaseClass
 from nerfw.server.password_manager import PasswordManager
 
 
-class LoginHandler(LoggerBase):
+class LoginHandler(LoginBaseClass):
     """
     Handles login process
     """
@@ -15,7 +15,6 @@ class LoginHandler(LoggerBase):
         super().__init__()
         self.db = DbHandler()
         self.pwd_manager = PasswordManager(self.db)
-        self.allowed_users = []
 
     def login(self, data: dict):
         """
@@ -39,15 +38,6 @@ class LoginHandler(LoggerBase):
 
         return result[0]
 
-    def check_user_allowed(self, login: str):
-        """
-        Checks if user is allowed
-        :param login: User login
-        :return: bool
-        """
-
-        return login in self.allowed_users if self.allowed_users else True
-
     def register(self, data: dict):
         """
         Registers new user
@@ -68,29 +58,3 @@ class LoginHandler(LoggerBase):
         """
 
         return "default"
-
-    @staticmethod
-    def get_additional_data():
-        """
-        Gets additional data for login
-        :return: None
-        """
-
-        return None
-
-    def authorize(self):
-        """
-        Checks if user is authorized
-        :return: bool
-        """
-
-        raise NotImplementedError
-
-    def set_list_of_allowed_users(self, users: list):
-        """
-        Sets list of allowed users
-        :param users: List of users
-        :return: None
-        """
-
-        self.allowed_users = users
