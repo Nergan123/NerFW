@@ -5,7 +5,7 @@ from nerfw.helpers.errors.password_mismatch import PasswordsMismatch
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 
 
-class LoginHandlerTests(unittest.TestCase):
+class LoginDefaultTests(unittest.TestCase):
     """
     This class contains unit tests for the LoginHandler class.
     """

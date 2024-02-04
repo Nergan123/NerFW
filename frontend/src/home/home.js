@@ -13,11 +13,16 @@ function Home() {
     function handleClickToSaves() {
         navigate("/saves");
     }
+    
+    function handleClickToGallery() {
+        navigate("/gallery");
+    }
 
     return (
         <div id="main_menu" className="button_div">
             <button onClick={handleClickToGame}>Game</button>
             <button onClick={handleClickToSaves}>Saves</button>
+            <button onClick={handleClickToGallery}>Gallery</button>
         </div>
     );
 }

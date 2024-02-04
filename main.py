@@ -2,14 +2,13 @@ from nerfw import Game, NerFW
 from nerfw import LoggerBase
 
 
-def script(last_line):
+def script(*args, **kwargs):
     """
     Game script to be run
-    :param last_line: Required to run
     :return: None
     """
 
-    app = Game(last_line)
+    app = Game(*args, **kwargs)
     app.set_background("tests/integration_testing/test_files/back.jpg")
 
     tester = app.create_character(
@@ -41,6 +40,7 @@ def script(last_line):
         tester.say("Nothing")
         val = 2
 
+    app.unlock_scene("tests/integration_testing/test_files/char1.png", "tester", "test")
     tester.hide()
     coder.say("Got it")
     if val == 1:

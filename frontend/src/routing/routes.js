@@ -5,6 +5,7 @@ import Home from "../home/home.js";
 import Login from "../login/login.js";
 import Register from "../register/register.js";
 import Saves from "../saves/saves.js";
+import Gallery from "../gallery/gallery.js";
 
 
 function RoutesHome() {
@@ -19,6 +20,9 @@ function RoutesHome() {
             </Route>
             <Route exact path='/saves' element={<RouteGuard />}>
                 <Route exact path="/saves" element={<Saves />} />
+            </Route>
+            <Route exact path="/gallery" element={<RouteGuard />}>
+                <Route exact path="/gallery" element={<Gallery />} />
             </Route>
             <Route exact path="/Login" element={<Login />} />
             <Route exact path="/Register" element={<Register />} />

@@ -12,7 +12,7 @@ class GameTests(unittest.TestCase):
         """
         Set up method for the test class. Initializes an instance of the Game class.
         """
-        self.game = Game('{"line": "line1", "prev_line": "line0"}')
+        self.game = Game(last_line='{"line": "line1", "prev_line": "line0"}', username="user")
 
     def test_game_create_character(self):
         """

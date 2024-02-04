@@ -12,6 +12,7 @@ from nerfw.helpers.errors.user_already_registered import UserAlreadyRegistered
 from nerfw.helpers.errors.user_doesnt_exist import UserDoesntExist
 from nerfw.helpers.errors.user_not_allowed import UserNotAllowed
 from nerfw.helpers.input_handler import InputHandler
+from nerfw.server.gallery import Gallery
 from nerfw.server.login_github import LoginGithub
 from nerfw.server.login_default import LoginDefault
 from nerfw.server.require_token import require_token
@@ -37,6 +38,7 @@ class Server:
         self.login_handler = None
         self._set_login_method(login_method)
         self.token_handler = TokenHandler()
+        self.gallery_handler = Gallery()
         self.script = None
 
     def _set_login_method(self, method: str):
@@ -158,6 +160,9 @@ class Server:
         """
 
         line = request.cookies.get("line")
+        username = self.token_handler.unlock_token(request.cookies.get("token"))[
+            "login"
+        ]
         if line is None:
             line = {"line": "", "back": False, "choices": {}, "stringInput": {}}
         else:
@@ -182,7 +187,7 @@ class Server:
         line = json.dumps(line)
 
         try:
-            self.script(line)
+            self.script(last_line=line, username=username)
             output = redirect("/")
             text = ""
         except Breaker as br:
@@ -208,7 +213,7 @@ class Server:
             login = self.token_handler.unlock_token(login)["login"]
             saves = self.saves_handler.get_all_saves(login)
 
-            output = self.render_save(saves)
+            output = self.render_save(saves, login)
 
             resp = make_response(output)
             return resp
@@ -225,10 +230,11 @@ class Server:
 
         return resp
 
-    def render_save(self, saves):
+    def render_save(self, saves, username):
         """
         Renders scene object for each save
         :param saves: Saves data to render
+        :param username: Username
         :return: dict
         """
 
@@ -238,7 +244,7 @@ class Server:
             line = loads(save)
             line = line["line"]
             try:
-                self.script(line)
+                self.script(last_line=line, username=username)
                 data = {}
             except Breaker as br:
                 data = self.deconstructor.deconstruct(br)
@@ -259,6 +265,21 @@ class Server:
         resp = make_response()
         return resp
 
+    @require_token
+    def gallery(self):
+        """
+        Gallery endpoint
+        :return: None
+        """
+
+        login = request.cookies.get("token")
+        login = self.token_handler.unlock_token(login)["login"]
+        images = self.gallery_handler.get_images(login)
+        images = [{"image": img, "category": category} for img, category in images]
+
+        resp = make_response(jsonify(images))
+        return resp
+
     def run(self, script, debug=False):
         """
         Runs a server
@@ -270,7 +291,7 @@ class Server:
 
         self.script = script
         try:
-            self.script(self.input.get_current_line())
+            self.script(last_line=self.input.get_current_line(), username="")
         except Breaker:
             pass
 
@@ -290,6 +311,7 @@ class Server:
         self.app.add_endpoint(
             "/login/register", "register", self.register, methods=["POST"]
         )
+        self.app.add_endpoint("/gallery", "gallery", self.gallery, methods=["GET"])
 
         if self.login_handler.get_method() == "github":
             self.app.add_endpoint(
