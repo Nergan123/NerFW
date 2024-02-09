@@ -1,0 +1,43 @@
+.GalleryWrapper {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+}
+
+.CategorieSelector {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  justify-content: left;
+  width: 15%;
+}
+
+.CategorieButton {
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+    background: linear-gradient(to right, #fff5, #fff0, #0000);
+    background-size: 200% 100%;
+    background-position: 99%;
+    border-bottom: 1px solid #fff;
+    border-image: linear-gradient(to right, #fff, #fff0, #0000);
+    border-image-slice: 1;
+    text-align: left;
+}
+
+.CategorieButton:hover {
+    outline: none;
+    border: 0px solid;
+    border-bottom: 1px solid #fff;
+    border-image: linear-gradient(to right, #fff, #fff0);
+    border-image-slice: 1;
+    box-shadow: none;
+    background-position: 0%;
+}
+
+.MainMenuButtonDiv {
+    position: absolute;
+    left: 1%;
+    bottom: 1%;
+}

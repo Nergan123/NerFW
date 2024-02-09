@@ -38,6 +38,7 @@ button {
     text-transform: uppercase;
     padding: 7px 12px;
     margin: 0 0 1%;
+    cursor: pointer;
 }
 
 button:hover {
