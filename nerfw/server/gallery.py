@@ -21,6 +21,7 @@ class Gallery(LoggerBase):
         """
 
         self.logger.debug(f"Getting images for {username}")
-        query = "SELECT image, category FROM unlockedScenes WHERE user = ?"
+        query = "SELECT image, category, label FROM unlockedScenes WHERE user = ?"
         result = self.db.execute(query, [username])
+        self.logger.debug(f"Images for {username}: {result}")
         return result

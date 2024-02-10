@@ -26,11 +26,11 @@ function Gallery() {
             <div className='CategorieSelector'>
                 <button className='CategorieButton' onClick={handleAllClick}>All</button>
                 {
-                    categories.map((category) => {
+                    categories.map((category, idx) => {
                         const handleClick = () => handleSetSelectedCategory(category);
 
                         return (
-                            <button className='CategorieButton' onClick={handleClick}>
+                            <button className='CategorieButton' onClick={handleClick} key={idx}>
                                 {category}
                             </button>
                         );
@@ -54,7 +54,7 @@ function Gallery() {
             selectedImages.map((image, idx) => {
                 return (
                         <div className='ImageSelected' key={idx}>
-                            <ImageSelected image={image.image} key={idx} />
+                            <ImageSelected image={image} idx={idx} />
                         </div>
                     );
                 }
@@ -73,10 +73,16 @@ function Gallery() {
                 return image;
                 })
             );
-            setCategories(data.map((image) => {
-                return image.category;
-                })
-            );
+
+            const toInclude = [];
+
+            data.forEach((image) => {
+                if(!toInclude.includes(image.category)) {
+                    toInclude.push(image.category);
+                }
+            });
+
+            setCategories(toInclude);
         }
 
         fetchImages();
@@ -85,7 +91,11 @@ function Gallery() {
     return (
         <div className='GalleryWrapper'>
             {categoriesSelector()}
-            {getSelectedImages()}
+            <div className='GalleryImages'>
+                <div className='ImagesInner'>
+                    {getSelectedImages()}
+                </div>
+            </div>
             <div className='MainMenuButtonDiv'>
                 <button onClick={handleClickToMainMenu}>Main Menu</button>
             </div>

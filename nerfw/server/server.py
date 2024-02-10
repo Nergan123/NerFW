@@ -275,7 +275,10 @@ class Server:
         login = request.cookies.get("token")
         login = self.token_handler.unlock_token(login)["login"]
         images = self.gallery_handler.get_images(login)
-        images = [{"image": img, "category": category} for img, category in images]
+        images = [
+            {"image": img, "category": category, "label": label}
+            for img, category, label in images
+        ]
 
         resp = make_response(jsonify(images))
         return resp

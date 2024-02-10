@@ -12,10 +12,16 @@ def script(*args, **kwargs):
     app.set_background("tests/integration_testing/test_files/back.jpg")
 
     tester = app.create_character(
-        "Tester", "tests/integration_testing/test_files/char1.png", (100, 255, 255), (30, 10)
+        "Tester",
+        "tests/integration_testing/test_files/char1.png",
+        (100, 255, 255),
+        (30, 10),
     )
     coder = app.create_character(
-        "Coder", "tests/integration_testing/test_files/char1.jpeg", (255, 100, 100), (70, 10)
+        "Coder",
+        "tests/integration_testing/test_files/char1.jpeg",
+        (255, 100, 100),
+        (70, 10),
     )
 
     tester.show()
@@ -24,6 +30,11 @@ def script(*args, **kwargs):
     tester.animation.move(20, 10, 3)
     tester.scale(height=500, width=500)
     tester.say("Test 2")
+    app.unlock_scene("tests/integration_testing/test_files/back.jpg", "back", "test")
+    app.unlock_scene("tests/integration_testing/test_files/char1.jpeg", "coder", "test")
+    app.unlock_scene("tests/integration_testing/test_files/char1.jpeg", "coder1New", "coders")
+    app.unlock_scene("tests/integration_testing/test_files/char1.jpeg", "coder2New", "coders")
+    app.unlock_scene("tests/integration_testing/test_files/char1.jpeg", "coder3New", "coders")
     app.set_background("tests/integration_testing/test_files/back.jpg")
     tester.hide()
 
