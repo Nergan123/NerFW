@@ -6,11 +6,11 @@ version: "1.0"
 
 #Specify inspection profile for code analysis
 profile:
-  name: qodana.starter
+  name: qodana.recommended
 
 #Enable inspections
-#include:
-#  - name: <SomeEnabledInspectionId>
+include:
+  - name: CheckDependencyLicenses
 
 #Disable inspections
 #exclude:
@@ -20,7 +20,9 @@ profile:
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
-bootstrap: pip install .[dev]
+bootstrap: |
+  rm -rf .idea
+  pip install .[dev]
 
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #plugins:
