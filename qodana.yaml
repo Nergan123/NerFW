@@ -13,16 +13,17 @@ include:
   - name: CheckDependencyLicenses
 
 #Disable inspections
-#exclude:
-#  - name: <SomeDisabledInspectionId>
-#    paths:
-#      - <path/where/not/run/inspection>
+inspections:
+  - id: "Duplicates"
+    parameters:
+      excludes:
+        - "frontend/**/*.css"
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
 bootstrap: |
   rm -rf .idea
-  pip install .[dev]
+  pip install .
 
 #Install IDE plugins before Qodana execution (Applied in CI/CD pipeline)
 #plugins:
