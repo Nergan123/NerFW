@@ -17,7 +17,7 @@ inspections:
   - id: "Duplicates"
     parameters:
       excludes:
-        - "frontend/**/*.css"
+        - "**/*.css"
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
