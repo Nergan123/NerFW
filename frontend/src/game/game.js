@@ -121,6 +121,21 @@ function Game() {
         return scene['text'];
     }
 
+    function getControlButtons(){
+        if (scene['choice']['options'] != null || scene['stringInput']['text'] != null){
+            return (
+                <div></div>
+            );
+        }
+        return (
+            <div id="control_buttons" style={buttons_container}>
+                <div id="back" className="button_div"><button onClick={backwardClick}>back</button></div>
+                <div id="next" className="button_div"><button onClick={forwardClick}>next</button></div>
+            </div>
+        );
+    
+    }
+
     useEffect(() => {
         HandlePrevSceneSet(cookie.prev_scene);
         forwardClick();
@@ -132,10 +147,7 @@ function Game() {
             {GetScene(scene, HandleSceneSet)}
             <div id="dialogue_menu">
                 <div id="wrapper" style={wrapper_style}>
-                <div style={buttons_container}>
-                    <div id="back" className="button_div"><button onClick={backwardClick}>back</button></div>
-                    <div id="next" className="button_div"><button onClick={forwardClick}>next</button></div>
-                </div>
+                {getControlButtons()}
                 <div style={buttons_container}>
                     <div id="main_menu" className="button_div"><button onClick={handleClick}>main_menu</button></div>
                     <div id="save" className="button_div"><button onClick={SaveGame}>save</button></div>
