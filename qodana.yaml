@@ -14,9 +14,9 @@ include:
 
 #Disable inspections
 exclude:
-  - name: Duplicates
+  - name: DuplicatedCode
     paths:
-      - "frontend/**/*.css"
+      - frontend/src/**/*.css
 
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
