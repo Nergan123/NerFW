@@ -17,18 +17,33 @@ function ImageSelected(props, idx) {
 
     const styleSelected = {
         position: 'absolute',
-        top: 0,
-        left: 0,
+        top: '49%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
         height: `${window.innerHeight - 20}px`,
         zIndex: 2,
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    };
+
+    const containerNotSelected = {
+        backgroundColor: 'rgba(0, 0, 0, 0)',
     }
 
+    const containerSelected = {
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: `${window.innerWidth}px`,
+        height: `${window.innerHeight}px`,
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    }
+
+    const containerStyle = selected ? containerSelected : containerNotSelected; 
     const style = selected ? styleSelected : styleNotSelected;
     const imageSource = `data:image/jpeg;base64,${props.image.image}`;
     
     return (
-        <div>
+        <div className='OutterDiv' style={containerStyle}>
             <img className="ImageFrame" src={imageSource} onClick={handleClick} key={idx} style={style} />
             <p className="Title">{props.image.label}</p>
         </div>
