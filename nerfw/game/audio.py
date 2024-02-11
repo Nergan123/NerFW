@@ -27,6 +27,7 @@ class Audio(LoggerBase):
 
         dir_folder = files("nerfw.server.build")
         self.logger.debug(dir_folder)
+        # noinspection PyTypeChecker
         path = Path(dir_folder.joinpath(file))
 
         if not os.path.exists(path):
