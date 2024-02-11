@@ -10,7 +10,6 @@ build
 *.mp3
 !tests/integration_testing/**/*.mp3
 data
-qodana.yaml
 
 
 !package.json
