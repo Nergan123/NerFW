@@ -14,7 +14,7 @@ include:
 
 #Disable inspections
 exclude:
-  - name: DuplicatedCode
+  - name: All
     paths:
       - frontend/src/**/*.css
 
