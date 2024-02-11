@@ -1,5 +1,8 @@
 # NerFW
 
+[![Code check](https://github.com/Nergan123/NerFW/actions/workflows/Checks.yml/badge.svg)](https://github.com/Nergan123/NerFW/actions/workflows/Checks.yml)
+[![Qodana](https://github.com/Nergan123/NerFW/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/Nergan123/NerFW/actions/workflows/qodana_code_quality.yml)
+
 created by Nergan
 
 
