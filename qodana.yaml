@@ -13,11 +13,11 @@ include:
   - name: CheckDependencyLicenses
 
 #Disable inspections
-inspections:
-  - id: "Duplicates"
-    parameters:
-      excludes:
-        - "**/*.css"
+exclude:
+  - name: Duplicates
+    paths:
+      - "frontend/**/*.css"
+
 
 #Execute shell command before Qodana execution (Applied in CI/CD pipeline)
 #bootstrap: sh ./prepare-qodana.sh
