@@ -2,7 +2,7 @@
 
 [![Code check](https://github.com/Nergan123/NerFW/actions/workflows/Checks.yml/badge.svg)](https://github.com/Nergan123/NerFW/actions/workflows/Checks.yml)
 [![Qodana](https://github.com/Nergan123/NerFW/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/Nergan123/NerFW/actions/workflows/qodana_code_quality.yml)
-[![Test Coverage](https://github.com/Nergan123/NerFW/blob/main/tests/coverage.svg)](https://github.com/Nergan123/NerFW/actions/workflows/test_coverage.yml)
+[![Test Coverage](https://github.com/Nergan123/NerFW/blob/Development_branch/tests/coverage.svg)](https://github.com/Nergan123/NerFW/actions/workflows/test_coverage.yml)
 
 created by Nergan
 
