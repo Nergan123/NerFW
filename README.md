@@ -52,3 +52,7 @@ Class for UI creation
 | **Name**   | **Description**                 | **Example**                                     |
 |:-----------|:--------------------------------|:------------------------------------------------|
 | add_button | Creates a new button for the ui | add_button("next", (10, 10), Functions.FORWARD) |
+
+## Known Issues
+
+1. Patreon api updates creators token everytime you are logging to your campaign
