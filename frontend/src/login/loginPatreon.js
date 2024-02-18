@@ -1,4 +1,5 @@
-
+import PatreonLogo from "./PATREON_SYMBOL_1_WHITE_RGB.svg"
+import "./loginPatreon.css"
 
 function LoginPatreon({additionalData}) {
 
@@ -13,6 +14,7 @@ function LoginPatreon({additionalData}) {
   return (
     <div className="outterWrapper">
       <div className="innerWrapper">
+        <img src={PatreonLogo} alt="Patreon Logo"/>
         <button onClick={handleLogin} className="button-Patreon">
           Login with Patreon
         </button>
