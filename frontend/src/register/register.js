@@ -60,7 +60,7 @@ function Register() {
                     value={login}
                     onChange={handleLogin}
                 />
-                <input type="text"
+                <input type="password"
                     id="Password"
                     name="Password"
                     required="" minLength="4"
@@ -71,7 +71,7 @@ function Register() {
                     value={password}
                     onChange={handlePassword}
                 />
-                <input type="text"
+                <input type="password"
                     id="Repeat_password"
                     name="Repeat_password"
                     required=""
