@@ -15,6 +15,7 @@ from nerfw.helpers.input_handler import InputHandler
 from nerfw.server.gallery import Gallery
 from nerfw.server.login_github import LoginGithub
 from nerfw.server.login_default import LoginDefault
+from nerfw.server.login_patreon import LoginPatreon
 from nerfw.server.require_token import require_token
 from nerfw.server.saves_handler import SavesHandler
 from nerfw.server.token_handler import TokenHandler
@@ -53,6 +54,8 @@ class Server:
         elif method == "github":
             oauth = OAuth(self.app)
             self.login_handler = LoginGithub(oauth)
+        elif method == "patreon":
+            self.login_handler = LoginPatreon()
 
     def home(self):
         """
@@ -320,6 +323,13 @@ class Server:
             self.app.add_endpoint(
                 "/github/callback",
                 "github_authorized",
+                self.login_handler.authorize,
+                methods=["GET"],
+            )
+        elif self.login_handler.get_method() == "patreon":
+            self.app.add_endpoint(
+                "/patreon/callback",
+                "patreon_authorized",
                 self.login_handler.authorize,
                 methods=["GET"],
             )

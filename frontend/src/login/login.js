@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import LoginDefault from './loginDefault.js';
 import LoginGithub from './loginGithub.js';
+import LoginPatreon from './loginPatreon.js';
 
 
 const LOGIN_METHOD_DEFAULT = 'default';
 const LOGIN_METHOD_GITHUB = 'github';
+const LOGIN_METHOD_PATREON = 'patreon';
 
 function Login() {
     const [loginMethod, setLoginMethod] = useState(LOGIN_METHOD_DEFAULT);
@@ -29,6 +31,8 @@ function Login() {
 
     if (loginMethod === LOGIN_METHOD_GITHUB) {
         return <LoginGithub additionalData={additionalData} />;
+    } else if (loginMethod === LOGIN_METHOD_PATREON) {
+        return <LoginPatreon additionalData={additionalData} />;
     }
     
     return <LoginDefault />;

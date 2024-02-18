@@ -37,6 +37,7 @@ dependencies = [
     "pyjwt",
     "authlib",
     "requests",
+    "patreon",
 ]
 
 [project.urls]

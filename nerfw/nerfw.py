@@ -34,7 +34,7 @@ class NerFW(LoggerBase):
         :return: None
         """
 
-        if method.lower() not in ["default", "github"]:
+        if method.lower() not in ["default", "github", "patreon"]:
             raise UnsupportedLoginMethodError(method)
 
         self.logger.info(f"Setting login method to {method}")
