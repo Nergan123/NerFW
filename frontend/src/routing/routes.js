@@ -6,6 +6,7 @@ import Login from "../login/login.js";
 import Register from "../register/register.js";
 import Saves from "../saves/saves.js";
 import Gallery from "../gallery/gallery.js";
+import Unauthenticated from "../login/unauthenticated.js";
 
 
 function RoutesHome() {
@@ -26,6 +27,7 @@ function RoutesHome() {
             </Route>
             <Route exact path="/Login" element={<Login />} />
             <Route exact path="/Register" element={<Register />} />
+            <Route exact path="/Unauthenticated" element={<Unauthenticated />} />
         </Routes>
     );
 }

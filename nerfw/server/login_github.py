@@ -5,6 +5,7 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from flask import make_response, redirect, request
 
+from nerfw.helpers.errors.user_not_allowed import UserNotAllowed
 from nerfw.helpers.login_base import LoginBaseClass
 from nerfw.server.token_handler import TokenHandler
 
@@ -33,11 +34,20 @@ class LoginGithub(LoginBaseClass):
     def login(self):
         """
         Login to GitHub.
-        :return: None
-
+        :return: JWT token
         """
 
-        self.logger.info("Logging in to GitHub...")
+        self.logger.info("Authorizing GitHub login...")
+        request_token = request.args.get("code")
+        access_token = self._get_access_token(request_token)
+        user_data = self._get_user_data(access_token)
+
+        if not self.check_user_allowed(user_data["login"]):
+            raise UserNotAllowed(user_data["login"])
+
+        jwt_token = self.token_handler.create_token(user_data["login"])
+
+        return jwt_token
 
     @staticmethod
     def _get_id_and_secret():
@@ -93,17 +103,15 @@ class LoginGithub(LoginBaseClass):
         :return: None
         """
 
-        self.logger.info("Authorizing GitHub login...")
-        request_token = request.args.get("code")
-        access_token = self._get_access_token(request_token)
-        user_data = self._get_user_data(access_token)
-
-        if not self.check_user_allowed(user_data["login"]):
-            raise ValueError("User not allowed")
-
-        jwt_token = self.token_handler.create_token(user_data["login"])
-        resp = make_response(redirect("/"))
-        resp.set_cookie("token", jwt_token)
+        try:
+            jwt_token = self.login()
+            resp = make_response(redirect("/"))
+            resp.set_cookie("token", jwt_token)
+        except UserNotAllowed as e:
+            self.logger.error(e)
+            resp = make_response(redirect("/"))
+            resp.status_code = 401
+            resp.set_cookie("error", str(e))
 
         return resp
 

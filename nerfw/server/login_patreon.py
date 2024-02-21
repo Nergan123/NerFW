@@ -40,6 +40,33 @@ class LoginPatreon(LoginBaseClass):
 
         return client_id, client_secret
 
+    def login(self):
+        """
+        Login to Patreon.
+        :return: JWT token
+        """
+
+        self.logger.info("Authorizing Patreon login...")
+        client_id, client_secret = self._get_id_and_secret()
+        oauth_client = patreon.OAuth(client_id, client_secret)
+        tokens = oauth_client.get_tokens(
+            request.args.get("code"), "http://127.0.0.1:5000/patreon/callback"
+        )
+        access_token = tokens["access_token"]
+        user_response = self.get_user_data(access_token)
+        campaign = self.get_campaign_id()
+
+        if not self.check_user_is_patron(user_response, campaign):
+            raise UserNotAllowed(
+                user_response["included"][0]["attributes"]["full_name"]
+            )
+
+        jwt_token = self.token_handler.create_token(
+            user_response["included"][0]["attributes"]["full_name"]
+        )
+
+        return jwt_token
+
     @staticmethod
     def get_creator_token():
         """
@@ -93,26 +120,15 @@ class LoginPatreon(LoginBaseClass):
         :return: None
         """
 
-        self.logger.info("Authorizing Patreon login...")
-        client_id, client_secret = self._get_id_and_secret()
-        oauth_client = patreon.OAuth(client_id, client_secret)
-        tokens = oauth_client.get_tokens(
-            request.args.get("code"), "http://127.0.0.1:5000/patreon/callback"
-        )
-        access_token = tokens["access_token"]
-        user_response = self.get_user_data(access_token)
-        campaign = self.get_campaign_id()
-
-        if not self.check_user_is_patron(user_response, campaign):
-            raise UserNotAllowed(
-                user_response["included"][0]["attributes"]["full_name"]
-            )
-
-        jwt_token = self.token_handler.create_token(
-            user_response["included"][0]["attributes"]["full_name"]
-        )
-        resp = make_response(redirect("/"))
-        resp.set_cookie("token", jwt_token)
+        try:
+            jwt_token = self.login()
+            resp = make_response(redirect("/"))
+            resp.set_cookie("token", jwt_token)
+        except UserNotAllowed as e:
+            self.logger.error(e)
+            resp = make_response(redirect("/"))
+            resp.status_code = 401
+            resp.set_cookie("error", str(e))
 
         return resp
 

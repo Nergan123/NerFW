@@ -1,3 +1,5 @@
+import typing
+
 from nerfw.helpers.errors.unsupported_login_method import UnsupportedLoginMethodError
 from nerfw.helpers.logger import LoggerBase
 from nerfw.server.server import Server
@@ -40,12 +42,16 @@ class NerFW(LoggerBase):
         self.logger.info(f"Setting login method to {method}")
         self.login_method = method
 
-    def set_allowed_users(self, users: str):
+    def set_allowed_users(self, users: typing.Union[str, list]):
         """
         Sets list of allowed users
-        :param users: path to file with list of users
+        :param users: path to file with list of users. Or list of users
         :return: None
         """
+
+        if isinstance(users, list):
+            self.allowed_users = users
+            return
 
         with open(users) as f:
             users = f.readlines()

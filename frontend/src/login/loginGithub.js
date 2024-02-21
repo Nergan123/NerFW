@@ -17,7 +17,7 @@ function LoginGithub({additionalData}) {
         <button onClick={handleLogin} className="button-Github">
           Login with Github
         </button>
-        </div>
+      </div>
     </div>
   );
 }
