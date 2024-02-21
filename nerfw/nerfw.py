@@ -15,6 +15,7 @@ class NerFW(LoggerBase):
         self.logger.info("Initializing NerFW")
         self.login_method = "default"
         self.allowed_users = []
+        self.name = "NerFW"
 
     def run(self, script, debug=False):
         """
@@ -24,7 +25,7 @@ class NerFW(LoggerBase):
         :return: None
         """
 
-        server = Server(self.login_method)
+        server = Server(self.login_method, self.name)
         server.login_handler.set_list_of_allowed_users(self.allowed_users)
         self.logger.info("Launching NerFW")
         server.run(script, debug=debug)
@@ -56,3 +57,13 @@ class NerFW(LoggerBase):
         with open(users) as f:
             users = f.readlines()
         self.allowed_users = users
+
+    def set_name(self, name: str):
+        """
+        Sets name of the game
+        :param name: Name of the game
+        :return: None
+        """
+
+        self.logger.info(f"Setting name of the game to {name}")
+        self.name = name

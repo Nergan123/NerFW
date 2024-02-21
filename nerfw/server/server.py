@@ -25,7 +25,7 @@ from nerfw.server.wrapper import FlaskAppWrapper
 class Server:
     """Server class"""
 
-    def __init__(self, login_method: str):
+    def __init__(self, login_method: str, name: str):
         flask_app = Flask(
             __name__,
             static_url_path="/",
@@ -41,6 +41,7 @@ class Server:
         self.token_handler = TokenHandler()
         self.gallery_handler = Gallery()
         self.script = None
+        self.name = name
 
     def _set_login_method(self, method: str):
         """
@@ -63,7 +64,7 @@ class Server:
         :return: Rendered template from html
         """
 
-        resp = make_response(render_template("index.html"))
+        resp = make_response(render_template("index.html", name_game=self.name))
         self.input.reset()
 
         return resp

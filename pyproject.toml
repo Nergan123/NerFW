@@ -15,6 +15,7 @@ keywords = [
     "flask",
     "visual",
     "novel",
+    "web",
 ]
 license = {file = 'LICENSE'}
 classifiers = [
@@ -60,6 +61,9 @@ nerfw = [
     "**/*.js",
     "**/*.txt",
     "**/*.map",
+    "**/build/**/*.ico",
+    "**/build/**/*.png",
+    "**/build/**/*.svg",
 ]
 
 [project.optional-dependencies]
