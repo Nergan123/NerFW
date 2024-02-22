@@ -42,6 +42,19 @@ class Server:
         self.gallery_handler = Gallery()
         self.script = None
         self.name = name
+        self.background = {
+            "type": "background",
+            "data": "#282a36"
+        }
+
+    def set_background(self, background: dict):
+        """
+        Sets background
+        :param background: Background
+        :return: None
+        """
+
+        self.background = background
 
     def _set_login_method(self, method: str):
         """
@@ -287,6 +300,16 @@ class Server:
         resp = make_response(jsonify(images))
         return resp
 
+    @require_token
+    def get_background(self):
+        """
+        Gets background image
+        :return: None
+        """
+
+        resp = make_response(jsonify(background=self.background))
+        return resp
+
     def run(self, script, debug=False):
         """
         Runs a server
@@ -319,6 +342,9 @@ class Server:
             "/login/register", "register", self.register, methods=["POST"]
         )
         self.app.add_endpoint("/gallery", "gallery", self.gallery, methods=["GET"])
+        self.app.add_endpoint(
+            "/background", "get_background", self.get_background, methods=["GET"]
+        )
 
         if self.login_handler.get_method() == "github":
             self.app.add_endpoint(

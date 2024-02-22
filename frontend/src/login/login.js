@@ -19,7 +19,6 @@ function Login() {
     const cookie = new Cookies();
 
     useEffect(() => {
-        console.log("Fetching")
         const fetchLoginMethod = async () => {
             const response = await fetch('/login', {
                 method: 'GET'

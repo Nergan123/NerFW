@@ -1,6 +1,7 @@
 import typing
 
 from nerfw.helpers.errors.unsupported_login_method import UnsupportedLoginMethodError
+from nerfw.helpers.img_handler import ImageHandler
 from nerfw.helpers.logger import LoggerBase
 from nerfw.server.server import Server
 
@@ -15,7 +16,9 @@ class NerFW(LoggerBase):
         self.logger.info("Initializing NerFW")
         self.login_method = "default"
         self.allowed_users = []
+        self.image_handler = ImageHandler()
         self.name = "NerFW"
+        self.background = {"type": "background", "data": "#282a36"}
 
     def run(self, script, debug=False):
         """
@@ -26,6 +29,7 @@ class NerFW(LoggerBase):
         """
 
         server = Server(self.login_method, self.name)
+        server.set_background(self.background)
         server.login_handler.set_list_of_allowed_users(self.allowed_users)
         self.logger.info("Launching NerFW")
         server.run(script, debug=debug)
@@ -67,3 +71,18 @@ class NerFW(LoggerBase):
 
         self.logger.info(f"Setting name of the game to {name}")
         self.name = name
+
+    def set_background(self, background: str):
+        """
+        Sets background
+        :param background: Path to background
+        :return: None
+        """
+
+        self.logger.info(f"Setting background to {background}")
+        img = self.image_handler.convert_to_base64(background)
+
+        self.background = {
+            "type": "backgroundImage",
+            "data": f"url(data:image/jpeg;base64,{img})",
+        }
