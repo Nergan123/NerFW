@@ -40,10 +40,6 @@ dependencies = [
     "requests",
     "patreon",
 ]
-dependencies = [
-    "python-dotenv",
-    "flask",
-]
 
 [project.urls]
 homepage = "https://github.com/Nergan123/NerFW/tree/main"

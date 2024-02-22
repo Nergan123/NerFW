@@ -362,4 +362,4 @@ class Server:
                 methods=["GET"],
             )
 
-        self.app.run(host="0.0.0.0", debug=debug)
+        self.app.run(host="0.0.0.0", debug=debug, port=port)
