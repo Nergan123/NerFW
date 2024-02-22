@@ -310,12 +310,13 @@ class Server:
         resp = make_response(jsonify(background=self.background))
         return resp
 
-    def run(self, script, debug=False):
+    def run(self, script, debug=False, port=5000):
         """
         Runs a server
 
         :param debug: Sets debug mode
         :param script: Script to be run
+        :param port: Port to be used
         :return: None
         """
 
