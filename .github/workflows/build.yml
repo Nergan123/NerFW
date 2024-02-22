@@ -38,4 +38,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "Add files from Docker container"
-          git push origin HEAD:${{ github.head_ref }}
+          git push
