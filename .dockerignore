@@ -1,0 +1,6 @@
+**/node_modules
+logs
+data
+*.egg-info
+*.db
+build

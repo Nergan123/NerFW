@@ -17,6 +17,23 @@ class Choice(LoggerBase):
         self.cookies = cookies
         self.setup()
 
+    def to_dict(self):
+        """
+        Converts obj to dict
+        :return: dict
+        """
+
+        output = {"options": []}
+        for choice in self.choices:
+            output['options'].append(
+                {
+                    "id": self.id,
+                    "text": choice
+                }
+            )
+
+        return output
+
     def setup(self):
         """
         Sets up choice from cookies
@@ -43,19 +60,3 @@ class Choice(LoggerBase):
         self.recorder.check(str(self.choices))
         self.recorder.scene.remove_choice_from_scene()
         return self.answers
-
-    def compile(self):
-        """
-        Compiles css and html
-        :return: css, html
-        """
-
-        html = "<div class='big_wrapper'>"
-        html += "<div class='choice'>"
-        for choice in self.choices:
-            html += f"<button class='button_specific' id='{self.id}' value='{choice}' " \
-                    f"onclick='RegisterChoice(this)'>{choice}</button>"
-        html += "</div>"
-        html += "</div>"
-
-        return html

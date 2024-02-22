@@ -9,26 +9,51 @@ authors = [
 ]
 description = "Framework for creation of web based visual novels"
 readme = "README.md"
-version = "0.1"
+dynamic = ["version"]
 requires-python = ">=3.10"
 keywords = [
     "flask",
     "visual",
     "novel",
+    "web",
 ]
-license = {text = "MIT"}
+license = {file = 'LICENSE'}
 classifiers = [
     "Framework :: Flask",
     "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Games/Entertainment",
+    "Topic :: Games/Entertainment :: Role-Playing",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "python-dotenv",
+    "flask",
+    "pyjwt",
+    "authlib",
+    "requests",
+    "patreon",
 ]
 dependencies = [
     "python-dotenv",
     "flask",
 ]
 
+[project.urls]
+homepage = "https://github.com/Nergan123/NerFW/tree/main"
+repository = "https://github.com/Nergan123/NerFW/tree/main"
+
 [tool.setuptools.packages.find]
 exclude = [
     "test_files",
+    "frontend",
+    "tests",
 ]
 namespaces = false
 
@@ -38,15 +63,19 @@ nerfw = [
     "**/*.html",
     "**/*.css",
     "**/*.js",
+    "**/*.txt",
+    "**/*.map",
+    "**/build/**/*.ico",
+    "**/build/**/*.png",
+    "**/build/**/*.svg",
 ]
 
-dynamic = ["version"]
-homepage = ["https://github.com/Nergan123/NerFW/tree/main"]
-repository = ["https://github.com/Nergan123/NerFW/tree/main"]
 
 [project.optional-dependencies]
 dev = [
     "black",
     "pylint",
     "pytest",
+    "sphinx",
+    "sphinx-rtd-theme",
 ]

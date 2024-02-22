@@ -12,12 +12,14 @@ class InputHandler(LoggerBase):
                 "current": {
                     "line": current_line,
                     "back": False,
-                    "choices": {}
+                    "choices": {},
+                    "stringInput": {}
                 },
                 "previous": {
                     "line": prev_line,
                     "back": False,
-                    "choices": {}
+                    "choices": {},
+                    "stringInput": {}
                 }
             }
         }
@@ -30,6 +32,15 @@ class InputHandler(LoggerBase):
         """
 
         self.cookie["lines"]["current"]["choices"] = choices
+
+    def set_string_input(self, string_input: dict):
+        """
+        Sets string input in current line
+        :param string_input: Dict
+        :return: None
+        """
+
+        self.cookie["lines"]["current"]["stringInput"] = string_input
 
     def get_current_line(self):
         """
@@ -73,12 +84,14 @@ class InputHandler(LoggerBase):
                 "current": {
                     "line": "",
                     "back": False,
-                    "choices": {}
+                    "choices": {},
+                    "stringInput": {}
                 },
                 "previous": {
                     "line": "",
                     "back": False,
-                    "choices": {}
+                    "choices": {},
+                    "stringInput": {}
                 }
             }
         }

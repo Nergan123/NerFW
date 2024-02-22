@@ -25,8 +25,20 @@ class DbHandler(LoggerBase):
 
         with self.connection:
             cur = self.connection.cursor()
-            cur.execute("CREATE TABLE saves (login TEXT, date TEXT, data TEXT);")
-            cur.execute("CREATE TABLE credentials (login TEXT, password TEXT, UNIQUE(login));")
+            cur.execute(
+                "CREATE TABLE IF NOT EXISTS saves (login TEXT, date TEXT, data TEXT);"
+            )
+            cur.execute(
+                "CREATE TABLE IF NOT EXISTS credentials"
+                "(login TEXT, password TEXT, salt TEXT, UNIQUE(login));"
+            )
+            cur.execute(
+                "CREATE TABLE IF NOT EXISTS unlockedScenes "
+                "(sceneId TEXT, user TEXT, label TEXT, image TEXT, "
+                "category TEXT, "
+                "date DATETIME DEFAULT CURRENT_TIMESTAMP, "
+                "UNIQUE(sceneId));"
+            )
 
     def execute(self, query: str, values=None):
         """

@@ -20,9 +20,19 @@ class Deconstructor(LoggerBase):
         self.logger.debug(f"Deconstructing: {breaker}")
         scene_dict = {
             "background": breaker.scene.background,
-            "characters": breaker.scene.characters_to_show,
+            "characters": [
+                character.to_dict() for character in breaker.scene.characters_to_show
+            ],
             "text": breaker.line,
-            "choice": breaker.scene.choice
+            "name": breaker.scene.name,
+            "color": breaker.scene.color,
+            "choice": {}
+            if breaker.scene.choice is None
+            else breaker.scene.choice.to_dict(),
+            "stringInput": {}
+            if breaker.scene.string_input is None
+            else breaker.scene.string_input.to_dict(),
+            "audio": breaker.scene.audio,
         }
 
         return scene_dict
