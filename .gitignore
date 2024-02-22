@@ -5,7 +5,6 @@ logs
 game_script
 .env
 *.db
-build
 *.egg-info
 *.mp3
 !tests/integration_testing/**/*.mp3
@@ -23,7 +22,7 @@ node_modules
 
 coverage
 
-*/frontend/build
+**/frontend/build
 
 .DS_Store
 .env.local
