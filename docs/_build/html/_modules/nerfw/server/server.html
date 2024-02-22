@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nerfw.server.server &mdash; NerFW  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            NerFW
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NerFW</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">nerfw.server.server</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for nerfw.server.server</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
+
+<span class="kn">from</span> <span class="nn">authlib.integrations.flask_client</span> <span class="kn">import</span> <span class="n">OAuth</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">make_response</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">nerfw.helpers.deconstructor</span> <span class="kn">import</span> <span class="n">Deconstructor</span>
+
+<span class="kn">from</span> <span class="nn">nerfw.helpers.breaker</span> <span class="kn">import</span> <span class="n">Breaker</span>
+<span class="kn">from</span> <span class="nn">nerfw.helpers.errors.password_mismatch</span> <span class="kn">import</span> <span class="n">PasswordsMismatch</span>
+<span class="kn">from</span> <span class="nn">nerfw.helpers.errors.user_already_registered</span> <span class="kn">import</span> <span class="n">UserAlreadyRegistered</span>
+<span class="kn">from</span> <span class="nn">nerfw.helpers.errors.user_doesnt_exist</span> <span class="kn">import</span> <span class="n">UserDoesntExist</span>
+<span class="kn">from</span> <span class="nn">nerfw.helpers.errors.user_not_allowed</span> <span class="kn">import</span> <span class="n">UserNotAllowed</span>
+<span class="kn">from</span> <span class="nn">nerfw.helpers.input_handler</span> <span class="kn">import</span> <span class="n">InputHandler</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.gallery</span> <span class="kn">import</span> <span class="n">Gallery</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.login_github</span> <span class="kn">import</span> <span class="n">LoginGithub</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.login_default</span> <span class="kn">import</span> <span class="n">LoginDefault</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.login_patreon</span> <span class="kn">import</span> <span class="n">LoginPatreon</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.require_token</span> <span class="kn">import</span> <span class="n">require_token</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.saves_handler</span> <span class="kn">import</span> <span class="n">SavesHandler</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.token_handler</span> <span class="kn">import</span> <span class="n">TokenHandler</span>
+<span class="kn">from</span> <span class="nn">nerfw.server.wrapper</span> <span class="kn">import</span> <span class="n">FlaskAppWrapper</span>
+
+
+<div class="viewcode-block" id="Server">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server">[docs]</a>
+<span class="k">class</span> <span class="nc">Server</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Server class&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">login_method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">flask_app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span>
+            <span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">static_url_path</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+            <span class="n">static_folder</span><span class="o">=</span><span class="s2">&quot;build&quot;</span><span class="p">,</span>
+            <span class="n">template_folder</span><span class="o">=</span><span class="s2">&quot;build&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">FlaskAppWrapper</span><span class="p">(</span><span class="n">flask_app</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">InputHandler</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deconstructor</span> <span class="o">=</span> <span class="n">Deconstructor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saves_handler</span> <span class="o">=</span> <span class="n">SavesHandler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_login_method</span><span class="p">(</span><span class="n">login_method</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_handler</span> <span class="o">=</span> <span class="n">TokenHandler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gallery_handler</span> <span class="o">=</span> <span class="n">Gallery</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;background&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;#282a36&quot;</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="Server.set_background">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.set_background">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets background</span>
+<span class="sd">        :param background: Background</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">background</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_set_login_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets login method</span>
+<span class="sd">        :param method: Login method. Can be &quot;Default&quot;, &quot;GitHub&quot;</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span> <span class="o">=</span> <span class="n">LoginDefault</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;github&quot;</span><span class="p">:</span>
+            <span class="n">oauth</span> <span class="o">=</span> <span class="n">OAuth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span> <span class="o">=</span> <span class="n">LoginGithub</span><span class="p">(</span><span class="n">oauth</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;patreon&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span> <span class="o">=</span> <span class="n">LoginPatreon</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Server.home">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.home">[docs]</a>
+    <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders home url</span>
+<span class="sd">        :return: Rendered template from html</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">,</span> <span class="n">name_game</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.login">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.login">[docs]</a>
+    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Login page</span>
+<span class="sd">        :return: Login page</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+            <span class="n">resp_data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">get_method</span><span class="p">(),</span>
+                <span class="s2">&quot;additionalData&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">get_additional_data</span><span class="p">(),</span>
+            <span class="p">}</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">resp_data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">resp</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_handler</span><span class="o">.</span><span class="n">create_token</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Login&quot;</span><span class="p">])</span>
+            <span class="n">expire_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">expire_date</span> <span class="o">=</span> <span class="n">expire_date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">httponly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">expires</span><span class="o">=</span><span class="n">expire_date</span><span class="p">)</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_current_line</span><span class="p">())</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;prev_line&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_prev_line</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">UserDoesntExist</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">404</span>
+        <span class="k">except</span> <span class="n">UserNotAllowed</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">401</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.register">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.register">[docs]</a>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Registers a user</span>
+<span class="sd">        :return: Register page</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">UserAlreadyRegistered</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">409</span>
+        <span class="k">except</span> <span class="n">PasswordsMismatch</span><span class="p">:</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">401</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;Password mismatch&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.game">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.game">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">game</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Game page</span>
+<span class="sd">        :return: Rendered template for game</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">200</span><span class="p">))</span>
+
+        <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_current_line</span><span class="p">())</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;prev_line&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_prev_line</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.backward">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.backward">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns to previous slide</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">line</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;prev_line&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;back&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;choices&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;stringInput&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">cookie</span><span class="p">[</span><span class="s2">&quot;lines&quot;</span><span class="p">][</span><span class="s2">&quot;current&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">cookie</span><span class="p">[</span><span class="s2">&quot;lines&quot;</span><span class="p">][</span><span class="s2">&quot;previous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.forward">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.forward">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Progresses the game forward function</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">line</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_handler</span><span class="o">.</span><span class="n">unlock_token</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">))[</span>
+            <span class="s2">&quot;login&quot;</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;back&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;choices&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;stringInput&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">&quot;choice&quot;</span><span class="p">]</span>
+            <span class="n">choice_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="n">line</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="n">choice_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">answer</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">string_input</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">&quot;stringInput&quot;</span><span class="p">]</span>
+            <span class="n">input_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="n">line</span><span class="p">[</span><span class="s2">&quot;stringInput&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">input_id</span><span class="p">)]</span> <span class="o">=</span> <span class="n">string_input</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">set_choices</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">set_string_input</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="s2">&quot;stringInput&quot;</span><span class="p">])</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">last_line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">except</span> <span class="n">Breaker</span> <span class="k">as</span> <span class="n">br</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deconstructor</span><span class="o">.</span><span class="n">deconstruct</span><span class="p">(</span><span class="n">br</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">br</span><span class="o">.</span><span class="n">line</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">set_line</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_current_line</span><span class="p">())</span>
+        <span class="n">resp</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">&quot;prev_line&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_prev_line</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.load_game">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.load_game">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">load_game</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves menu</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+            <span class="n">login</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">)</span>
+            <span class="n">login</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_handler</span><span class="o">.</span><span class="n">unlock_token</span><span class="p">(</span><span class="n">login</span><span class="p">)[</span><span class="s2">&quot;login&quot;</span><span class="p">]</span>
+            <span class="n">saves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saves_handler</span><span class="o">.</span><span class="n">get_all_saves</span><span class="p">(</span><span class="n">login</span><span class="p">)</span>
+
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_save</span><span class="p">(</span><span class="n">saves</span><span class="p">,</span> <span class="n">login</span><span class="p">)</span>
+
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">resp</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">cookie</span><span class="p">[</span><span class="s2">&quot;lines&quot;</span><span class="p">][</span><span class="s2">&quot;previous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;prev_line&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">set_line</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">])[</span><span class="s2">&quot;line&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">cookie</span><span class="p">[</span><span class="s2">&quot;lines&quot;</span><span class="p">][</span><span class="s2">&quot;current&quot;</span><span class="p">][</span><span class="s2">&quot;back&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">])[</span><span class="s2">&quot;back&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">cookie</span><span class="p">[</span><span class="s2">&quot;lines&quot;</span><span class="p">][</span><span class="s2">&quot;current&quot;</span><span class="p">][</span><span class="s2">&quot;choices&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">])[</span>
+            <span class="s2">&quot;choices&quot;</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.render_save">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.render_save">[docs]</a>
+    <span class="k">def</span> <span class="nf">render_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">saves</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders scene object for each save</span>
+<span class="sd">        :param saves: Saves data to render</span>
+<span class="sd">        :param username: Username</span>
+<span class="sd">        :return: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">date</span><span class="p">,</span> <span class="n">save</span> <span class="ow">in</span> <span class="n">saves</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">save</span><span class="p">)</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">last_line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">except</span> <span class="n">Breaker</span> <span class="k">as</span> <span class="n">br</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deconstructor</span><span class="o">.</span><span class="n">deconstruct</span><span class="p">(</span><span class="n">br</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">:</span> <span class="n">save</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
+<div class="viewcode-block" id="Server.save">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.save">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a save entry in db</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">login</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_handler</span><span class="o">.</span><span class="n">unlock_token</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">])[</span><span class="s2">&quot;login&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saves_handler</span><span class="o">.</span><span class="n">create_save</span><span class="p">(</span><span class="n">login</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.gallery">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.gallery">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">gallery</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gallery endpoint</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">login</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">)</span>
+        <span class="n">login</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_handler</span><span class="o">.</span><span class="n">unlock_token</span><span class="p">(</span><span class="n">login</span><span class="p">)[</span><span class="s2">&quot;login&quot;</span><span class="p">]</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gallery_handler</span><span class="o">.</span><span class="n">get_images</span><span class="p">(</span><span class="n">login</span><span class="p">)</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">img</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">label</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">img</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">images</span>
+        <span class="p">]</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">images</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.get_background">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.get_background">[docs]</a>
+    <span class="nd">@require_token</span>
+    <span class="k">def</span> <span class="nf">get_background</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets background image</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">jsonify</span><span class="p">(</span><span class="n">background</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="Server.run">
+<a class="viewcode-back" href="../../../nerfw.server.html#nerfw.server.server.Server.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs a server</span>
+
+<span class="sd">        :param debug: Sets debug mode</span>
+<span class="sd">        :param script: Script to be run</span>
+<span class="sd">        :param port: Port to be used</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="n">script</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">last_line</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">get_current_line</span><span class="p">(),</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">Breaker</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;home&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">home</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span><span class="s2">&quot;/game&quot;</span><span class="p">,</span> <span class="s2">&quot;game&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+            <span class="s2">&quot;/game/forward&quot;</span><span class="p">,</span> <span class="s2">&quot;forward&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+            <span class="s2">&quot;/game/backward&quot;</span><span class="p">,</span> <span class="s2">&quot;backward&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span><span class="s2">&quot;/game/save&quot;</span><span class="p">,</span> <span class="s2">&quot;save&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+            <span class="s2">&quot;/game/load_game&quot;</span><span class="p">,</span> <span class="s2">&quot;load_game&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_game</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="s2">&quot;login&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">login</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+            <span class="s2">&quot;/login/register&quot;</span><span class="p">,</span> <span class="s2">&quot;register&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span><span class="s2">&quot;/gallery&quot;</span><span class="p">,</span> <span class="s2">&quot;gallery&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gallery</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+            <span class="s2">&quot;/background&quot;</span><span class="p">,</span> <span class="s2">&quot;get_background&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_background</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">get_method</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;github&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+                <span class="s2">&quot;/github/callback&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;github_authorized&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">authorize</span><span class="p">,</span>
+                <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">get_method</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;patreon&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">add_endpoint</span><span class="p">(</span>
+                <span class="s2">&quot;/patreon/callback&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;patreon_authorized&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">login_handler</span><span class="o">.</span><span class="n">authorize</span><span class="p">,</span>
+                <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Nergan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
