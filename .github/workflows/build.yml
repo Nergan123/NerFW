@@ -21,6 +21,10 @@ jobs:
         run: |
           docker build -t nerfw:latest -f build.dockerfile .
 
+      - name: Create Docker container
+        run: |
+          docker create --name temp_container nerfw:latest
+
       - name: Copy files from Docker container
         run: |
           docker cp temp_container:/docs /docs
