@@ -3,6 +3,8 @@ name: Code check
 on:
   workflow_dispatch:
   push:
+    branches:
+      - Development_branch
   pull_request:
     branches:
       - master

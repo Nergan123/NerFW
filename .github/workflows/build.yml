@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - master
+permissions:
+  contents: write
 
 jobs:
   BuildDocs:
@@ -28,6 +30,7 @@ jobs:
       - name: Copy files from Docker container
         run: |
           docker cp temp_container:/app/docs .
+          docker cp temp_container:/app/nerfw .
 
       - name: Commit and push files
         run: |
