@@ -39,4 +39,4 @@ jobs:
           git config --local user.name "Nergan123"
           git add .
           git commit -m "Add files from Docker container"
-          git push
+          git push origin main
