@@ -2,7 +2,9 @@ name: Build and Publish
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - master
 
