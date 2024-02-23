@@ -29,7 +29,7 @@ jobs:
       - name: Create Docker container
         id: create_container
         run: |
-          docker create --name nerfw_container -v $(pwd):/app nerfw:latest
+          docker create --name nerfw_container nerfw:latest
 
       - name: Copy files from Docker container
         run: |
