@@ -16,5 +16,6 @@ RUN npm run build
 WORKDIR /app
 RUN pip install .[dev]
 RUN pip install --upgrade build
+RUN pip install --upgrade twine
 
 RUN python -m build
