@@ -41,6 +41,9 @@ dependencies = [
     "patreon",
 ]
 
+[tool.setuptools.dynamic]
+version = {attr = "nerfw.__version__"}
+
 [project.urls]
 homepage = "https://github.com/Nergan123/NerFW/tree/main"
 repository = "https://github.com/Nergan123/NerFW/tree/main"
