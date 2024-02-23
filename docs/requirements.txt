@@ -5,3 +5,4 @@ patreon
 flask
 pyjwt
 python-dotenv
+requests
