@@ -2,11 +2,8 @@ name: Build and Publish
 
 on:
   workflow_dispatch:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - master
+  release:
+    types: [ published ]
 
 jobs:
   BuildDocs:
