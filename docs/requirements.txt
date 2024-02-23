@@ -4,3 +4,4 @@ authlib
 patreon
 flask
 jwt
+python-dotenv
