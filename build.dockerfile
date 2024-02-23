@@ -15,5 +15,7 @@ RUN npm run build
 
 WORKDIR /app
 RUN pip install .[dev]
-RUN sphinx-apidoc -o docs nerfw/
-RUN cd docs && make html
+RUN pip install --upgrade build
+RUN pip install --upgrade twine
+
+RUN python -m build
