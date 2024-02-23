@@ -34,8 +34,8 @@ jobs:
       - name: Copy files from Docker container
         run: |
           docker start nerfw_container
-          docker cp nerfw_container:dist .
-          docker cp nerfw_container:nerfw .
+          docker cp nerfw_container:/app/dist .
+          docker cp nerfw_container:/app/nerfw .
 
       - name: Publish on PyPi
         run: |
