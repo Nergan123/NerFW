@@ -1,6 +1,9 @@
 FROM python:3.10
 LABEL authors="nergan"
 
+ARG PYPI_TOKEN=${PYPI_TOKEN}
+ARG PYPI_USERNAME=${PYPI_USERNAME}
+
 WORKDIR /app
 COPY . .
 
@@ -15,5 +18,7 @@ RUN npm run build
 
 WORKDIR /app
 RUN pip install .[dev]
-RUN sphinx-apidoc -o docs nerfw/
-RUN cd docs && make html
+RUN pip install --upgrade build
+RUN pip install --upgrade twine
+
+RUN python -m build
