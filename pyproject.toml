@@ -64,6 +64,8 @@ nerfw = [
     "**/build/**/*.ico",
     "**/build/**/*.png",
     "**/build/**/*.svg",
+    "**/build/asset-manifest.json",
+    "**/build/manifest.json",
 ]
 
 
