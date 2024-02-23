@@ -1,2 +1,6 @@
 sphinx
 sphinx-rtd-theme==1.2.2
+authlib
+patreon
+flask
+jwt
