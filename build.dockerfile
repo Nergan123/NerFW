@@ -1,9 +1,6 @@
 FROM python:3.10
 LABEL authors="nergan"
 
-ARG PYPI_TOKEN=${PYPI_TOKEN}
-ARG PYPI_USERNAME=${PYPI_USERNAME}
-
 WORKDIR /app
 COPY . .
 
