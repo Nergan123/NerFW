@@ -15,6 +15,7 @@ class Animations(LoggerBase):
     def move(self, move_x: int, move_y: int, duration: float or int):
         """
         Moves character
+
         :param move_x: Translation by X axis
         :param move_y: Translation by Y axis
         :param duration: Duration of animation in seconds

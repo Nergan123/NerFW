@@ -16,6 +16,7 @@ class FlaskAppWrapper:
     def configs(self, **configs):
         """
         Adds configs to the app
+
         :param configs: Configurations for the server
         :return: None
         """
@@ -33,6 +34,7 @@ class FlaskAppWrapper:
     ):
         """
         Adds server url endpoints
+
         :param endpoint: url
         :param endpoint_name: name for the endpoint
         :param handler: Function which is called
@@ -50,6 +52,7 @@ class FlaskAppWrapper:
     def run(self, **kwargs):
         """
         Runs a server
+
         :param kwargs: Positional arguments passed to the app
         :return: None
         """

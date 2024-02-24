@@ -18,6 +18,7 @@ class UnlockScene(LoggerBase):
     def unlock(self, image: str, username: str, label: str, category: str):
         """
         Unlocks a scene
+
         :param image: Path to image
         :param username: Username
         :param label: Label for the image

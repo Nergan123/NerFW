@@ -41,6 +41,7 @@ class Character(LoggerBase):
     def say(self, text="Sample text"):
         """
         Character will display text
+
         :param text: String to display
         :return: None
         """
@@ -51,6 +52,7 @@ class Character(LoggerBase):
     def hide(self):
         """
         Removes character img from scene
+
         :return: None
         """
 
@@ -60,6 +62,7 @@ class Character(LoggerBase):
     def show(self):
         """
         Shows character on display
+
         :return: None
         """
 
@@ -68,6 +71,7 @@ class Character(LoggerBase):
     def scale(self, height: int, width: int):
         """
         Scales character
+
         :param height: Height of the character image in px
         :param width: Width of the character image in px
         :return: None

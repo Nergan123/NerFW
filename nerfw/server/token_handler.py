@@ -27,6 +27,7 @@ class TokenHandler(LoggerBase):
     def get_key(self):
         """
         Gets a key from file
+
         :return: key
         """
 
@@ -39,6 +40,7 @@ class TokenHandler(LoggerBase):
     def generate_key(self):
         """
         Generates a secret key
+
         :return: None
         """
 
@@ -50,6 +52,7 @@ class TokenHandler(LoggerBase):
     def create_token(self, user_name: str):
         """
         Creates a session token for user
+
         :param user_name: Name of user
         :return: token
         """
@@ -63,6 +66,7 @@ class TokenHandler(LoggerBase):
     def verify_token(self, token: str):
         """
         Verifies a jwt
+
         :param token: Lwt str token
         :return: bool or dict
         """
@@ -80,6 +84,7 @@ class TokenHandler(LoggerBase):
     def unlock_token(self, token: str):
         """
         Decodes token and return json obj
+
         :param token: JWS token
         :return: dict
         """

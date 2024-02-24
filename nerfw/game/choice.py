@@ -20,6 +20,7 @@ class Choice(LoggerBase):
     def to_dict(self):
         """
         Converts obj to dict
+
         :return: dict
         """
 
@@ -37,6 +38,7 @@ class Choice(LoggerBase):
     def setup(self):
         """
         Sets up choice from cookies
+
         :return: None
         """
 
@@ -54,6 +56,7 @@ class Choice(LoggerBase):
     def make(self):
         """
         Displays or passes a choice
+
         :return: answers
         """
 

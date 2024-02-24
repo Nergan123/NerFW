@@ -29,6 +29,7 @@ class Game(LoggerBase):
     ):
         """
         Generates a character_files class
+
         :param name: Name of the character_files
         :param img: Path to image file
         :param color: Color in rgb from 0 to 255
@@ -42,6 +43,7 @@ class Game(LoggerBase):
     def set_background(self, img_path: str):
         """
         Sets background to display
+
         :param img_path: Path to image file
         :return: None
         """
@@ -52,6 +54,7 @@ class Game(LoggerBase):
     def choice(self, choices: list):
         """
         Makes a choice
+
         :param choices: List of options
         :return: returns a list with booleans representing answers
         """
@@ -68,6 +71,7 @@ class Game(LoggerBase):
     def string_input(self, string_name: str):
         """
         Allows string input
+
         :param string_name: Name of the variable to display
         :return: Answer from user
         """
@@ -84,6 +88,7 @@ class Game(LoggerBase):
     def play_audio(self, filename: str, repeat: bool = False):
         """
         Plays audio
+
         :param filename: File to play
         :param repeat: Whether to repeat audio or not
         :return: None
@@ -94,6 +99,7 @@ class Game(LoggerBase):
     def stop_audio(self, filename: str):
         """
         Stops audio
+
         :param filename: File to stop
         :return: None
         """
@@ -103,6 +109,7 @@ class Game(LoggerBase):
     def unlock_scene(self, img_path: str, label: str, category: str = None):
         """
         Unlocks scene
+
         :param img_path: Path to image file
         :param category: Category of the scene
         :param label: Label of the scene. Should be unique

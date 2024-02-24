@@ -50,6 +50,7 @@ class Server:
     def set_background(self, background: dict):
         """
         Sets background
+
         :param background: Background
         :return: None
         """
@@ -59,6 +60,7 @@ class Server:
     def _set_login_method(self, method: str):
         """
         Sets login method
+
         :param method: Login method. Can be "Default", "GitHub"
         :return: None
         """
@@ -74,6 +76,7 @@ class Server:
     def home(self):
         """
         Renders home url
+
         :return: Rendered template from html
         """
 
@@ -85,6 +88,7 @@ class Server:
     def login(self):
         """
         Login page
+
         :return: Login page
         """
 
@@ -118,6 +122,7 @@ class Server:
     def register(self):
         """
         Registers a user
+
         :return: Register page
         """
 
@@ -139,6 +144,7 @@ class Server:
     def game(self):
         """
         Game page
+
         :return: Rendered template for game
         """
 
@@ -153,6 +159,7 @@ class Server:
     def backward(self):
         """
         Returns to previous slide
+
         :return: None
         """
 
@@ -173,6 +180,7 @@ class Server:
     def forward(self):
         """
         Progresses the game forward function
+
         :return: None
         """
 
@@ -222,6 +230,7 @@ class Server:
     def load_game(self):
         """
         Saves menu
+
         :return: None
         """
 
@@ -250,6 +259,7 @@ class Server:
     def render_save(self, saves, username):
         """
         Renders scene object for each save
+
         :param saves: Saves data to render
         :param username: Username
         :return: dict
@@ -273,6 +283,7 @@ class Server:
     def save(self):
         """
         Creates a save entry in db
+
         :return: None
         """
 
@@ -286,6 +297,7 @@ class Server:
     def gallery(self):
         """
         Gallery endpoint
+
         :return: None
         """
 
@@ -304,6 +316,7 @@ class Server:
     def get_background(self):
         """
         Gets background image
+
         :return: None
         """
 

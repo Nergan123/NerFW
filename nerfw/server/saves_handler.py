@@ -16,6 +16,7 @@ class SavesHandler(LoggerBase):
     def create_save(self, login: str, data: dict):
         """
         Creates an entry in database
+
         :param login: User login
         :param data: Save data
         :return: None
@@ -35,6 +36,7 @@ class SavesHandler(LoggerBase):
     def get_all_saves(self, login: str):
         """
         Gets all save files for Login
+
         :param login: user login
         :return: list of saves
         """

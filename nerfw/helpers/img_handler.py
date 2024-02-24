@@ -13,6 +13,7 @@ class ImageHandler(LoggerBase):
     def convert_to_base64(self, img_path: str):
         """
         Converts img and returns base64
+
         :param img_path: Path to img file
         :return: Base64 encoded img
         """

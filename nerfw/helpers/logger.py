@@ -12,6 +12,8 @@ class LoggerBase:
     def setup_logger():
         """
         Sets up logging
+
+        :return: None
         """
 
         if not os.path.isdir('logs'):

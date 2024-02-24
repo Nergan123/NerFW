@@ -16,6 +16,7 @@ class Gallery(LoggerBase):
     def get_images(self, username: str):
         """
         Gets images for the user
+
         :param username: Username
         :return: list
         """

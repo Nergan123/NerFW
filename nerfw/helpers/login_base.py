@@ -13,6 +13,7 @@ class LoginBaseClass(LoggerBase):
     def check_user_allowed(self, login: str):
         """
         Checks if user is allowed
+
         :param login: User login
         :return: bool
         """
@@ -23,6 +24,7 @@ class LoginBaseClass(LoggerBase):
     def get_method():
         """
         Returns method name.
+
         :return: str
         """
 
@@ -32,6 +34,7 @@ class LoginBaseClass(LoggerBase):
     def get_additional_data():
         """
         Gets additional data for login
+
         :return: None
         """
 
@@ -40,6 +43,7 @@ class LoginBaseClass(LoggerBase):
     def authorize(self):
         """
         Checks if user is authorized
+
         :return: None
         """
 
@@ -48,6 +52,7 @@ class LoginBaseClass(LoggerBase):
     def set_list_of_allowed_users(self, users: list):
         """
         Sets list of allowed users
+
         :param users: List of users
         :return: None
         """

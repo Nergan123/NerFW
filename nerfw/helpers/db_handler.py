@@ -20,6 +20,7 @@ class DbHandler(LoggerBase):
     def setup_db(self):
         """
         Sets up databases
+
         :return:
         """
 
@@ -43,6 +44,7 @@ class DbHandler(LoggerBase):
     def execute(self, query: str, values=None):
         """
         Executes sql query
+
         :param query: Query to execute
         :param values: Values if have
         :return: list

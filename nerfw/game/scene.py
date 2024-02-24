@@ -22,6 +22,7 @@ class Scene(LoggerBase):
     def set_background(self, img_file: str):
         """
         Sets background
+
         :param img_file:
         :return: None
         """
@@ -32,6 +33,7 @@ class Scene(LoggerBase):
     def add_character_to_scene(self, character: Character):
         """
         Adds character to the displayed scene
+
         :param character: Character class to be shown
         :return: None
         """
@@ -43,6 +45,7 @@ class Scene(LoggerBase):
     def remove_character_from_scene(self, character: Character):
         """
         Removes character from display
+
         :param character: Character class to be removed
         :return: None
         """
@@ -55,6 +58,7 @@ class Scene(LoggerBase):
     def add_choice_to_scene(self, choice):
         """
         Adds choice to be displayed
+
         :param choice: Choice object
         :return: None
         """
@@ -65,6 +69,7 @@ class Scene(LoggerBase):
     def remove_choice_from_scene(self):
         """
         Removes choice from object
+
         :return: None
         """
 
@@ -74,6 +79,7 @@ class Scene(LoggerBase):
     def add_audio(self, filename: str, repeatable: bool = False):
         """
         Adds audio to self
+
         :param filename: Audio file name
         :param repeatable: If audio should be repeatable
         :return: None
@@ -86,6 +92,7 @@ class Scene(LoggerBase):
     def remove_audio(self, filename: str):
         """
         Removes audio from self
+
         :param filename: Audio file name
         :return: None
         """
@@ -96,6 +103,7 @@ class Scene(LoggerBase):
     def add_string_input(self, string_input: StringInput):
         """
         Adds string input to self
+
         :param string_input: String input object
         :return: None
         """
@@ -106,6 +114,7 @@ class Scene(LoggerBase):
     def remove_string_input(self):
         """
         Removes string input from self
+
         :return: None
         """
 

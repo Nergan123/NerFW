@@ -19,6 +19,7 @@ class LoginDefault(LoginBaseClass):
     def login(self, data: dict):
         """
         Checks user data
+
         :param data: Login credentials
         :return: dict
         """
@@ -41,6 +42,7 @@ class LoginDefault(LoginBaseClass):
     def register(self, data: dict):
         """
         Registers new user
+
         :param data: Login credentials
         :return: bool
         """
@@ -54,6 +56,7 @@ class LoginDefault(LoginBaseClass):
     def get_method():
         """
         Gets login method
+
         :return: str
         """
 

@@ -18,6 +18,7 @@ class StringInput(LoggerBase):
     def setup(self):
         """
         Sets up string from cookies
+
         :return: None
         """
 
@@ -32,6 +33,7 @@ class StringInput(LoggerBase):
     def make(self):
         """
         Displays or passes a string
+
         :return: string
         """
 
@@ -42,6 +44,7 @@ class StringInput(LoggerBase):
     def to_dict(self):
         """
         Converts obj to dict
+
         :return: dict
         """
 

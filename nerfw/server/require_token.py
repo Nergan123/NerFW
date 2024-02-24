@@ -8,6 +8,7 @@ from nerfw.server.token_handler import TokenHandler
 def require_token(func):
     """
     Decorator to check if token is available
+
     :param func: Function to check
     :return: Wrapper
     """

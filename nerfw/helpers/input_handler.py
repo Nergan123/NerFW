@@ -27,6 +27,7 @@ class InputHandler(LoggerBase):
     def set_choices(self, choices: dict):
         """
         Sets choices in current line
+
         :param choices: Dict
         :return: None
         """
@@ -36,6 +37,7 @@ class InputHandler(LoggerBase):
     def set_string_input(self, string_input: dict):
         """
         Sets string input in current line
+
         :param string_input: Dict
         :return: None
         """
@@ -46,7 +48,7 @@ class InputHandler(LoggerBase):
         """
         Function to set input params when forward
 
-        :return:
+        :return: JSON string
         """
 
         output = self.cookie["lines"]["current"]
@@ -57,7 +59,7 @@ class InputHandler(LoggerBase):
         """
         Function to set input params when backwards
 
-        :return:
+        :return: JSON string
         """
         output = self.cookie["lines"]["previous"]
 
@@ -66,6 +68,7 @@ class InputHandler(LoggerBase):
     def set_line(self, line: str):
         """
         Sets new line as current
+
         :param line: Str
         :return: None
         """
@@ -76,6 +79,7 @@ class InputHandler(LoggerBase):
     def reset(self):
         """
         Resets to default
+
         :return: None
         """
 

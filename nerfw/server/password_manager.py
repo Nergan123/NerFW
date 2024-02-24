@@ -22,6 +22,7 @@ class PasswordManager(LoggerBase):
     def register(self, data: dict):
         """
         Registers a password in db
+
         :param data: Data from web
         :return: None
         """
@@ -40,6 +41,7 @@ class PasswordManager(LoggerBase):
     def encrypt(password: str, salt=None):
         """
         Encrypts a password
+
         :param password: Provided password
         :param salt: Salt to be used
         :return: Hashed password

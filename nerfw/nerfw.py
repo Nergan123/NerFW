@@ -23,6 +23,7 @@ class NerFW(LoggerBase):
     def run(self, script, debug=False):
         """
         Runs a game
+
         :param script: Script to run
         :param debug: Debug mode
         :return: None
@@ -37,6 +38,7 @@ class NerFW(LoggerBase):
     def set_login_method(self, method: str):
         """
         Sets login method
+
         :param method: Login method. Can be "Default", "GitHub"
         :return: None
         """
@@ -50,6 +52,7 @@ class NerFW(LoggerBase):
     def set_allowed_users(self, users: typing.Union[str, list]):
         """
         Sets list of allowed users
+
         :param users: path to file with list of users. Or list of users
         :return: None
         """
@@ -65,6 +68,7 @@ class NerFW(LoggerBase):
     def set_name(self, name: str):
         """
         Sets name of the game
+
         :param name: Name of the game
         :return: None
         """
@@ -75,6 +79,7 @@ class NerFW(LoggerBase):
     def set_background(self, background: str):
         """
         Sets background
+
         :param background: Path to background
         :return: None
         """

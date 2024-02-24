@@ -34,6 +34,7 @@ class LoginGithub(LoginBaseClass):
     def login(self):
         """
         Login to GitHub.
+
         :return: JWT token
         """
 
@@ -53,6 +54,7 @@ class LoginGithub(LoginBaseClass):
     def _get_id_and_secret():
         """
         Gets id and secret from GitHub.
+
         :return: Tuple of id and secret
         """
 
@@ -74,6 +76,7 @@ class LoginGithub(LoginBaseClass):
     def get_method():
         """
         Gets login method.
+
         :return: str
         """
 
@@ -83,6 +86,7 @@ class LoginGithub(LoginBaseClass):
     def get_additional_data():
         """
         Gets additional data for login.
+
         :return: None
         """
 
@@ -100,6 +104,7 @@ class LoginGithub(LoginBaseClass):
     def authorize(self):
         """
         Authorizes GitHub login.
+
         :return: None
         """
 
@@ -118,6 +123,7 @@ class LoginGithub(LoginBaseClass):
     def _get_access_token(self, request_token: str):
         """
         Gets access token from GitHub.
+
         :param request_token:
         :return: str
         """
@@ -142,6 +148,7 @@ class LoginGithub(LoginBaseClass):
     def _get_user_data(access_token: str) -> dict:
         """
         Gets user data from GitHub.
+
         :param access_token: Access token
         :return: dict
         """

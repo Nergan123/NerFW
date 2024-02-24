@@ -23,6 +23,7 @@ class LoginPatreon(LoginBaseClass):
     def _get_id_and_secret():
         """
         Gets id and secret from GitHub.
+
         :return: Tuple of id and secret
         """
 
@@ -43,6 +44,7 @@ class LoginPatreon(LoginBaseClass):
     def login(self):
         """
         Login to Patreon.
+
         :return: JWT token
         """
 
@@ -71,6 +73,7 @@ class LoginPatreon(LoginBaseClass):
     def get_creator_token():
         """
         Gets creator token.
+
         :return: str
         """
 
@@ -89,6 +92,7 @@ class LoginPatreon(LoginBaseClass):
     def get_method():
         """
         Gets login method.
+
         :return: str
         """
 
@@ -98,6 +102,7 @@ class LoginPatreon(LoginBaseClass):
     def get_additional_data():
         """
         Gets additional data for login.
+
         :return: None
         """
 
@@ -117,6 +122,7 @@ class LoginPatreon(LoginBaseClass):
     def authorize(self):
         """
         Authorizes GitHub login.
+
         :return: None
         """
 
@@ -136,6 +142,7 @@ class LoginPatreon(LoginBaseClass):
     def get_user_data(access_token: str):
         """
         Gets user data.
+
         :param access_token: Access token
         :return:
         """
@@ -157,6 +164,7 @@ class LoginPatreon(LoginBaseClass):
     def get_campaign_id(self):
         """
         Gets current patrons.
+
         :return: Campaign id
         """
 
@@ -177,6 +185,7 @@ class LoginPatreon(LoginBaseClass):
     def check_user_is_patron(user_data: dict, campaign_id: str):
         """
         Checks if user is a patron.
+
         :param user_data: User data
         :param campaign_id: Campaign id
         :return: bool

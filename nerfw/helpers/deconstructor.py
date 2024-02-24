@@ -13,6 +13,7 @@ class Deconstructor(LoggerBase):
     def deconstruct(self, breaker: Breaker):
         """
         Deconstructs Breaker exception into json
+
         :param breaker: Exception to deconstruct
         :return: Dict
         """
