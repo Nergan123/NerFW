@@ -29,6 +29,19 @@ pip install nerfw
 - [PyPi](https://pypi.org/project/nerfw/)
 - [GitHub](https://github.com/Nergan123/NerFW)
 
+## Contacts
+
+- [Discord](https://discordapp.com/users/278900472679628800)
+- [GitHub](https://github.com/Nergan123)
+- [Email](mailto:noname.nosurname2016@yandex.ru)
+
+### Bug reporting
+
+If you found a bug in the framework, please report it in the 
+[issues](https://github.com/Nergan123/NerFW/issues) section of the GitHub repository.
+
+Or you can contact me directly using the contacts above.
+
 ## Known Issues
 
 1. Patreon api updates creators token everytime you are logging to your campaign
