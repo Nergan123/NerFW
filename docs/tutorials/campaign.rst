@@ -6,3 +6,4 @@ Campaign creation
     :caption: Contents:
 
     installation
+    setting_server

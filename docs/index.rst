@@ -18,7 +18,7 @@ and at the same time to make the game harder to pirate.
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
+   :caption: Framework Contents:
 
    modules
 
