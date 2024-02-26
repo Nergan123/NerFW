@@ -6,6 +6,16 @@
 Welcome to NerFW's documentation!
 =================================
 
+NerFW *(Nergans FrameWork)* is a framework for visual novel creation. This framework
+is created in an attempt to make creation of visual novels more convenient for game developers,
+and at the same time to make the game harder to pirate.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: User's Guide
+
+   tutorials/campaign
+
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
