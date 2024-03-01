@@ -16,6 +16,7 @@
     box-shadow: 0 0 20px #ccc;
     background-color: #00000030;
     padding: 20px 20px 20px 20px;
+    margin: 25%;
 }
 
 .button-Patreon {
@@ -26,5 +27,5 @@
 img {
     margin: 10%;
     border-radius: 15px;
-    height: 50%;
+    width: 80%;
 }
