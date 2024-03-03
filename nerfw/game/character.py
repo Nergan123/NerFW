@@ -1,3 +1,5 @@
+import os.path
+
 from nerfw.helpers.img_handler import ImageHandler
 
 from nerfw.game.animation import Animations
@@ -81,3 +83,18 @@ class Character(LoggerBase):
             "height": height,
             "width": width
         }
+
+    def set_image(self, img_path: str):
+        """
+        Sets character image
+
+        :param img_path: Path to image
+        :return: None
+        """
+
+        if not os.path.exists(img_path):
+            self.logger.error(f"Path {img_path} is a directory")
+            raise FileNotFoundError(f"Path {img_path} is a directory")
+
+        self.logger.debug(f"Setting img to {img_path}")
+        self.img = img_path
