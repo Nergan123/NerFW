@@ -6,3 +6,4 @@ How to create a script
 
     general
     game
+    character
