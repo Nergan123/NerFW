@@ -3,4 +3,4 @@ from .game.game import Game
 from .helpers.logger import LoggerBase
 
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
