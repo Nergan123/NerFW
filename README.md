@@ -5,6 +5,8 @@
 [![PyPI version](https://badge.fury.io/py/nerfw.svg)](https://badge.fury.io/py/nerfw)
 [![Documentation Status](https://readthedocs.org/projects/nerfw/badge/?version=latest)](https://nerfw.readthedocs.io/en/latest/?badge=latest)
 
+![NerFW Logo](docs/img/logo512.png)
+
 ## About
 
 NerFW *(Nergans FrameWork)* is a framework for visual novel creation. This framework
