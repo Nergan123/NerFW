@@ -17,5 +17,6 @@ WORKDIR /app
 RUN pip install .[dev]
 RUN pip install --upgrade build
 RUN pip install --upgrade twine
+RUN rm -rf tests
 
 RUN python -m build
