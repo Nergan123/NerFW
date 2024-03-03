@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from nerfw.game.character import Character
 
 
@@ -63,6 +63,48 @@ class CharacterTests(unittest.TestCase):
         self.character.show()
         self.recorder_mock.scene.add_character_to_scene.assert_called_once_with(
             self.character
+        )
+
+    @patch("os.path.exists")
+    def image_path_exists(self, mock_exists):
+        """
+        Test case to verify that the set_image method correctly sets the image path
+        when the provided path exists.
+
+        This method uses the unittest.mock.patch decorator to mock the os.path.exists
+        function, making it always return True. This allows us to simulate a scenario
+        where the image path provided to the set_image method exists.
+
+        The set_image method is then called with a valid image path, and we assert that
+        the logger's debug method was called with the correct message, and that the
+        character's img attribute was set to the provided path.
+        """
+        mock_exists.return_value = True
+        self.character.set_image("valid/path/to/image.png")
+        self.character.logger.debug.assert_called_with(
+            "Setting img to valid/path/to/image.png"
+        )
+        self.assertEqual(self.character.img, "valid/path/to/image.png")
+
+    @patch("os.path.exists")
+    def image_path_does_not_exist(self, mock_exists):
+        """
+        Test case to verify that the set_image method raises a FileNotFoundError
+        when the provided path does not exist.
+
+        This method uses the unittest.mock.patch decorator to mock the os.path.exists
+        function, making it always return False. This allows us to simulate a scenario
+        where the image path provided to the set_image method does not exist.
+
+        The set_image method is then called with an invalid image path, and we assert that
+        a FileNotFoundError is raised, and that the logger's error method was called with
+        the correct message.
+        """
+        mock_exists.return_value = False
+        with self.assertRaises(FileNotFoundError):
+            self.character.set_image("invalid/path/to/image.png")
+        self.character.logger.error.assert_called_with(
+            "Path invalid/path/to/image.png is a directory"
         )
 
 
