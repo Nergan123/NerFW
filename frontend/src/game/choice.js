@@ -1,7 +1,7 @@
 function Choice(ChoiceData, HandleSceneSet){
 
     async function respond(buttonId, buttonValue){
-        const response = await fetch('/game/forward', {
+        const response = await fetch('/api/forward', {
             method: 'POST',
             redirect: 'follow',
             headers: {

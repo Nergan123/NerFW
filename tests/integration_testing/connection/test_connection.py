@@ -9,13 +9,12 @@ import pytest
     "endpoint, method, result",
     [
         ("/", "get", 200),
-        ("/login", "post", 415),
-        ("/login/register", "post", 415),
-        ("/game", "get", 302),
-        ("/game/forward", "post", 302),
-        ("/game/backward", "post", 302),
-        ("/game/load_game", "post", 302),
-        ("/game/save", "post", 302),
+        ("/api/authorize", "post", 415),
+        ("/api/register", "post", 415),
+        ("/api/forward", "post", 302),
+        ("/api/backward", "post", 302),
+        ("/api/get_saves", "post", 302),
+        ("/api/save", "post", 302),
     ],
 )
 def test_connection(logger, endpoint, method, result):

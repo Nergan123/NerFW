@@ -75,7 +75,7 @@ function Game() {
 
     async function forwardClick() {
         HandlePrevSceneSet(scene);
-        const data = await fetch("/game/forward", {
+        const data = await fetch("/api/forward", {
             method: 'POST',
             redirect: 'follow',
             headers: {
@@ -94,7 +94,7 @@ function Game() {
     }
 
     async function backwardClick() {
-        await fetch("/game/backward", {
+        await fetch("/api/backward", {
             method: 'POST',
             redirect: 'follow',
             headers: {
@@ -107,7 +107,7 @@ function Game() {
     }
 
     async function SaveGame(){
-        await fetch('game/save', {
+        await fetch('api/save', {
             method: 'POST',
         })
     }

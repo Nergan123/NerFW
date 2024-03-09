@@ -45,7 +45,7 @@ function Home() {
 
     useEffect(() => {
         const fetchBackground = async () => {
-            const response = await fetch('/background', {
+            const response = await fetch('/api/get_background', {
                 method: 'GET'
             });
     

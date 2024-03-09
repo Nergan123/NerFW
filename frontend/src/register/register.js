@@ -24,7 +24,7 @@ function Register() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const response = await fetch('/login/register', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             redirect: 'follow',
             headers: {

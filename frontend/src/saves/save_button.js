@@ -24,7 +24,7 @@ function SaveButton({name, idx, save, state, setStateFunction}){
     };
 
     async function HandleOnClick(){
-        const response = await fetch("/game/load_game", {
+        const response = await fetch("/api/get_saves", {
             method: 'POST',
             redirect: 'follow',
             headers: {

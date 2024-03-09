@@ -12,7 +12,7 @@ function StringInput(name, idx, HandleSceneSet) {
     }
 
     async function submitStringInput(){
-        const response = await fetch('/game/forward', {
+        const response = await fetch('/api/forward', {
             method: 'POST',
             redirect: 'follow',
             headers: {
