@@ -1,5 +1,6 @@
 import json
 import datetime
+import logging
 from json import loads
 
 from authlib.integrations.flask_client import OAuth
@@ -32,6 +33,8 @@ class Server:
             static_folder="build",
             template_folder="build",
         )
+        self.logger = logging.getLogger(self.__class__.__name__)
+        flask_app.errorhandler(404)(lambda e: render_template("index.html"))
         self.app = FlaskAppWrapper(flask_app)
         self.input = InputHandler("", "")
         self.deconstructor = Deconstructor()
@@ -42,10 +45,7 @@ class Server:
         self.gallery_handler = Gallery()
         self.script = None
         self.name = name
-        self.background = {
-            "type": "background",
-            "data": "#282a36"
-        }
+        self.background = {"type": "background", "data": "#282a36"}
 
     def set_background(self, background: dict):
         """
@@ -73,19 +73,22 @@ class Server:
         elif method == "patreon":
             self.login_handler = LoginPatreon()
 
-    def home(self):
+    def home(self, path: str):
         """
         Renders home url
 
+        :param path: Path
         :return: Rendered template from html
         """
 
         resp = make_response(render_template("index.html", name_game=self.name))
+        if path:
+            self.logger.info(f"Path requested: {path}")
         self.input.reset()
 
         return resp
 
-    def login(self):
+    def api_authorize(self):
         """
         Login page
 
@@ -119,7 +122,7 @@ class Server:
 
         return resp
 
-    def register(self):
+    def api_register(self):
         """
         Registers a user
 
@@ -141,22 +144,7 @@ class Server:
         return resp
 
     @require_token
-    def game(self):
-        """
-        Game page
-
-        :return: Rendered template for game
-        """
-
-        resp = make_response(jsonify(code=200))
-
-        resp.set_cookie("line", self.input.get_current_line())
-        resp.set_cookie("prev_line", self.input.get_prev_line())
-
-        return resp
-
-    @require_token
-    def backward(self):
+    def api_backward(self):
         """
         Returns to previous slide
 
@@ -177,7 +165,7 @@ class Server:
         return resp
 
     @require_token
-    def forward(self):
+    def api_forward(self):
         """
         Progresses the game forward function
 
@@ -227,7 +215,7 @@ class Server:
         return resp
 
     @require_token
-    def load_game(self):
+    def api_get_saves(self):
         """
         Saves menu
 
@@ -280,7 +268,7 @@ class Server:
         return output
 
     @require_token
-    def save(self):
+    def api_create_save(self):
         """
         Creates a save entry in db
 
@@ -294,7 +282,7 @@ class Server:
         return resp
 
     @require_token
-    def gallery(self):
+    def api_get_gallery(self):
         """
         Gallery endpoint
 
@@ -313,7 +301,7 @@ class Server:
         return resp
 
     @require_token
-    def get_background(self):
+    def api_get_background(self):
         """
         Gets background image
 
@@ -339,25 +327,36 @@ class Server:
         except Breaker:
             pass
 
-        self.app.add_endpoint("/", "home", self.home, methods=["GET"])
-        self.app.add_endpoint("/game", "game", self.game, methods=["GET"])
         self.app.add_endpoint(
-            "/game/forward", "forward", self.forward, methods=["POST"]
+            "/", "home", self.home, methods=["GET"], defaults={"path": ""}
+        )
+        self.app.add_endpoint("/<path:path>", "home", self.home, methods=["GET"])
+        self.app.add_endpoint(
+            "/api/forward", "forward", self.api_forward, methods=["POST"]
         )
         self.app.add_endpoint(
-            "/game/backward", "backward", self.backward, methods=["POST"]
+            "/api/backward", "backward", self.api_backward, methods=["POST"]
         )
-        self.app.add_endpoint("/game/save", "save", self.save, methods=["POST"])
         self.app.add_endpoint(
-            "/game/load_game", "load_game", self.load_game, methods=["GET", "POST"]
+            "/api/save", "save", self.api_create_save, methods=["POST"]
         )
-        self.app.add_endpoint("/login", "login", self.login, methods=["POST", "GET"])
         self.app.add_endpoint(
-            "/login/register", "register", self.register, methods=["POST"]
+            "/api/get_saves", "get_saves", self.api_get_saves, methods=["GET", "POST"]
         )
-        self.app.add_endpoint("/gallery", "gallery", self.gallery, methods=["GET"])
         self.app.add_endpoint(
-            "/background", "get_background", self.get_background, methods=["GET"]
+            "/api/authorize", "authorize", self.api_authorize, methods=["POST", "GET"]
+        )
+        self.app.add_endpoint(
+            "/api/register", "register", self.api_register, methods=["POST"]
+        )
+        self.app.add_endpoint(
+            "/api/gallery", "gallery", self.api_get_gallery, methods=["GET"]
+        )
+        self.app.add_endpoint(
+            "/api/get_background",
+            "get_background",
+            self.api_get_background,
+            methods=["GET"],
         )
 
         if self.login_handler.get_method() == "github":

@@ -20,7 +20,7 @@ function Login() {
 
     useEffect(() => {
         const fetchLoginMethod = async () => {
-            const response = await fetch('/login', {
+            const response = await fetch('/api/authorize', {
                 method: 'GET'
             });
     

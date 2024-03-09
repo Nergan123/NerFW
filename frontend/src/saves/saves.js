@@ -9,7 +9,7 @@ function Saves(){
     const [saves, setSaves] = useState([]);
 
     const savesData = async () => {
-        const response = await fetch('/game/load_game', {
+        const response = await fetch('/api/get_saves', {
             method: 'GET',
         });
         const responseData = await response.json();

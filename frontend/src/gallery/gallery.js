@@ -64,7 +64,7 @@ function Gallery() {
 
     useEffect(() => {
         const fetchImages = async () => {
-            const response = await fetch('/gallery', {
+            const response = await fetch('/api/gallery', {
                 method: 'GET'
             });
     

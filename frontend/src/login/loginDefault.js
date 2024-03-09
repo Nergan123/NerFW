@@ -20,7 +20,7 @@ function LoginDefault() {
     const handleSubmit = async (event) => {
       event.preventDefault();
   
-      const response = await fetch('/login', {
+      const response = await fetch('/api/authorize', {
         method: 'POST',
         redirect: 'follow',
         headers: {
