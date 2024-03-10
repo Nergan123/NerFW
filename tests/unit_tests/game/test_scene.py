@@ -7,7 +7,7 @@ from nerfw.helpers.errors.character_not_found import CharacterNotFoundError
 
 class SceneTest(unittest.TestCase):
     """
-    This class contains unit tests for the Scene class in the nerfw.game.scene module.
+    This class contains unit tests for the Scene class in the nerfw.login_register.scene module.
     """
 
     def setUp(self):

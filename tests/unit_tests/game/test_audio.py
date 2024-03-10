@@ -8,7 +8,7 @@ from nerfw.game.audio import Audio
 
 class AudioTests(unittest.TestCase):
     """
-    Unit test class for the Audio class in the nerfw.game.audio module.
+    Unit test class for the Audio class in the nerfw.login_register.audio module.
     """
 
     # pylint: disable=unused-argument

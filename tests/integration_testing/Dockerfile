@@ -2,7 +2,7 @@ FROM python:3.10
 LABEL authors="nergan"
 
 RUN apt-get update
-RUN pip install pytest requests
+RUN pip install pytest requests selenium
 
 WORKDIR /app
 COPY . .

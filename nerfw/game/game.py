@@ -9,7 +9,7 @@ from nerfw.helpers.logger import LoggerBase
 
 
 class Game(LoggerBase):
-    """Class to create a game"""
+    """Class to create a login_register"""
 
     def __init__(self, *args, **kwargs):
         _ = args

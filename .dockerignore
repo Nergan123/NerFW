@@ -2,5 +2,5 @@
 logs
 data
 *.egg-info
-*.db
+login_data.db
 build

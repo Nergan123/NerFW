@@ -6,7 +6,7 @@ from nerfw.helpers.recorder import Recorder
 
 class ChoiceTest(unittest.TestCase):
     """
-    This class contains unit tests for the Choice class in the nerfw.game.choice module.
+    This class contains unit tests for the Choice class in the nerfw.login_register.choice module.
     """
 
     def setUp(self):

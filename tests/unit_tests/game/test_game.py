@@ -5,7 +5,7 @@ from nerfw.game.game import Game
 
 class GameTests(unittest.TestCase):
     """
-    Unit test class for the Game class in the nerfw.game.game module.
+    Unit test class for the Game class in the nerfw.login_register.login_register module.
     """
 
     def setUp(self):

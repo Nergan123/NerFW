@@ -8,6 +8,8 @@ services:
       context: "."
     ports:
       - "8080:5000"
+    networks:
+      - mynetwork
   tests:
     environment:
         - CLIENT_ID=${CLIENT_ID}
@@ -18,3 +20,8 @@ services:
       - "9999:5000"
     depends_on:
       - "nerfw_server"
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+      driver: bridge

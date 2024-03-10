@@ -5,7 +5,7 @@ from nerfw.game.character import Character
 
 class CharacterTests(unittest.TestCase):
     """
-    Unit test class for the Character class in the nerfw.game.character module.
+    Unit test class for the Character class in the nerfw.login_register.character module.
     """
 
     def setUp(self):
