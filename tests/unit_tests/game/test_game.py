@@ -27,7 +27,7 @@ class GameTests(unittest.TestCase):
         self.assertEqual(character.animation.current_x, 0)
         self.assertEqual(character.animation.current_y, 0)
 
-    @patch("nerfw.login_register.scene.Scene.set_background")
+    @patch("nerfw.game.scene.Scene.set_background")
     def test_game_set_background(self, mock_set_background):
         """
         Test case to verify that the set_background
@@ -36,7 +36,7 @@ class GameTests(unittest.TestCase):
         self.game.set_background("background_img_path")
         mock_set_background.assert_called_once_with("background_img_path")
 
-    @patch("nerfw.login_register.audio.Audio.play")
+    @patch("nerfw.game.audio.Audio.play")
     def test_game_play_audio(self, mock_play):
         """
         Test case to verify that the play_audio method correctly plays an audio file.
