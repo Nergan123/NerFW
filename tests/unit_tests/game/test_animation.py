@@ -4,7 +4,7 @@ from nerfw.game.animation import Animations
 
 class TestAnimations(unittest.TestCase):
     """
-    Unit test class for the Animations class in the nerfw.game.animation module.
+    Unit test class for the Animations class in the nerfw.login_register.animation module.
     """
 
     def setUp(self):

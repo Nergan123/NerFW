@@ -61,10 +61,17 @@ jobs:
         with:
           python-version: '3.10.x'
 
-      - name: Build containers
+      - name: Build Selenium
         run: |
-          docker-compose build
+          docker-compose -f docker-compose.selenium.yml build
+          docker-compose -f docker-compose.selenium.yml up -d
 
-      - name: Compose up
+      - name: Build Integration Tests
         run: |
-          docker-compose up --abort-on-container-exit
+          docker-compose -f docker-compose.integration.yml build
+          docker-compose -f docker-compose.integration.yml up --abort-on-container-exit
+
+      - name: Clean up
+        run: |
+          docker-compose -f docker-compose.selenium.yml down
+          docker-compose -f docker-compose.integration.yml down
