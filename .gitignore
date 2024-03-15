@@ -18,6 +18,7 @@ logo_dir
 !package-lock.json
 !manifest.json
 !asset-manifest.json
+!.devcontainer/*.json
 
 node_modules
 *.pnp

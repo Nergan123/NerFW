@@ -30,6 +30,8 @@ def script(*args, **kwargs):
     tester.animation.move(20, 10, 3)
     tester.scale(height=500, width=500)
     tester.say("Test 2")
+    tester.say("Test 3")
+    tester.say("Test 4")
     app.unlock_scene("tests/integration_testing/test_files/back.jpg", "back", "test")
     app.unlock_scene("tests/integration_testing/test_files/char1.jpeg", "coder", "test")
     app.unlock_scene("tests/integration_testing/test_files/char1.jpeg", "coder1New", "coders")

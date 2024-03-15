@@ -1,0 +1,14 @@
+{
+  "name": "NerFW Integration Testing",
+  "dockerComposeFile": [
+    "../docker-compose.integration.yml",
+    "../docker-compose.selenium.yml"
+  ],
+  "service": "tests",
+  "workspaceFolder": "/app",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "python.pythonPath": "/usr/local/bin/python3.10",
+  },
+  "postAttachCommand": "mv .devcontainer/conftest.py tests/integration_testing/conftest.py"
+}
