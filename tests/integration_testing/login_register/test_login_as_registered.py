@@ -4,18 +4,19 @@ from selenium.webdriver.common.by import By
 
 
 @pytest.mark.game
-def test_login_as_registered(register_browser_chrome: webdriver, logger):
+def test_login_as_registered(register_browser_chrome: webdriver, logger, login_value):
     """
     Test to access the login_register
 
     :param register_browser_chrome: Chrome browser instance
     :param logger: Logger instance
+    :param login_value: Unique login
     """
 
     logger.info("Accessing the Login page")
     register_browser_chrome.get("http://nerfw_server:5000/Login")
 
-    register_browser_chrome.find_element(By.ID, "Login").send_keys("test")
+    register_browser_chrome.find_element(By.ID, "Login").send_keys(login_value)
     register_browser_chrome.find_element(By.ID, "Password").send_keys("test")
     register_browser_chrome.find_element(By.ID, "Submit").click()
 

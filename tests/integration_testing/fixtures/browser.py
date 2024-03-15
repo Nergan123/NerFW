@@ -11,6 +11,17 @@ login = str(uuid.uuid4())
 
 
 @pytest.fixture
+def login_value():
+    """
+    Fixture to create a unique login
+
+    :return: Unique login
+    """
+
+    return login
+
+
+@pytest.fixture
 def browser_chrome():
     """
     Fixture to create a Chrome browser instance

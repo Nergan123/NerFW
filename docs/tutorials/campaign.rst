@@ -9,3 +9,4 @@ Campaign creation
     setting_server
     login_methods/login_methods
     game_script_tutorial/campaign_tutorial
+    whats_next
