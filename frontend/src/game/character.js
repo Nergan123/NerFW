@@ -11,8 +11,8 @@ function Character({charData, idx}){
         alt="character"
         style={charStyle}
         key={idx}
-        height={charData.scale.height + "px"}
-        width={charData.scale.width + "px"}
+        height={charData.scale.height}
+        width={charData.scale.width}
         />
     );
 }

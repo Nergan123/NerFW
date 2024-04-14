@@ -28,7 +28,7 @@ def script(*args, **kwargs):
     app.play_audio("tests/integration_testing/test_files/test.mp3")
     tester.say("Test 1")
     tester.animation.move(20, 10, 3)
-    tester.scale(height=500, width=500)
+    tester.scale(height=5000, width=500)
     tester.say("Test 2")
     tester.say("Test 3")
     tester.say("Test 4")

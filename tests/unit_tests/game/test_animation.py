@@ -32,6 +32,7 @@ class TestAnimations(unittest.TestCase):
             "--moveEndX": "10%",
             "--moveStartY": "0%",
             "--moveEndY": "20%",
+            "overflow": "hidden",
             "animation": "1s ease-in-out 0s 1 slideIn",
             "top": "20%",
             "left": "10%",

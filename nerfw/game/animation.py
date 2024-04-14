@@ -34,6 +34,7 @@ class Animations(LoggerBase):
             "animation": f"{duration}s ease-in-out 0s 1 slideIn",
             "top": f"{move_y}%",
             "left": f"{move_x}%",
+            "overflow": "hidden",
         }
 
         self.current_x = move_x

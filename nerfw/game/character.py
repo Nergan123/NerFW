@@ -80,8 +80,8 @@ class Character(LoggerBase):
         """
 
         self.img_scale = {
-            "height": height,
-            "width": width
+            "height": f"{height}px",
+            "width": f"{width}px"
         }
 
     def set_image(self, img_path: str):

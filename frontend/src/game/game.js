@@ -56,6 +56,7 @@ function Game() {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        overflow: "hidden",
     }
 
     const charNameStyle = {

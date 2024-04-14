@@ -24,7 +24,7 @@
     background-color: #ffffff20;
 }
 
-img {
+.innerWrapper img {
     margin: 10%;
     border-radius: 15px;
     width: 80%;
