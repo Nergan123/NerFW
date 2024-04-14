@@ -26,7 +26,7 @@ function GetScene(scene, HandleSceneSet) {
     }
 
     return(
-        <div id="show-data" style={{position: "relative"}}>
+        <div id="show-data">
             <AudioGroup sourcesInput={scene.audio}/>
             {
                 scene['characters'].map((character, idx) => {
