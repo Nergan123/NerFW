@@ -1,7 +1,6 @@
 # NerFW
 
 [![Code check](https://github.com/Nergan123/NerFW/actions/workflows/Checks.yml/badge.svg)](https://github.com/Nergan123/NerFW/actions/workflows/Checks.yml)
-[![Qodana](https://github.com/Nergan123/NerFW/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/Nergan123/NerFW/actions/workflows/qodana_code_quality.yml)
 [![PyPI version](https://badge.fury.io/py/nerfw.svg)](https://badge.fury.io/py/nerfw)
 [![Documentation Status](https://readthedocs.org/projects/nerfw/badge/?version=latest)](https://nerfw.readthedocs.io/en/latest/?badge=latest)
 
