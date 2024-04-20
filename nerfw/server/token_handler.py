@@ -79,6 +79,9 @@ class TokenHandler(LoggerBase):
         except jwt.ExpiredSignatureError:
             self.logger.debug("Expired signature")
             return False
+        except jwt.InvalidTokenError:
+            self.logger.debug("Invalid token")
+            return False
         return decoded
 
     def unlock_token(self, token: str):

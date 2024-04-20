@@ -7,7 +7,12 @@ const RouteGuard = () => {
 
     const cookie = new Cookies();
 
-    return cookie.get("token") ? <Outlet /> : <Navigate to="/Login" />;
+    const token = cookie.get("token");
+    if (token !== undefined && token !== null && token !== "") {
+        return <Outlet />;
+    } else {
+        return <Navigate to="/Login" />;
+    }
 
 }
 

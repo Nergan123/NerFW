@@ -19,7 +19,9 @@ def require_token(func):
         handler = TokenHandler()
         answer = handler.verify_token(token)
         if not answer:
-            return redirect("/login")
+            response = redirect("/login")
+            response.set_cookie("token", "", expires=0)
+            return response
         return func(*args, *kwargs)
 
     return wrapper
