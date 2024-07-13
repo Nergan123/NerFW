@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './choices.css'
 import './dialogue_menu.css'
+import './game.css'
 import { useNavigate } from 'react-router-dom';
 import GetScene from './get_scene';
 import { useCookies } from 'react-cookie';

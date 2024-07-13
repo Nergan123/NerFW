@@ -2,6 +2,7 @@ import AudioGroup from "./audioGroup";
 import Character from "./character";
 import Choice from "./choice";
 import StringInput from "./stringInput";
+import "./game.css"
 
 
 function GetScene(scene, HandleSceneSet) {
@@ -26,7 +27,7 @@ function GetScene(scene, HandleSceneSet) {
     }
 
     return(
-        <div id="show-data">
+        <div id="show-data" style={{overflow: "hidden"}}>
             <AudioGroup sourcesInput={scene.audio}/>
             {
                 scene['characters'].map((character, idx) => {
