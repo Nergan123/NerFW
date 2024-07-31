@@ -39,6 +39,7 @@ dependencies = [
     "authlib",
     "requests",
     "patreon",
+    "pillow",
 ]
 
 [tool.setuptools.dynamic]

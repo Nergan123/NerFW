@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import pako from "pako";
 
 
 function ImageSelected(props, idx) {
@@ -40,7 +41,12 @@ function ImageSelected(props, idx) {
 
     const containerStyle = selected ? containerSelected : containerNotSelected; 
     const style = selected ? styleSelected : styleNotSelected;
-    const imageSource = `data:image/jpeg;base64,${props.image.image}`;
+
+    const compressedData = props.image.image;
+    const byteArray = Uint8Array.from(atob(compressedData), (c) => c.charCodeAt(0));
+    const decompressedData = pako.inflate(byteArray, {to: 'string'});
+
+    const imageSource = `data:image/webp;base64,${decompressedData}`;
     
     return (
         <div className='OutterDiv' style={containerStyle}>

@@ -13,7 +13,7 @@ function Character({charData, idx}) {
     return (
         <img
             id={charData['name']}
-            src={`data:image/jpeg;base64,${decompressedData}`}
+            src={`data:image/webp;base64,${decompressedData}`}
             alt="character"
             style={charStyle}
             key={idx}

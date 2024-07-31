@@ -1,5 +1,7 @@
 import base64
+import io
 import zlib
+from PIL import Image
 
 from nerfw.helpers.logger import LoggerBase
 
@@ -33,8 +35,11 @@ class ImageHandler(LoggerBase):
         """
 
         self.logger.info(f"Converting {img_path} to base64")
-        with open(img_path, "rb") as img:
-            encoded_image = base64.b64encode(img.read())
+        with open(img_path, "rb") as img_file:
+            img = Image.open(img_file)
+            buffer = io.BytesIO()
+            img.save(buffer, format="WEBP")
+            encoded_image = base64.b64encode(buffer.getvalue())
 
         compressed = self._compress(encoded_image)
 

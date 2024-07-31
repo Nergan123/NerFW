@@ -57,7 +57,7 @@ function Home() {
             const byteArray = Uint8Array.from(atob(compressedData), (c) => c.charCodeAt(0));
             const decompressedData = pako.inflate(byteArray, {to: 'string'});
 
-            setBackGround(`url(data:image/jpeg;base64,${decompressedData})`);
+            setBackGround(`url(data:image/webp;base64,${decompressedData})`);
         }
 
         fetchBackground().then(r => console.log("Background fetched"));

@@ -58,7 +58,7 @@ function Game() {
 
     const backgroundStyle = {
         height: "100%",
-        backgroundImage: `url(data:image/jpeg;base64,${decompressedData})`,
+        backgroundImage: `url(data:image/webp;base64,${decompressedData})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
