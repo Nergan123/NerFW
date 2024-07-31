@@ -89,5 +89,6 @@ if __name__ == "__main__":
     LoggerBase.setup_logger()
     ner = NerFW()
     ner.set_name("Test game")
+    ner.set_background("tests/integration_testing/test_files/back.jpg")
 
     ner.run(script)

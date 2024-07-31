@@ -5,6 +5,7 @@ import './game.css'
 import { useNavigate } from 'react-router-dom';
 import GetScene from './get_scene';
 import { useCookies } from 'react-cookie';
+import pako from "pako";
 
 
 function Game() {
@@ -51,9 +52,13 @@ function Game() {
         margin: '10px 10px 10px 10px'
     }
 
+    const compressedData = scene.background;
+    const byteArray = Uint8Array.from(atob(compressedData), (c) => c.charCodeAt(0));
+    const decompressedData = pako.inflate(byteArray, {to: 'string'});
+
     const backgroundStyle = {
         height: "100%",
-        backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
+        backgroundImage: `url(data:image/webp;base64,${decompressedData})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",

@@ -89,5 +89,5 @@ class NerFW(LoggerBase):
 
         self.background = {
             "type": "backgroundImage",
-            "data": f"url(data:image/jpeg;base64,{img})",
+            "data": img,
         }

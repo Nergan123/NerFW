@@ -1,27 +1,32 @@
 import Character from "../game/character";
+import pako from "pako";
 
 
-function RenderVisualBackground({scene, idx, state}){
+function RenderVisualBackground({scene, idx, state}) {
+
+    const compressedData = scene.background;
+    const byteArray = Uint8Array.from(atob(compressedData), (c) => c.charCodeAt(0));
+    const decompressedData = pako.inflate(byteArray, {to: 'string'});
 
     const backgroundStyleVisible = {
         height: "100%",
         width: "100%",
-        backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
+        backgroundImage: `url(data:image/webp;base64,${decompressedData})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        zIndex: -1-idx,
+        zIndex: -1 - idx,
         opacity: 0,
     }
 
     const backgroundStyleInvisible = {
         height: "100%",
         width: "100%",
-        backgroundImage: `url(data:image/jpeg;base64,${scene['background']}`,
+        backgroundImage: `url(data:image/webp;base64,${decompressedData}`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        zIndex: -1-idx,
+        zIndex: -1 - idx,
         opacity: 1,
     }
 
@@ -45,38 +50,46 @@ function RenderVisualBackground({scene, idx, state}){
         color: `rgb(${scene['color'][0]}, ${scene['color'][1]}, ${scene['color'][2]})`,
     }
 
-    function getSceneText(){
+    function getSceneText() {
         if (scene['choice']['options'] != null) {
             return "";
-        }else if (scene['stringInput']['text'] != null){
+        } else if (scene['stringInput']['text'] != null) {
             return "";
         }
         return scene['text'];
     }
 
-    function getStyle(){
-        if(state[idx]){
-            return(backgroundStyleInvisible);
-        }else{
-            return(backgroundStyleVisible);
+    function getStyle() {
+        if (state[idx]) {
+            return (backgroundStyleInvisible);
+        } else {
+            return (backgroundStyleVisible);
         }
     }
 
-    return(
+    return (
         <div className="Save" key={idx} style={getStyle()}>
             {scene['characters'].map((character, idx) => {
-                return(<Character charData={character} idx={idx}/>)
+                return (<Character charData={character} idx={idx}/>)
             })}
             <div id="dialogue_menu">
                 <div id="wrapper" style={wrapper_style}>
-                <div style={buttons_container}>
-                    <div id="back" className="button_div"><button>back</button></div>
-                    <div id="next" className="button_div"><button>next</button></div>
-                </div>
-                <div style={buttons_container}>
-                    <div id="main_menu" className="button_div"><button>main_menu</button></div>
-                    <div id="save" className="button_div"><button>save</button></div>
-                </div>
+                    <div style={buttons_container}>
+                        <div id="back" className="button_div">
+                            <button>back</button>
+                        </div>
+                        <div id="next" className="button_div">
+                            <button>next</button>
+                        </div>
+                    </div>
+                    <div style={buttons_container}>
+                        <div id="main_menu" className="button_div">
+                            <button>main_menu</button>
+                        </div>
+                        <div id="save" className="button_div">
+                            <button>save</button>
+                        </div>
+                    </div>
                 </div>
 
                 <form method="POST" style={{'margin': '10px 20px'}}>
