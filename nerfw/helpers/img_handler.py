@@ -19,7 +19,7 @@ class ImageHandler(LoggerBase):
         :return: Compressed img bytes
         """
 
-        self.logger.debug(f"Compressing...")
+        self.logger.debug("Compressing...")
         output = zlib.compress(img_b64, level=9)
 
         return output
