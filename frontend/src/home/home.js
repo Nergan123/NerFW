@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import './home.css'
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {Cookies} from "react-cookie";
-
+import pako from 'pako';
 
 function Home() {
 
@@ -18,7 +18,7 @@ function Home() {
     function handleClickToSaves() {
         navigate("/saves");
     }
-    
+
     function handleClickToGallery() {
         navigate("/gallery");
     }
@@ -48,14 +48,19 @@ function Home() {
             const response = await fetch('/api/get_background', {
                 method: 'GET'
             });
-    
+
             const data = await response.json();
 
             setType(data.background.type);
-            setBackGround(data.background.data);
+
+            const compressedData = data.background.data;
+            const byteArray = Uint8Array.from(atob(compressedData), (c) => c.charCodeAt(0));
+            const decompressedData = pako.inflate(byteArray, {to: 'string'});
+
+            setBackGround(`url(data:image/jpeg;base64,${decompressedData})`);
         }
 
-        fetchBackground();
+        fetchBackground().then(r => console.log("Background fetched"));
     }, [setBackGround]);
 
     return (

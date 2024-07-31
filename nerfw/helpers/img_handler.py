@@ -1,4 +1,5 @@
 import base64
+import zlib
 
 from nerfw.helpers.logger import LoggerBase
 
@@ -9,6 +10,19 @@ class ImageHandler(LoggerBase):
     def __init__(self):
         super().__init__()
         self.logger.debug("Initialized")
+
+    def _compress(self, img_b64: bytes):
+        """
+        Compresses img
+
+        :param img_b64: Base64 encoded img
+        :return: Compressed img bytes
+        """
+
+        self.logger.debug(f"Compressing...")
+        output = zlib.compress(img_b64, level=9)
+
+        return output
 
     def convert_to_base64(self, img_path: str):
         """
@@ -22,4 +36,6 @@ class ImageHandler(LoggerBase):
         with open(img_path, "rb") as img:
             encoded_image = base64.b64encode(img.read())
 
-        return encoded_image.decode("utf-8")
+        compressed = self._compress(encoded_image)
+
+        return base64.b64encode(compressed).decode("ascii")
