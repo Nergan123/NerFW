@@ -5,21 +5,21 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nerfw"
 authors = [
-    {name = "Nergan", email = "noname.nosurname2016@yandex.ru"},
+    { name = "Nergan", email = "noname.nosurname2016@yandex.ru" },
 ]
 description = "Framework for creation of web based visual novels"
 readme = "README.md"
 dynamic = ["version"]
 requires-python = ">=3.10"
 keywords = [
-    "flask",
+    "fastapi",
     "visual",
     "novel",
     "web",
 ]
-license = {file = 'LICENSE'}
+license = { file = 'LICENSE' }
 classifiers = [
-    "Framework :: Flask",
+    "Framework :: FastAPI",
     "Programming Language :: Python :: 3",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -34,7 +34,8 @@ classifiers = [
 ]
 dependencies = [
     "python-dotenv",
-    "flask",
+    "fastapi",
+    "uvicorn[standart]",
     "pyjwt",
     "authlib",
     "requests",
@@ -43,7 +44,7 @@ dependencies = [
 ]
 
 [tool.setuptools.dynamic]
-version = {attr = "nerfw.__version__"}
+version = { attr = "nerfw.__version__" }
 
 [project.urls]
 homepage = "https://github.com/Nergan123/NerFW/tree/main"
@@ -54,9 +55,9 @@ exclude = [
     "test_files",
     "frontend",
     "tests",
+    "tests/**/*",
 ]
 namespaces = false
-
 
 [tool.setuptools.package-data]
 nerfw = [
@@ -72,13 +73,52 @@ nerfw = [
     "**/build/manifest.json",
 ]
 
-
 [project.optional-dependencies]
 dev = [
-    "black",
-    "pylint",
+    "ruff",
     "pytest",
     "sphinx",
     "sphinx-rtd-theme",
     "myst-parser",
+    "towncrier",
+    "nox",
+    "pre-commit",
 ]
+
+[tool.towncrier]
+package = "nerfw"
+package_dir = "nerfw"
+directory = ".changelog"
+filename = "CHANGELOG.md"
+start_string = "<!-- towncrier release notes start -->\n"
+underlines = ["", "", ""]
+title_format = "## [{version}](https://github.com/twisted/my-project/tree/{version}) - {project_date}"
+issue_format = "[#{issue}](https://github.com/twisted/my-project/issues/{issue})"
+
+[[tool.towncrier.section]]
+path = ""
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Features"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Bugfixes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "doc"
+name = "Improved Documentation"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "removal"
+name = "Deprecations and Removals"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "misc"
+name = "Misc"
+showcontent = false

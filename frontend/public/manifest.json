@@ -1,6 +1,6 @@
 {
-  "short_name": "NerFW",
-  "name": "NerFW application",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

@@ -39,3 +39,6 @@ coverage
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.nox
+*TO_DELETE
