@@ -10,7 +10,7 @@ from nerfw import __version__
 
 @nox.session(python=None)
 def lint(session: nox.Session):
-    session.install(".[dev]")
+    session.install("ruff")
     session.run("ruff", "check", ".")
 
 
