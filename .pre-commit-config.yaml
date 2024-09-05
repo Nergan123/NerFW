@@ -9,6 +9,7 @@ repos:
     rev: v0.6.4
     hooks:
       - id: ruff
+      - id: ruff-format
   - repo: https://github.com/twisted/towncrier
     rev: 24.8.0
     hooks:
