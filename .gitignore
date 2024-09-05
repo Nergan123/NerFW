@@ -29,6 +29,7 @@ coverage
 **/frontend/build
 !frontend/**/*.ico
 !frontend/**/*.png
+!tsconfig.json
 
 .DS_Store
 .env.local
