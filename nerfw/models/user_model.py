@@ -10,5 +10,6 @@ class UserModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     password = Column(String)
+    role = Column(String, default="user")
 
     saves = relationship("SaveModel", back_populates="user")

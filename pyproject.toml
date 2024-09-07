@@ -43,6 +43,7 @@ dependencies = [
     "patreon",
     "pillow",
     "sqlalchemy",
+    "bcrypt",
 ]
 
 [tool.setuptools.dynamic]
@@ -91,11 +92,10 @@ dev = [
 package = "nerfw"
 package_dir = "nerfw"
 directory = ".changelog"
-filename = "CHANGELOG.md"
+filename = "CHANGELOG.rst"
 start_string = "<!-- towncrier release notes start -->\n"
-underlines = ["", "", ""]
-title_format = "## [{version}](https://github.com/twisted/my-project/tree/{version}) - {project_date}"
-issue_format = "[#{issue}](https://github.com/twisted/my-project/issues/{issue})"
+title_format = "`{version} <https://github.com/Nergan123/NerFW/releases/tag/v{version}>`_ - {project_date}"
+issue_format = "`#{issue} <https://github.com/Nergan123/NerFW/issues/{issue}>`_"
 
 [[tool.towncrier.section]]
 path = ""
@@ -124,3 +124,8 @@ showcontent = true
 directory = "misc"
 name = "Misc"
 showcontent = false
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking Changes"
+showcontent = true
