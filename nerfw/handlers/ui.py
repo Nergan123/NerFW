@@ -1,6 +1,9 @@
 import logging
+from io import BytesIO
 from pathlib import Path
 from typing import Tuple
+
+from PIL import Image, ImageDraw
 
 
 class Ui:
@@ -20,7 +23,7 @@ class Ui:
         self._logger.info("Getting background image.")
         if self.background is None:
             self._logger.warning("No background image set.")
-            return b"", "image/png"
+            return await self.create_default_background(), "image/png"
 
         image_type = self.background.suffix
 
@@ -40,3 +43,22 @@ class Ui:
             image_path = Path(image_path)
 
         self.background = image_path
+
+    async def create_default_background(self) -> bytes:
+        """
+        Create a default background image.
+
+        :return: Bytes of the default background color.
+        """
+
+        self._logger.info("Creating default background image.")
+        image = Image.new("RGB", (200, 100), "white")
+        draw = ImageDraw.Draw(image)
+        hex_color = "#153950"
+        draw.rectangle([0, 0, 200, 100], fill=hex_color)
+
+        buffered = BytesIO()
+        image.save(buffered, format="PNG")
+        image_bytes = buffered.getvalue()
+
+        return image_bytes

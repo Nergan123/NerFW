@@ -1,17 +1,20 @@
 import Button from "../utils/button";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {LoginResponse} from "@types";
 import {Cookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import Popup from "./popup";
+import A from "../utils/a";
+import {BackgroundContext} from "../utils/backgroundProvider";
+import Input from "../utils/input";
 
 function Login() {
 
-    const [backgroundImage, setBackgroundImage] = useState<string>("");
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [popup, setPopup] = useState<boolean>(false);
     const [popupMessage, setPopupMessage] = useState<string>("");
+    const background = useContext<string>(BackgroundContext);
 
     const cookie = new Cookies();
     const navigate = useNavigate();
@@ -46,27 +49,14 @@ function Login() {
         }
     }
 
+    console.log(background);
+
     const style = {
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url(${background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat"
     }
-
-    useEffect(() => {
-        async function fetchBackground() {
-            try {
-                const response = await fetch("/api/ui/background");
-                const blob = await response.blob();
-                const url = URL.createObjectURL(blob);
-                setBackgroundImage(url);
-            } catch (error) {
-                console.error("Error fetching background image:", error);
-            }
-        }
-
-        fetchBackground().then();
-    }, []);
 
     return (
         <div style={style}
@@ -75,18 +65,17 @@ function Login() {
             <div
                 className={"flex flex-col p-5 border-2 border-white border-opacity-55 bg-opacity-5 bg-white backdrop-blur-lg rounded-2xl items-center gap-3"}>
                 <h1 className={"text-4xl font-bold text-center text-white mb-3"}>Login</h1>
-                <input
-                    className={"p-2 rounded bg-opacity-5 bg-white border-1 border-white text-white hover:bg-opacity-20 transition-all ease-in-out duration-300"}
+                <Input
                     placeholder={"Username"}
                     onChange={handleUsernameChange}
                 />
-                <input
-                    className={"p-2 rounded bg-opacity-5 bg-white border-1 border-white text-white hover:bg-opacity-20 transition-all ease-in-out duration-300"}
+                <Input
                     placeholder={"Password"}
                     type={"password"}
                     onChange={handlePasswordChange}
                 />
                 <Button className={"w-full"} onClick={handleLogin}>Login</Button>
+                <A onClick={() => navigate("/Register")}>Don't have an account?</A>
             </div>
         </div>
     );
