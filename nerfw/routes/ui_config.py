@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 from starlette.responses import Response
 
-from nerfw.inner import ui
+from nerfw.handlers.ui import Ui
 
 ui_config_router = APIRouter(prefix="/ui", tags=["ui_config"])
+ui = Ui()
 
 
 @ui_config_router.get("/background", response_class=Response)

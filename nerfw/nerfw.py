@@ -4,7 +4,8 @@ from pathlib import Path
 import uvicorn
 
 from nerfw.app import app
-from nerfw.inner import ui, game
+from nerfw.handlers.game import GameHandler
+from nerfw.handlers.ui import Ui
 
 
 class NerFW:
@@ -12,8 +13,8 @@ class NerFW:
         self._generate_secret()
         self._load_secret()
         self.app = app
-        self.ui = ui
-        self.game = game
+        self.ui = Ui()
+        self.game = GameHandler()
         self.text = "Hello, World!"
 
     def run(self):

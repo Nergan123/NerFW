@@ -5,8 +5,10 @@ from typing import Tuple
 
 from PIL import Image, ImageDraw
 
+from nerfw.handlers.util.singleton import Singleton
 
-class Ui:
+
+class Ui(metaclass=Singleton):
     """User interface for NERFW."""
 
     def __init__(self):
