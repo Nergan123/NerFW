@@ -44,6 +44,7 @@ dependencies = [
     "pillow",
     "sqlalchemy",
     "bcrypt",
+    "sqladmin[full]",
 ]
 
 [tool.setuptools.dynamic]

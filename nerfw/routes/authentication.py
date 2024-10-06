@@ -8,7 +8,13 @@ auth_router = APIRouter(prefix="/auth", tags=["auth"])
 handler = LoginHandler()
 
 
-@auth_router.post("/login", response_model=LoginResponse)
+@auth_router.post(
+    "/login",
+    description="Login to the application.",
+    summary="Login to the application.",
+    response_description="Login response",
+    response_model=LoginResponse,
+)
 async def login(request: LoginRequest):
     """
     Login endpoint.

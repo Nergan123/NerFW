@@ -18,7 +18,7 @@ class NerFW:
         self.text = "Hello, World!"
 
     def run(self):
-        uvicorn.run(self.app, host="0.0.0.0", port=8000)
+        uvicorn.run(self.app, host="0.0.0.0", port=8000, forwarded_allow_ips="*")
 
     @staticmethod
     def _generate_secret():
